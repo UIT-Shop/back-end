@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MyShop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
     public class ProductTypeController : ControllerBase
     {
         private readonly IProductTypeService _productTypeService;
@@ -23,18 +21,25 @@ namespace MyShop.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<List<ProductType>>>> AddProductType(ProductType productType)
         {
             var response = await _productTypeService.AddProductType(productType);
             return Ok(response);
         }
 
-        [HttpPut]
+        [HttpPut, Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<List<ProductType>>>> UpdateProductType(ProductType productType)
         {
             var response = await _productTypeService.UpdateProductType(productType);
             return Ok(response);
+        }
+
+        [HttpDelete("{id}"), Authorize(Roles = "Admin")]
+        public async Task<ActionResult<ServiceResponse<bool>>> DeleteCategory(int id)
+        {
+            var result = await _productTypeService.DeleteProductType(id);
+            return Ok(result);
         }
     }
 }

@@ -18,6 +18,22 @@
             return await GetProductTypes();
         }
 
+        public async Task<ServiceResponse<bool>> DeleteProductType(int productTypeId)
+        {
+            var dbProductType = await _context.ProductTypes.FindAsync(productTypeId);
+            if (dbProductType == null)
+            {
+                return new ServiceResponse<bool>
+                {
+                    Success = false,
+                    Data = false,
+                    Message = "Product Type not found."
+                };
+            }
+            await _context.SaveChangesAsync();
+            return new ServiceResponse<bool> { Data = true };
+        }
+
         public async Task<ServiceResponse<List<ProductType>>> GetProductTypes()
         {
             var productTypes = await _context.ProductTypes.ToListAsync();

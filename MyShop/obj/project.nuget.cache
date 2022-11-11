@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "RHJoNCxlIp7bx0nVFrk+RUDLjJaDWoRbyAEYsNmmuC/k6LqC6ZJUX+DxNQ4dYYDDHLIpIzjQFtdbMfqu1UE3mg==",
+  "dgSpecHash": "RMIarGgtxIs5E83Z3fT0WzhwGLQHAAsDfTh8BfcNjPTjYwmF7MO5hw0phsPrVZXvLwCI7+iU2hsrFD5H2i8HKA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Asus\\Downloads\\Git\\DA2\\back-end\\MyShop\\MyShop.csproj",
   "expectedPackageFiles": [
@@ -36,7 +36,7 @@
     "C:\\Users\\Asus\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
-    "C:\\Users\\Asus\\.nuget\\packages\\stripe.net\\40.14.0\\stripe.net.40.14.0.nupkg.sha512",
+    "C:\\Users\\Asus\\.nuget\\packages\\stripe.net\\40.16.0\\stripe.net.40.16.0.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\swashbuckle.aspnetcore\\6.4.0\\swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.4.0\\swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.4.0\\swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",
