@@ -18,7 +18,9 @@ namespace MyShop.Models
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public Address? Address { get; set; }
-        public string phone { get; set; } = String.Empty;
+        public string Phone { get; set; } = String.Empty;
         public Role Role { get; set; } = Role.Customer;
+
+        public bool Deleted { get; set; } = false;
     }
 }

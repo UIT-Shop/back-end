@@ -23,6 +23,9 @@
 
         public async Task<ServiceResponse<bool>> DeleteCategory(int categoryId)
         {
+            if (!_httpContextAccessor.HttpContext.User.IsInRole(Enum.GetName(typeof(Role), Role.Admin)))
+                return new ServiceResponse<bool> { Success = false, Message = "You are not allow to do this action" };
+
             var dbCategory = await _context.Categories.FindAsync(categoryId);
             if (dbCategory == null)
             {
@@ -48,6 +51,9 @@
 
         public async Task<ServiceResponse<Category>> UpdateCategory(Category category)
         {
+            if (!_httpContextAccessor.HttpContext.User.IsInRole(Enum.GetName(typeof(Role), Role.Admin)))
+                return new ServiceResponse<Category> { Success = false, Message = "You are not allow to do this action" };
+
             var dbCategory = await _context.Categories
                 .FirstOrDefaultAsync(p => p.Id == category.Id);
 

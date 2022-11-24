@@ -33,6 +33,7 @@
                     Message = "Brand not found."
                 };
             }
+            _context.Brands.Remove(dbBrand);
             await _context.SaveChangesAsync();
             return new ServiceResponse<bool> { Data = true };
         }

@@ -6,9 +6,7 @@
         private readonly ICartService _cartService;
         private readonly IAuthService _authService;
 
-        public OrderService(DataContext context,
-            ICartService cartService,
-            IAuthService authService)
+        public OrderService(DataContext context, ICartService cartService, IAuthService authService)
         {
             _context = context;
             _cartService = cartService;
@@ -19,13 +17,13 @@
         {
             var response = new ServiceResponse<OrderDetailsResponse>();
             var order = await _context.Orders
-                .Include(o => o.OrderItems)
-                .ThenInclude(oi => oi.Product)
-                .Include(o => o.OrderItems)
-                .ThenInclude(oi => oi.ProductType)
-                .Where(o => o.UserId == _authService.GetUserId() && o.Id == orderId)
-                .OrderByDescending(o => o.OrderDate)
-                .FirstOrDefaultAsync();
+               .Include(o => o.OrderItems)
+               .ThenInclude(oi => oi.Product)
+               .Include(o => o.OrderItems)
+               .ThenInclude(oi => oi.ProductType)
+               .Where(o => o.UserId == _authService.GetUserId() && o.Id == orderId)
+               .OrderByDescending(o => o.OrderDate)
+               .FirstOrDefaultAsync();
 
             if (order == null)
             {
@@ -45,7 +43,7 @@
             orderDetailsResponse.Products.Add(new OrderDetailsProductResponse
             {
                 ProductId = item.ProductId,
-                ImageUrl = item.Product.Variants.First().Images.First().Data,
+                ImageUrl = item.Product.Variants.First().ProductColor.Images.First().Data,
                 ProductType = item.ProductType.Name,
                 Quantity = item.Quantity,
                 Title = item.Product.Title,
@@ -78,7 +76,7 @@
                     $"{o.OrderItems.First().Product.Title} and" +
                     $" {o.OrderItems.Count - 1} more..." :
                     o.OrderItems.First().Product.Title,
-                ProductImageUrl = o.OrderItems.First().Product.Variants.First().Images.First().Data
+                ProductImageUrl = o.OrderItems.First().Product.Variants.First().ProductColor.Images.First().Data
             }));
 
             response.Data = orderResponse;

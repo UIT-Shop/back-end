@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace MyShop.Controllers
 {
@@ -43,10 +41,17 @@ namespace MyShop.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("{productId}/{productTypeId}")]
-        public async Task<ActionResult<ServiceResponse<bool>>> RemoveItemFromCart(int productId, int productTypeId)
+        [HttpDelete("remove/{productId}/{productTypeId}/{productColorId}")]
+        public async Task<ActionResult<ServiceResponse<bool>>> RemoveItemFromCart(int productId, string productTypeId, string productColorId)
         {
-            var result = await _cartService.RemoveItemFromCart(productId, productTypeId);
+            var result = await _cartService.RemoveItemFromCart(productId, productTypeId, productColorId);
+            return Ok(result);
+        }
+
+        [HttpDelete("remove")]
+        public async Task<ActionResult<ServiceResponse<bool>>> RemoveItemFromCart(ProductVariant productVariant)
+        {
+            var result = await _cartService.RemoveItemFromCart(productVariant.ProductId, productVariant.ProductTypeId, productVariant.ProductColorId);
             return Ok(result);
         }
 

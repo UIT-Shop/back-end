@@ -7,19 +7,22 @@
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CartItem>()
-                .HasKey(ci => new { ci.UserId, ci.ProductId });
-
-            modelBuilder.Entity<ProductVariant>()
-                .HasKey(p => new { p.ProductId, p.ProductColorId });
+                .HasKey(ci => new { ci.UserId, ci.ProductVariantId });
 
             modelBuilder.Entity<OrderItem>()
                 .HasKey(oi => new { oi.OrderId, oi.ProductId });
 
             modelBuilder.Entity<ProductColor>().HasData(
-                    new { Id = "1", Name = "Default", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now },
-                    new { Id = "2", Name = "Paperback", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now },
-                    new { Id = "3", Name = "E-Book", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now },
-                    new { Id = "4", Name = "Audiobook", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now }
+                    new { Id = "Wh", Name = "Trắng", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now },
+                    new { Id = "Ble", Name = "Xanh dương", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now },
+                    new { Id = "Bla", Name = "Đen", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now },
+                    new { Id = "Ye", Name = "Vàng", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now }
+                );
+            modelBuilder.Entity<ProductType>().HasData(
+                    new { Id = "S", Name = "Small", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now },
+                    new { Id = "M", Name = "Medium", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now },
+                    new { Id = "L", Name = "Large", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now },
+                    new { Id = "Xl", Name = "Extra large", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now }
                 );
 
             modelBuilder.Entity<Category>().HasData(
@@ -131,8 +134,10 @@
             modelBuilder.Entity<ProductVariant>().HasData(
                 new
                 {
+                    Id = 1,
                     ProductId = 1,
-                    ProductColorId = "2",
+                    ProductColorId = "Ye",
+                    ProductTypeId = "S",
                     Price = 9.99m,
                     OriginalPrice = 9.99m,
                     Deleted = false,
@@ -142,8 +147,10 @@
                 },
                 new
                 {
+                    Id = 2,
                     ProductId = 1,
-                    ProductColorId = "3",
+                    ProductColorId = "Ble",
+                    ProductTypeId = "XL",
                     Price = 9.99m,
                     OriginalPrice = 9.99m,
                     Deleted = false,
@@ -153,8 +160,10 @@
                 },
                 new
                 {
+                    Id = 3,
                     ProductId = 1,
-                    ProductColorId = "4",
+                    ProductColorId = "Bla",
+                    ProductTypeId = "XL",
                     Price = 9.99m,
                     OriginalPrice = 9.99m,
                     Deleted = false,
@@ -164,8 +173,10 @@
                 },
                 new
                 {
+                    Id = 4,
                     ProductId = 2,
-                    ProductColorId = "2",
+                    ProductColorId = "Wh",
+                    ProductTypeId = "S",
                     Price = 9.99m,
                     OriginalPrice = 9.99m,
                     Deleted = false,
@@ -175,8 +186,10 @@
                 },
                 new
                 {
+                    Id = 5,
                     ProductId = 3,
-                    ProductColorId = "2",
+                    ProductColorId = "Ye",
+                    ProductTypeId = "XL",
                     Price = 9.99m,
                     OriginalPrice = 9.99m,
                     Deleted = false,
@@ -186,8 +199,10 @@
                 },
                 new
                 {
+                    Id = 6,
                     ProductId = 4,
-                    ProductColorId = "1",
+                    ProductColorId = "Wh",
+                    ProductTypeId = "XL",
                     Price = 9.99m,
                     OriginalPrice = 9.99m,
                     Deleted = false,
@@ -197,8 +212,10 @@
                 },
                 new
                 {
+                    Id = 7,
                     ProductId = 4,
-                    ProductColorId = "2",
+                    ProductColorId = "Ye",
+                    ProductTypeId = "XL",
                     Price = 9.99m,
                     OriginalPrice = 9.99m,
                     Deleted = false,
@@ -208,8 +225,10 @@
                 },
                 new
                 {
+                    Id = 8,
                     ProductId = 4,
-                    ProductColorId = "3",
+                    ProductColorId = "Bla",
+                    ProductTypeId = "L",
                     Price = 9.99m,
                     OriginalPrice = 9.99m,
                     Deleted = false,

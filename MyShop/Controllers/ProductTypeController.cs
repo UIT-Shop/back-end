@@ -36,7 +36,7 @@ namespace MyShop.Controllers
         }
 
         [HttpDelete("{id}"), Authorize(Roles = "Admin")]
-        public async Task<ActionResult<ServiceResponse<bool>>> DeleteCategory(int id)
+        public async Task<ActionResult<ServiceResponse<bool>>> DeleteProductType(int id)
         {
             var result = await _productTypeService.DeleteProductType(id);
             return Ok(result);

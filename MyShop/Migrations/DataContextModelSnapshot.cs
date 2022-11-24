@@ -68,14 +68,11 @@ namespace MyShop.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("ProductVariantId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("ProductTypeId")
-                        .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -83,7 +80,9 @@ namespace MyShop.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("UserId", "ProductId");
+                    b.HasKey("UserId", "ProductVariantId");
+
+                    b.HasIndex("ProductVariantId");
 
                     b.ToTable("CartItems");
                 });
@@ -141,15 +140,12 @@ namespace MyShop.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProductVariantProductColorId")
+                    b.Property<string>("ProductColorId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("ProductVariantProductId")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductVariantProductId", "ProductVariantProductColorId");
+                    b.HasIndex("ProductColorId");
 
                     b.ToTable("Images");
                 });
@@ -266,6 +262,9 @@ namespace MyShop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("AddressId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -283,6 +282,10 @@ namespace MyShop.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("Orders");
                 });
 
@@ -297,8 +300,9 @@ namespace MyShop.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProductTypeId")
-                        .HasColumnType("int");
+                    b.Property<string>("ProductTypeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -340,7 +344,7 @@ namespace MyShop.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(MAX)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -366,11 +370,11 @@ namespace MyShop.Migrations
                             Id = 1,
                             BrandId = 1,
                             CategoryId = 1,
-                            CreatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(785),
+                            CreatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7021),
                             Deleted = false,
                             Description = "The Hitchhiker's Guide to the Galaxy[note 1] (sometimes referred to as HG2G,[1] HHGTTG,[2] H2G2,[3] or tHGttG) is a comedy science fiction franchise created by Douglas Adams. Originally a 1978 radio comedy broadcast on BBC Radio 4, it was later adapted to other formats, including stage shows, novels, comic books, a 1981 TV series, a 1984 text-based computer game, and 2005 feature film.",
                             Title = "The Hitchhiker's Guide to the Galaxy",
-                            UpdatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(786),
+                            UpdatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7022),
                             Visible = true
                         },
                         new
@@ -378,11 +382,11 @@ namespace MyShop.Migrations
                             Id = 2,
                             BrandId = 1,
                             CategoryId = 1,
-                            CreatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(788),
+                            CreatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7024),
                             Deleted = false,
                             Description = "Ready Player One is a 2011 science fiction novel, and the debut novel of American author Ernest Cline. The story, set in a dystopia in 2045, follows protagonist Wade Watts on his search for an Easter egg in a worldwide virtual reality game, the discovery of which would lead him to inherit the game creator's fortune. Cline sold the rights to publish the novel in June 2010, in a bidding war to the Crown Publishing Group (a division of Random House).[1] The book was published on August 16, 2011.[2] An audiobook was released the same day; it was narrated by Wil Wheaton, who was mentioned briefly in one of the chapters.[3][4]Ch. 20 In 2012, the book received an Alex Award from the Young Adult Library Services Association division of the American Library Association[5] and won the 2011 Prometheus Award.[6]",
                             Title = "Ready Player One",
-                            UpdatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(788),
+                            UpdatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7025),
                             Visible = true
                         },
                         new
@@ -390,11 +394,11 @@ namespace MyShop.Migrations
                             Id = 3,
                             BrandId = 1,
                             CategoryId = 1,
-                            CreatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(790),
+                            CreatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7027),
                             Deleted = false,
                             Description = "Nineteen Eighty-Four (also stylised as 1984) is a dystopian social science fiction novel and cautionary tale written by English writer George Orwell. It was published on 8 June 1949 by Secker & Warburg as Orwell's ninth and final book completed in his lifetime. Thematically, it centres on the consequences of totalitarianism, mass surveillance and repressive regimentation of people and behaviours within society.[2][3] Orwell, a democratic socialist, modelled the totalitarian government in the novel after Stalinist Russia and Nazi Germany.[2][3][4] More broadly, the novel examines the role of truth and facts within politics and the ways in which they are manipulated.",
                             Title = "Nineteen Eighty-Four",
-                            UpdatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(791),
+                            UpdatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7028),
                             Visible = true
                         },
                         new
@@ -402,11 +406,11 @@ namespace MyShop.Migrations
                             Id = 4,
                             BrandId = 1,
                             CategoryId = 2,
-                            CreatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(792),
+                            CreatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7030),
                             Deleted = false,
                             Description = "The Matrix is a 1999 science fiction action film written and directed by the Wachowskis, and produced by Joel Silver. Starring Keanu Reeves, Laurence Fishburne, Carrie-Anne Moss, Hugo Weaving, and Joe Pantoliano, and as the first installment in the Matrix franchise, it depicts a dystopian future in which humanity is unknowingly trapped inside a simulated reality, the Matrix, which intelligent machines have created to distract humans while using their bodies as an energy source. When computer programmer Thomas Anderson, under the hacker alias \"Neo\", uncovers the truth, he \"is drawn into a rebellion against the machines\" along with other people who have been freed from the Matrix.",
                             Title = "The Matrix",
-                            UpdatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(793),
+                            UpdatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7031),
                             Visible = true
                         });
                 });
@@ -427,33 +431,30 @@ namespace MyShop.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1",
-                            Name = "Default"
+                            Id = "Wh",
+                            Name = "Trắng"
                         },
                         new
                         {
-                            Id = "2",
-                            Name = "Paperback"
+                            Id = "Ble",
+                            Name = "Xanh dương"
                         },
                         new
                         {
-                            Id = "3",
-                            Name = "E-Book"
+                            Id = "Bla",
+                            Name = "Đen"
                         },
                         new
                         {
-                            Id = "4",
-                            Name = "Audiobook"
+                            Id = "Ye",
+                            Name = "Vàng"
                         });
                 });
 
             modelBuilder.Entity("MyShop.Models.ProductType", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -462,15 +463,37 @@ namespace MyShop.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "S",
+                            Name = "Small"
+                        },
+                        new
+                        {
+                            Id = "M",
+                            Name = "Medium"
+                        },
+                        new
+                        {
+                            Id = "L",
+                            Name = "Large"
+                        },
+                        new
+                        {
+                            Id = "Xl",
+                            Name = "Extra large"
+                        });
                 });
 
             modelBuilder.Entity("MyShop.Models.ProductVariant", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("ProductColorId")
-                        .HasColumnType("nvarchar(450)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -484,8 +507,15 @@ namespace MyShop.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("ProductTypeId")
+                    b.Property<string>("ProductColorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ProductTypeId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -493,9 +523,11 @@ namespace MyShop.Migrations
                     b.Property<bool>("Visible")
                         .HasColumnType("bit");
 
-                    b.HasKey("ProductId", "ProductColorId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductColorId");
+
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("ProductTypeId");
 
@@ -504,90 +536,106 @@ namespace MyShop.Migrations
                     b.HasData(
                         new
                         {
-                            ProductId = 1,
-                            ProductColorId = "2",
-                            CreatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(823),
+                            Id = 1,
+                            CreatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7073),
                             Deleted = false,
                             OriginalPrice = 9.99m,
                             Price = 9.99m,
-                            UpdatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(824),
+                            ProductColorId = "Ye",
+                            ProductId = 1,
+                            ProductTypeId = "S",
+                            UpdatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7074),
                             Visible = true
                         },
                         new
                         {
-                            ProductId = 1,
-                            ProductColorId = "3",
-                            CreatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(826),
+                            Id = 2,
+                            CreatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7077),
                             Deleted = false,
                             OriginalPrice = 9.99m,
                             Price = 9.99m,
-                            UpdatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(827),
+                            ProductColorId = "Ble",
+                            ProductId = 1,
+                            ProductTypeId = "XL",
+                            UpdatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7078),
                             Visible = true
                         },
                         new
                         {
-                            ProductId = 1,
-                            ProductColorId = "4",
-                            CreatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(828),
+                            Id = 3,
+                            CreatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7079),
                             Deleted = false,
                             OriginalPrice = 9.99m,
                             Price = 9.99m,
-                            UpdatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(829),
+                            ProductColorId = "Bla",
+                            ProductId = 1,
+                            ProductTypeId = "XL",
+                            UpdatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7080),
                             Visible = true
                         },
                         new
                         {
+                            Id = 4,
+                            CreatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7082),
+                            Deleted = false,
+                            OriginalPrice = 9.99m,
+                            Price = 9.99m,
+                            ProductColorId = "Wh",
                             ProductId = 2,
-                            ProductColorId = "2",
-                            CreatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(830),
-                            Deleted = false,
-                            OriginalPrice = 9.99m,
-                            Price = 9.99m,
-                            UpdatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(831),
+                            ProductTypeId = "S",
+                            UpdatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7083),
                             Visible = true
                         },
                         new
                         {
+                            Id = 5,
+                            CreatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7085),
+                            Deleted = false,
+                            OriginalPrice = 9.99m,
+                            Price = 9.99m,
+                            ProductColorId = "Ye",
                             ProductId = 3,
-                            ProductColorId = "2",
-                            CreatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(832),
-                            Deleted = false,
-                            OriginalPrice = 9.99m,
-                            Price = 9.99m,
-                            UpdatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(833),
+                            ProductTypeId = "XL",
+                            UpdatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7086),
                             Visible = true
                         },
                         new
                         {
-                            ProductId = 4,
-                            ProductColorId = "1",
-                            CreatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(834),
+                            Id = 6,
+                            CreatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7088),
                             Deleted = false,
                             OriginalPrice = 9.99m,
                             Price = 9.99m,
-                            UpdatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(835),
+                            ProductColorId = "Wh",
+                            ProductId = 4,
+                            ProductTypeId = "XL",
+                            UpdatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7088),
                             Visible = true
                         },
                         new
                         {
-                            ProductId = 4,
-                            ProductColorId = "2",
-                            CreatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(836),
+                            Id = 7,
+                            CreatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7090),
                             Deleted = false,
                             OriginalPrice = 9.99m,
                             Price = 9.99m,
-                            UpdatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(837),
+                            ProductColorId = "Ye",
+                            ProductId = 4,
+                            ProductTypeId = "XL",
+                            UpdatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7091),
                             Visible = true
                         },
                         new
                         {
-                            ProductId = 4,
-                            ProductColorId = "3",
-                            CreatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(838),
+                            Id = 8,
+                            CreatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7093),
                             Deleted = false,
                             OriginalPrice = 9.99m,
                             Price = 9.99m,
-                            UpdatedDate = new DateTime(2022, 11, 2, 15, 0, 45, 723, DateTimeKind.Local).AddTicks(839),
+                            ProductColorId = "Bla",
+                            ProductId = 4,
+                            ProductTypeId = "L",
+                            UpdatedDate = new DateTime(2022, 11, 23, 22, 58, 14, 745, DateTimeKind.Local).AddTicks(7094),
                             Visible = true
                         });
                 });
@@ -602,6 +650,9 @@ namespace MyShop.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -619,26 +670,45 @@ namespace MyShop.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("MyShop.Models.CartItem", b =>
+                {
+                    b.HasOne("MyShop.Models.ProductVariant", "ProductVariant")
+                        .WithMany()
+                        .HasForeignKey("ProductVariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyShop.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductVariant");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("MyShop.Models.Image", b =>
                 {
-                    b.HasOne("MyShop.Models.ProductVariant", null)
+                    b.HasOne("MyShop.Models.ProductColor", null)
                         .WithMany("Images")
-                        .HasForeignKey("ProductVariantProductId", "ProductVariantProductColorId");
+                        .HasForeignKey("ProductColorId");
                 });
 
             modelBuilder.Entity("MyShop.Models.MAddress.Address", b =>
@@ -678,6 +748,23 @@ namespace MyShop.Migrations
                         .IsRequired();
 
                     b.Navigation("District");
+                });
+
+            modelBuilder.Entity("MyShop.Models.Order", b =>
+                {
+                    b.HasOne("MyShop.Models.MAddress.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
+                    b.HasOne("MyShop.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MyShop.Models.OrderItem", b =>
@@ -761,7 +848,7 @@ namespace MyShop.Migrations
                     b.Navigation("Variants");
                 });
 
-            modelBuilder.Entity("MyShop.Models.ProductVariant", b =>
+            modelBuilder.Entity("MyShop.Models.ProductColor", b =>
                 {
                     b.Navigation("Images");
                 });

@@ -18,6 +18,10 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<List<Product>>>> GetAdminProducts()
         {
             var result = await _productService.GetAdminProducts();
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
             return Ok(result);
         }
 
@@ -25,7 +29,10 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProducts()
         {
             var result = await _productService.GetProductsAsync();
-
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
             return Ok(result);
         }
 
@@ -33,7 +40,10 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<Product>>> GetProduct(int productId)
         {
             var result = await _productService.GetProductById(productId);
-
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
             return Ok(result);
         }
 
@@ -41,7 +51,10 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<Product>>> GetProductsByCategory(string categoryUrl)
         {
             var result = await _productService.GetProductsByCategory(categoryUrl);
-
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
             return Ok(result);
         }
 
@@ -57,7 +70,10 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<List<string>>>> SearchSuggestionProducts(string searchText)
         {
             var result = await _productService.SearchSuggestionProducts(searchText);
-
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
             return Ok(result);
         }
 
@@ -65,6 +81,10 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<Product>>> CreateProduct(Product product)
         {
             var result = await _productService.CreateProduct(product);
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
             return Ok(result);
         }
 
@@ -72,6 +92,10 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<Product>>> UpdateProduct(Product product)
         {
             var result = await _productService.UpdateProduct(product);
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
             return Ok(result);
         }
 
@@ -79,6 +103,10 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<bool>>> DeleteProduct(int id)
         {
             var result = await _productService.DeleteProduct(id);
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
             return Ok(result);
         }
     }

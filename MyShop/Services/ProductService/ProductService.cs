@@ -52,7 +52,7 @@
                     .Include(p => p.Variants.Where(v => !v.Deleted))
                     .ThenInclude(v => v.ProductType)
                     .Include(p => p.Variants.Where(v => !v.Deleted))
-                    .ThenInclude(v => v.Images)
+                    .ThenInclude(v => v.ProductColor.Images)
                     .ToListAsync()
             };
 
@@ -66,7 +66,7 @@
                 Data = await _context.Products
                     .Where(p => p.Visible && !p.Deleted)
                     .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
-                    .ThenInclude(v => v.Images)
+                    .ThenInclude(v => v.ProductColor.Images)
                     .ToListAsync()
             };
 
@@ -76,27 +76,19 @@
         public async Task<ServiceResponse<Product>> GetProductById(int productId)
         {
             var response = new ServiceResponse<Product>();
-            Product product = null;
-
-            if (_httpContextAccessor.HttpContext.User.IsInRole(Enum.GetName(typeof(Role), Role.Admin)))
-            {
-                product = await _context.Products
+            Product product = _httpContextAccessor.HttpContext.User.IsInRole(Enum.GetName(typeof(Role), Role.Admin))
+                ? await _context.Products
                     .Include(p => p.Variants.Where(v => !v.Deleted))
                     .ThenInclude(v => v.ProductType)
                     .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
-                    .ThenInclude(v => v.Images)
-                    .FirstOrDefaultAsync(p => p.Id == productId && !p.Deleted);
-            }
-            else
-            {
-                product = await _context.Products
+                    .ThenInclude(v => v.ProductColor.Images)
+                    .FirstOrDefaultAsync(p => p.Id == productId && !p.Deleted)
+                : await _context.Products
                     .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
                     .ThenInclude(v => v.ProductType)
                     .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
-                    .ThenInclude(v => v.Images)
+                    .ThenInclude(v => v.ProductColor.Images)
                     .FirstOrDefaultAsync(p => p.Id == productId && !p.Deleted && p.Visible);
-            }
-
             if (product == null)
             {
                 response.Success = false;
@@ -117,7 +109,7 @@
                 Data = await _context.Products
                     .Where(p => p.Visible && !p.Deleted)
                     .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
-                    .ThenInclude(v => v.Images)
+                    .ThenInclude(v => v.ProductColor.Images)
                     .ToListAsync()
             };
 
@@ -132,7 +124,7 @@
                     .Where(p => p.Category.Url.ToLower().Equals(categoryUrl.ToLower()) &&
                         p.Visible && !p.Deleted)
                     .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
-                    .ThenInclude(v => v.Images)
+                    .ThenInclude(v => v.ProductColor.Images)
                     .ToListAsync()
             };
 
@@ -182,7 +174,7 @@
                                     p.Description.ToLower().Contains(searchText.ToLower()) &&
                                     p.Visible && !p.Deleted)
                                 .Include(p => p.Variants)
-                                .ThenInclude(v => v.Images)
+                                .ThenInclude(v => v.ProductColor.Images)
                                 .Skip((page - 1) * (int)pageResults)
                                 .Take((int)pageResults)
                                 .ToListAsync();
@@ -204,7 +196,7 @@
         {
             var dbProduct = await _context.Products
                 .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
-                .ThenInclude(v => v.Images)
+                .ThenInclude(v => v.ProductColor.Images)
                 .FirstOrDefaultAsync(p => p.Id == product.Id);
 
             if (dbProduct == null)

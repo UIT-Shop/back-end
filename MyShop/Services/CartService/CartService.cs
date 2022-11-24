@@ -20,22 +20,22 @@
 
             foreach (var item in cartItems)
             {
-                var product = await _context.Products
-                    .Where(p => p.Id == item.ProductId)
-                    .FirstOrDefaultAsync();
+                var productVariant = await _context.ProductVariants
+                    .Include(pv => pv.Product)
+                    .Include(pv => pv.ProductType)
+                    .Include(pv => pv.ProductColor)
+                    .FirstOrDefaultAsync(pv => pv.Id == item.ProductVariantId);
 
-                if (product == null)
+                if (productVariant == null)
                 {
                     continue;
                 }
 
-                var productVariant = await _context.ProductVariants
-                    .Where(v => v.ProductId == item.ProductId
-                        && v.ProductTypeId == item.ProductTypeId)
-                    .Include(v => v.ProductType)
+                var product = await _context.Products
+                    .Where(p => p.Id == productVariant.ProductId)
                     .FirstOrDefaultAsync();
 
-                if (productVariant == null)
+                if (product == null)
                 {
                     continue;
                 }
@@ -44,10 +44,10 @@
                 {
                     ProductId = product.Id,
                     Title = product.Title,
-                    ImageUrl = product.Variants.First().Images.First().Data,
+                    ImageUrl = productVariant.ProductColor.Images.Count() != 0 ? productVariant.ProductColor.Images.First().Data : "0",
                     Price = productVariant.Price,
                     ProductType = productVariant.ProductType.Name,
-                    ProductTypeId = productVariant.ProductTypeId ?? 0,
+                    ProductTypeId = productVariant.ProductTypeId ?? "0",
                     Quantity = item.Quantity
                 };
 
@@ -74,8 +74,7 @@
 
         public async Task<ServiceResponse<List<CartProductResponse>>> GetDbCartProducts(int? userId = null)
         {
-            if (userId == null)
-                userId = _authService.GetUserId();
+            userId ??= _authService.GetUserId();
 
             return await GetCartProducts(await _context.CartItems
                 .Where(ci => ci.UserId == userId).ToListAsync());
@@ -86,8 +85,8 @@
             cartItem.UserId = _authService.GetUserId();
 
             var sameItem = await _context.CartItems
-                .FirstOrDefaultAsync(ci => ci.ProductId == cartItem.ProductId &&
-                ci.ProductTypeId == cartItem.ProductTypeId && ci.UserId == cartItem.UserId);
+                .FirstOrDefaultAsync(ci => ci.ProductVariantId == cartItem.ProductVariantId
+                && ci.UserId == cartItem.UserId);
             if (sameItem == null)
             {
                 _context.CartItems.Add(cartItem);
@@ -105,8 +104,9 @@
         public async Task<ServiceResponse<bool>> UpdateQuantity(CartItem cartItem)
         {
             var dbCartItem = await _context.CartItems
-                .FirstOrDefaultAsync(ci => ci.ProductId == cartItem.ProductId &&
-                ci.ProductTypeId == cartItem.ProductTypeId && ci.UserId == _authService.GetUserId());
+                .FirstOrDefaultAsync(ci => ci.ProductVariant.ProductId == cartItem.ProductVariant.ProductId
+                && ci.ProductVariant.ProductTypeId == cartItem.ProductVariant.ProductTypeId
+                && ci.UserId == cartItem.UserId);
             if (dbCartItem == null)
             {
                 return new ServiceResponse<bool>
@@ -123,11 +123,13 @@
             return new ServiceResponse<bool> { Data = true };
         }
 
-        public async Task<ServiceResponse<bool>> RemoveItemFromCart(int productId, int productTypeId)
+        public async Task<ServiceResponse<bool>> RemoveItemFromCart(int productId, string productTypeId, string productColorId)
         {
             var dbCartItem = await _context.CartItems
-                .FirstOrDefaultAsync(ci => ci.ProductId == productId &&
-                ci.ProductTypeId == productTypeId && ci.UserId == _authService.GetUserId());
+                .FirstOrDefaultAsync(ci => ci.ProductVariant.ProductId == productId
+                && ci.ProductVariant.ProductTypeId == productTypeId
+                && ci.ProductVariant.ProductColorId == productColorId
+                && ci.UserId == _authService.GetUserId());
             if (dbCartItem == null)
             {
                 return new ServiceResponse<bool>

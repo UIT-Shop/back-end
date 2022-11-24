@@ -2,9 +2,10 @@
 {
     public class CartItem
     {
+        public User? User { get; set; }
         public int UserId { get; set; }
-        public int ProductId { get; set; }
-        public int ProductTypeId { get; set; }
+        public ProductVariant? ProductVariant { get; set; }
+        public int ProductVariantId { get; set; }
         public int Quantity { get; set; } = 1;
     }
 }
