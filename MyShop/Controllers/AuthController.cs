@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Net;
 using System.Security.Claims;
 
 namespace MyShop.Controllers
@@ -26,24 +26,21 @@ namespace MyShop.Controllers
                 },
                 request.Password);
 
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
+            return !response.Success ? (ActionResult<ServiceResponse<int>>)BadRequest(response) : (ActionResult<ServiceResponse<int>>)Ok(response);
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<ServiceResponse<string>>> Login(UserLogin request)
         {
             var response = await _authService.Login(request.Email, request.Password);
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
+            return !response.Success ? (ActionResult<ServiceResponse<string>>)Unauthorized(response) : (ActionResult<ServiceResponse<string>>)Ok(response);
+        }
 
-            return Ok(response);
+        [HttpGet("check-authen")]
+        public async Task<ActionResult<ServiceResponse<string>>> CheckAuthen()
+        {
+            var response = await _authService.CheckAuthen();
+            return response.Success ? (ActionResult<ServiceResponse<string>>)Ok(response) : (ActionResult<ServiceResponse<string>>)StatusCode(((int)HttpStatusCode.Forbidden), response);
         }
 
         [HttpPost("change-password"), Authorize]
@@ -52,12 +49,7 @@ namespace MyShop.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var response = await _authService.ChangePassword(int.Parse(userId), newPassword);
 
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
+            return !response.Success ? (ActionResult<ServiceResponse<bool>>)BadRequest(response) : (ActionResult<ServiceResponse<bool>>)Ok(response);
         }
     }
 }

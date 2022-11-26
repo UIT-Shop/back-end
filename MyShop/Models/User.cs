@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 
 namespace MyShop.Models
 {
@@ -15,7 +16,9 @@ namespace MyShop.Models
         [Column(TypeName = "nvarchar(MAX)")]
         public string Name { get; set; } = String.Empty;
         public string Email { get; set; } = String.Empty;
+        [IgnoreDataMember]
         public byte[] PasswordHash { get; set; }
+        [IgnoreDataMember]
         public byte[] PasswordSalt { get; set; }
         public Address? Address { get; set; }
         public string Phone { get; set; } = String.Empty;

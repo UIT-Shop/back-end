@@ -20,9 +20,15 @@ namespace MyShop.Services.AuthService
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public int GetUserId() => int.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+        public int GetUserId()
+        {
+            return int.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+        }
 
-        public string GetUserEmail() => _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+        public string GetUserEmail()
+        {
+            return _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Email);
+        }
 
         public async Task<ServiceResponse<string>> Login(string email, string password)
         {
@@ -71,12 +77,8 @@ namespace MyShop.Services.AuthService
 
         public async Task<bool> UserExists(string email)
         {
-            if (await _context.Users.AnyAsync(user => user.Email.ToLower()
-                 .Equals(email.ToLower())))
-            {
-                return true;
-            }
-            return false;
+            return await _context.Users.AnyAsync(user => user.Email.ToLower()
+                 .Equals(email.ToLower()));
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
@@ -104,7 +106,8 @@ namespace MyShop.Services.AuthService
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.Email,user.Email),
                 new Claim(ClaimTypes.Role, user.Role.ToString())
             };
 
@@ -148,6 +151,13 @@ namespace MyShop.Services.AuthService
         public async Task<User> GetUserByEmail(string email)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Email.Equals(email));
+        }
+
+        public async Task<ServiceResponse<int>> CheckAuthen()
+        {
+            return !_httpContextAccessor.HttpContext.User.IsInRole(Enum.GetName(typeof(Role), Role.Admin))
+                ? new ServiceResponse<int> { Success = false, Message = "You are not allow to access this page" }
+                : new ServiceResponse<int> { Message = "OK" };
         }
     }
 }

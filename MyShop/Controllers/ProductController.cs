@@ -18,44 +18,35 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<List<Product>>>> GetAdminProducts()
         {
             var result = await _productService.GetAdminProducts();
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
+            return !result.Success ? (ActionResult<ServiceResponse<List<Product>>>)BadRequest(result) : (ActionResult<ServiceResponse<List<Product>>>)Ok(result);
         }
 
         [HttpGet]
         public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProducts()
         {
             var result = await _productService.GetProductsAsync();
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
+            return !result.Success ? (ActionResult<ServiceResponse<List<Product>>>)BadRequest(result) : (ActionResult<ServiceResponse<List<Product>>>)Ok(result);
+        }
+
+        [HttpPost("test")]
+        public async Task<ActionResult<ServiceResponse<string>>> Test()
+        {
+            var result = new ServiceResponse<string>() { Message = "Test", Data = null };
+            return !result.Success ? (ActionResult<ServiceResponse<string>>)BadRequest(result) : (ActionResult<ServiceResponse<string>>)Ok(result);
         }
 
         [HttpGet("{productId:int}")]
         public async Task<ActionResult<ServiceResponse<Product>>> GetProduct(int productId)
         {
             var result = await _productService.GetProductById(productId);
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
+            return !result.Success ? (ActionResult<ServiceResponse<Product>>)BadRequest(result) : (ActionResult<ServiceResponse<Product>>)Ok(result);
         }
 
         [HttpGet("Category/{categoryUrl}")]
         public async Task<ActionResult<ServiceResponse<Product>>> GetProductsByCategory(string categoryUrl)
         {
             var result = await _productService.GetProductsByCategory(categoryUrl);
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
+            return !result.Success ? (ActionResult<ServiceResponse<Product>>)BadRequest(result) : (ActionResult<ServiceResponse<Product>>)Ok(result);
         }
 
         [HttpGet("search/{searchText}/{page}")]
@@ -70,44 +61,28 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<List<string>>>> SearchSuggestionProducts(string searchText)
         {
             var result = await _productService.SearchSuggestionProducts(searchText);
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
+            return !result.Success ? (ActionResult<ServiceResponse<List<string>>>)BadRequest(result) : (ActionResult<ServiceResponse<List<string>>>)Ok(result);
         }
 
         [HttpPost, Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<Product>>> CreateProduct(Product product)
         {
             var result = await _productService.CreateProduct(product);
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
+            return !result.Success ? (ActionResult<ServiceResponse<Product>>)BadRequest(result) : (ActionResult<ServiceResponse<Product>>)Ok(result);
         }
 
         [HttpPut, Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<Product>>> UpdateProduct(Product product)
         {
             var result = await _productService.UpdateProduct(product);
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
+            return !result.Success ? (ActionResult<ServiceResponse<Product>>)BadRequest(result) : (ActionResult<ServiceResponse<Product>>)Ok(result);
         }
 
         [HttpDelete("{id}"), Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<bool>>> DeleteProduct(int id)
         {
             var result = await _productService.DeleteProduct(id);
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
+            return !result.Success ? (ActionResult<ServiceResponse<bool>>)BadRequest(result) : (ActionResult<ServiceResponse<bool>>)Ok(result);
         }
     }
 }

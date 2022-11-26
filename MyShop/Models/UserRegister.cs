@@ -4,6 +4,7 @@ namespace MyShop.Models
 {
     public class UserRegister
     {
+        public string Name { get; set; } = string.Empty;
         [Required, EmailAddress]
         public string Email { get; set; } = string.Empty;
         [Required, StringLength(100, MinimumLength = 6)]

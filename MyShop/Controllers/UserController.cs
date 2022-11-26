@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyShop.Services.UserService;
+
 
 namespace MyShop.Controllers
 {

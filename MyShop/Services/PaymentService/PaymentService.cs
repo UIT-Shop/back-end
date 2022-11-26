@@ -47,7 +47,7 @@ namespace MyShop.Services.PaymentService
                 ShippingAddressCollection =
                     new SessionShippingAddressCollectionOptions
                     {
-                        AllowedCountries = new List<string> { "US" }
+                        AllowedCountries = new List<string> { "US", "VN" }
                     },
                 PaymentMethodTypes = new List<string>
                 {
