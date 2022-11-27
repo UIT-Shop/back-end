@@ -23,36 +23,50 @@
 
         public async Task<ServiceResponse<bool>> DeleteCategory(int categoryId)
         {
-            if (!_httpContextAccessor.HttpContext.User.IsInRole(Enum.GetName(typeof(Role), Role.Admin)))
-                return new ServiceResponse<bool> { Success = false, Message = "You are not allow to do this action" };
+            try
+            {
+                if (!_httpContextAccessor.HttpContext.User.IsInRole(Enum.GetName(typeof(Role), Role.Admin)))
+                    return new ServiceResponse<bool> { Success = false, Message = "You are not allow to do this action" };
 
-            var dbCategory = await _context.Categories.FindAsync(categoryId);
-            if (dbCategory == null)
+                var dbCategory = await _context.Categories.FindAsync(categoryId);
+                if (dbCategory == null)
+                {
+                    return new ServiceResponse<bool>
+                    {
+                        Success = false,
+                        Data = false,
+                        Message = "Category not found."
+                    };
+                }
+                _context.Remove(dbCategory);
+                await _context.SaveChangesAsync();
+                return new ServiceResponse<bool> { Data = true };
+            }
+            catch (Exception ex)
             {
                 return new ServiceResponse<bool>
                 {
                     Success = false,
                     Data = false,
-                    Message = "Category not found."
+                    Message = "You can't delete this category"
                 };
             }
-            await _context.SaveChangesAsync();
-            return new ServiceResponse<bool> { Data = true };
+
         }
 
         public async Task<ServiceResponse<Category>> GetCategory(int id)
         {
             var category = await _context.Categories.FirstOrDefaultAsync(p => p.Id == id);
-            if (category == null)
-                return new ServiceResponse<Category>
+            return category == null
+                ? new ServiceResponse<Category>
                 {
                     Success = false,
                     Message = "Category not found"
+                }
+                : new ServiceResponse<Category>
+                {
+                    Data = category
                 };
-            return new ServiceResponse<Category>
-            {
-                Data = category
-            };
         }
 
         public async Task<ServiceResponse<List<Category>>> GetCategories()

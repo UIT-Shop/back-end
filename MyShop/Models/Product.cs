@@ -17,6 +17,10 @@ namespace MyShop.Models
 
         public List<ProductVariant> Variants { get; set; } = new List<ProductVariant>();
 
+        public string MetaTitle { get; set; } = String.Empty;
+        public string MetaKeyword { get; set; } = String.Empty;
+        public string MetaDiscription { get; set; } = String.Empty;
+
         public bool Visible { get; set; } = true;
         public bool Deleted { get; set; } = false;
         [NotMapped]

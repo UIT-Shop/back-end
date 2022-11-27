@@ -23,7 +23,8 @@ namespace MyShop.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal OriginalPrice { get; set; }
 
-
+        public int Quantity { get; set; }
+        public string ProductSize { get; set; }
 
         public bool Visible { get; set; } = true;
         public bool Deleted { get; set; } = false;
