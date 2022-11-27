@@ -7,6 +7,7 @@
 
         // Read
         Task<ServiceResponse<List<Category>>> GetCategories();
+        Task<ServiceResponse<Category>> GetCategory(int id);
 
         // Update
         Task<ServiceResponse<Category>> UpdateCategory(Category category);

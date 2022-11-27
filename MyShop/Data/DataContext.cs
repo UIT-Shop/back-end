@@ -282,19 +282,32 @@
 
         private void AddTimestamps()
         {
-            var entries = ChangeTracker
+            try
+            {
+                var entries = ChangeTracker
                 .Entries()
                 .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
 
-            foreach (var entityEntry in entries)
-            {
-                entityEntry.Property("UpdatedDate").CurrentValue = DateTime.Now;
-
-                if (entityEntry.State == EntityState.Added)
+                foreach (var entityEntry in entries)
                 {
-                    entityEntry.Property("CreatedDate").CurrentValue = DateTime.Now;
+                    foreach (var property in entityEntry.Properties)
+                    {
+                        if (property.Metadata.Name == "UpdatedDate")
+                        {
+                            entityEntry.Property("UpdatedDate").CurrentValue = DateTime.Now;
+                        }
+                        if (entityEntry.State == EntityState.Added && property.Metadata.Name == "CreatedDate")
+                        {
+                            entityEntry.Property("CreatedDate").CurrentValue = DateTime.Now;
+                        }
+                    }
                 }
             }
+            catch (Exception error)
+            {
+                Console.WriteLine(error.Message);
+            }
+
         }
     }
 }

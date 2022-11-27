@@ -40,6 +40,21 @@
             return new ServiceResponse<bool> { Data = true };
         }
 
+        public async Task<ServiceResponse<Category>> GetCategory(int id)
+        {
+            var category = await _context.Categories.FirstOrDefaultAsync(p => p.Id == id);
+            if (category == null)
+                return new ServiceResponse<Category>
+                {
+                    Success = false,
+                    Message = "Category not found"
+                };
+            return new ServiceResponse<Category>
+            {
+                Data = category
+            };
+        }
+
         public async Task<ServiceResponse<List<Category>>> GetCategories()
         {
             var categories = await _context.Categories.ToListAsync();
