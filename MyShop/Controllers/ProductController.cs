@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyShop.Controllers
 {
@@ -15,17 +16,17 @@ namespace MyShop.Controllers
         }
 
         [HttpGet("admin"), Authorize(Roles = "Admin")]
-        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetAdminProducts()
+        public async Task<ActionResult<ServiceResponse<ProductSearchResult>>> GetAdminProducts([Required] int page)
         {
-            var result = await _productService.GetAdminProducts();
-            return !result.Success ? (ActionResult<ServiceResponse<List<Product>>>)BadRequest(result) : (ActionResult<ServiceResponse<List<Product>>>)Ok(result);
+            var result = await _productService.GetAdminProducts(page);
+            return !result.Success ? (ActionResult<ServiceResponse<ProductSearchResult>>)BadRequest(result) : (ActionResult<ServiceResponse<ProductSearchResult>>)Ok(result);
         }
 
         [HttpGet]
-        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProducts()
+        public async Task<ActionResult<ServiceResponse<ProductSearchResult>>> GetProducts([Required] int page)
         {
-            var result = await _productService.GetProductsAsync();
-            return !result.Success ? (ActionResult<ServiceResponse<List<Product>>>)BadRequest(result) : (ActionResult<ServiceResponse<List<Product>>>)Ok(result);
+            var result = await _productService.GetProductsAsync(page);
+            return !result.Success ? (ActionResult<ServiceResponse<ProductSearchResult>>)BadRequest(result) : (ActionResult<ServiceResponse<ProductSearchResult>>)Ok(result);
         }
 
         [HttpPost("test")]

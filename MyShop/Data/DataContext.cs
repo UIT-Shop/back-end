@@ -12,42 +12,6 @@
             modelBuilder.Entity<OrderItem>()
                 .HasKey(oi => new { oi.OrderId, oi.ProductId });
 
-            modelBuilder.Entity<Color>().HasData(
-                    new { Id = "Wh", Name = "Trắng" },
-                    new { Id = "Ble", Name = "Xanh dương" },
-                    new { Id = "Bla", Name = "Đen" },
-                    new { Id = "Ye", Name = "Vàng" }
-                );
-            modelBuilder.Entity<ProductType>().HasData(
-                    new { Id = 1, Name = "Áo thun", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now },
-                    new { Id = 2, Name = "Áo khoác", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now },
-                    new { Id = 3, Name = "Áo sơ mi", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now },
-                    new { Id = 4, Name = "Quần dài", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now },
-                    new { Id = 5, Name = "Quần short", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now },
-                    new { Id = 6, Name = "Quần lót", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now }
-                );
-
-            modelBuilder.Entity<Category>().HasData(
-                new
-                {
-                    Id = 1,
-                    Name = "Áo thun tay dài",
-                    Url = "ao-thun-tay-dai",
-                    Type = "Áo thun",
-                    CreatedDate = DateTime.Now,
-                    UpdatedDate = DateTime.Now
-                },
-                new
-                {
-                    Id = 2,
-                    Name = "Áo thun tay ngắn",
-                    Url = "ao-thun-tay-ngan",
-                    Type = "Áo thun",
-                    CreatedDate = DateTime.Now,
-                    UpdatedDate = DateTime.Now
-                }
-                );
-
             modelBuilder.Entity<Brand>().HasData(
                 new
                 {
@@ -60,17 +24,17 @@
                 );
 
             modelBuilder.Entity<Product>().Property<DateTime>("CreatedDate");
-            modelBuilder.Entity<Product>().Property<DateTime>("UpdatedDate");
+            modelBuilder.Entity<Product>().Property<System.Nullable<DateTime>>("UpdatedDate");
             modelBuilder.Entity<ProductVariant>().Property<DateTime>("CreatedDate");
-            modelBuilder.Entity<ProductVariant>().Property<DateTime>("UpdatedDate");
+            modelBuilder.Entity<ProductVariant>().Property<System.Nullable<DateTime>>("UpdatedDate");
             modelBuilder.Entity<User>().Property<DateTime>("CreatedDate");
-            modelBuilder.Entity<User>().Property<DateTime>("UpdatedDate");
+            modelBuilder.Entity<User>().Property<System.Nullable<DateTime>>("UpdatedDate");
             modelBuilder.Entity<CartItem>().Property<DateTime>("CreatedDate");
-            modelBuilder.Entity<CartItem>().Property<DateTime>("UpdatedDate");
+            modelBuilder.Entity<CartItem>().Property<System.Nullable<DateTime>>("UpdatedDate");
             modelBuilder.Entity<Order>().Property<DateTime>("CreatedDate");
-            modelBuilder.Entity<Order>().Property<DateTime>("UpdatedDate");
+            modelBuilder.Entity<Order>().Property<System.Nullable<DateTime>>("UpdatedDate");
             modelBuilder.Entity<OrderItem>().Property<DateTime>("CreatedDate");
-            modelBuilder.Entity<OrderItem>().Property<DateTime>("UpdatedDate");
+            modelBuilder.Entity<OrderItem>().Property<System.Nullable<DateTime>>("UpdatedDate");
 
             modelBuilder.Entity<Category>().Property("Gender").HasDefaultValue("Nam");
             modelBuilder.Entity<Category>().Property("MetaTitle").HasDefaultValue(String.Empty);
@@ -80,6 +44,13 @@
             modelBuilder.Entity<Product>().Property("MetaKeyword").HasDefaultValue(String.Empty);
             modelBuilder.Entity<Product>().Property("MetaDiscription").HasDefaultValue(String.Empty);
 
+            modelBuilder.Entity<Product>().Property("Visible").HasDefaultValue(true);
+            modelBuilder.Entity<Product>().Property("Deleted").HasDefaultValue(false);
+            modelBuilder.Entity<Product>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
+            modelBuilder.Entity<ProductVariant>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
+            modelBuilder.Entity<ProductVariant>().Property("Visible").HasDefaultValue(true);
+            modelBuilder.Entity<ProductVariant>().Property("Deleted").HasDefaultValue(false);
+
         }
 
         public DbSet<Product> Products { get; set; }
@@ -87,7 +58,6 @@
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Color> Colors { get; set; }
         public DbSet<ProductColor> ProductColors { get; set; }
-        public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<ProductVariant> ProductVariants { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Province> Provinces { get; set; }

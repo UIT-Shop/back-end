@@ -40,15 +40,28 @@
             return new ServiceResponse<bool> { Data = true };
         }
 
-        public async Task<ServiceResponse<List<Product>>> GetAdminProducts()
+        public async Task<ServiceResponse<ProductSearchResult>> GetAdminProducts(int page)
         {
-            var response = new ServiceResponse<List<Product>>
-            {
-                Data = await _context.Products
+            var allProducts = await _context.Products
                     .Where(p => !p.Deleted)
-                    .Include(p => p.Variants.Where(v => !v.Deleted))
-                    .ThenInclude(v => v.ProductColor.Images)
-                    .ToListAsync()
+                    .ToListAsync();
+            var pageResults = 2f;
+            var pageCount = Math.Ceiling(allProducts.Count / pageResults);
+            var products = await _context.Products
+                                .Where(p => !p.Deleted)
+                                .Include(p => p.Variants.Where(v => !v.Deleted))
+                                .Skip((page - 1) * (int)pageResults)
+                                .Take((int)pageResults)
+                                .ToListAsync();
+
+            var response = new ServiceResponse<ProductSearchResult>
+            {
+                Data = new ProductSearchResult
+                {
+                    Products = products,
+                    CurrentPage = page,
+                    Pages = (int)pageCount
+                }
             };
 
             return response;
@@ -61,7 +74,6 @@
                 Data = await _context.Products
                     .Where(p => p.Visible && !p.Deleted)
                     .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
-                    .ThenInclude(v => v.ProductColor.Images)
                     .ToListAsync()
             };
 
@@ -73,12 +85,10 @@
             var response = new ServiceResponse<Product>();
             Product product = _httpContextAccessor.HttpContext.User.IsInRole(Enum.GetName(typeof(Role), Role.Admin))
                 ? await _context.Products
-                    .Include(p => p.Variants.Where(v => !v.Deleted))
-                    .ThenInclude(v => v.ProductColor.Images)
+                    .Include(p => p.Category)
                     .FirstOrDefaultAsync(p => p.Id == productId && !p.Deleted)
                 : await _context.Products
-                    .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
-                    .ThenInclude(v => v.ProductColor.Images)
+                    .Include(p => p.Variants)
                     .FirstOrDefaultAsync(p => p.Id == productId && !p.Deleted && p.Visible);
             if (product == null)
             {
@@ -93,15 +103,27 @@
             return response;
         }
 
-        public async Task<ServiceResponse<List<Product>>> GetProductsAsync()
+        public async Task<ServiceResponse<ProductSearchResult>> GetProductsAsync(int page)
         {
-            var response = new ServiceResponse<List<Product>>
-            {
-                Data = await _context.Products
+            var allProducts = await _context.Products
                     .Where(p => p.Visible && !p.Deleted)
-                    .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
-                    .ThenInclude(v => v.ProductColor.Images)
-                    .ToListAsync()
+                    .ToListAsync();
+            var pageResults = 20f;
+            var pageCount = Math.Ceiling(allProducts.Count / pageResults);
+            var products = await _context.Products
+                                .Where(p => p.Visible && !p.Deleted)
+                                .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
+                                .Skip((page - 1) * (int)pageResults)
+                                .Take((int)pageResults)
+                                .ToListAsync();
+            var response = new ServiceResponse<ProductSearchResult>
+            {
+                Data = new ProductSearchResult
+                {
+                    Products = products,
+                    CurrentPage = page,
+                    Pages = (int)pageCount
+                }
             };
 
             return response;
@@ -115,7 +137,6 @@
                     .Where(p => p.Category.Url.ToLower().Equals(categoryUrl.ToLower()) &&
                         p.Visible && !p.Deleted)
                     .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
-                    .ThenInclude(v => v.ProductColor.Images)
                     .ToListAsync()
             };
 
@@ -165,7 +186,6 @@
                                     p.Description.ToLower().Contains(searchText.ToLower()) &&
                                     p.Visible && !p.Deleted)
                                 .Include(p => p.Variants)
-                                .ThenInclude(v => v.ProductColor.Images)
                                 .Skip((page - 1) * (int)pageResults)
                                 .Take((int)pageResults)
                                 .ToListAsync();

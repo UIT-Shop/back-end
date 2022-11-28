@@ -21,10 +21,10 @@ namespace MyShop.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{productId}/{productTypeId}/{productColorId}")]
-        public async Task<ActionResult<ServiceResponse<ProductVariant>>> GetProductVariant(int productId, string productTypeId, string productColorId)
+        [HttpGet("{productId}/{productSize}/{productColorId}")]
+        public async Task<ActionResult<ServiceResponse<ProductVariant>>> GetProductVariant(int productId, string productSize, int productColorId)
         {
-            var response = await _productVariantService.GetProductVariant(productId, productColorId, productTypeId);
+            var response = await _productVariantService.GetProductVariant(productId, productColorId, productSize);
             return Ok(response);
         }
 

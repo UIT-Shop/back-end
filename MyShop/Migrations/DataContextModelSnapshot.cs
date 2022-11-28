@@ -65,7 +65,7 @@ namespace MyShop.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("UserId", "ProductVariantId");
@@ -122,22 +122,6 @@ namespace MyShop.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Áo thun tay dài",
-                            Type = "Áo thun",
-                            Url = "ao-thun-tay-dai"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Áo thun tay ngắn",
-                            Type = "Áo thun",
-                            Url = "ao-thun-tay-ngan"
-                        });
                 });
 
             modelBuilder.Entity("MyShop.Models.Color", b =>
@@ -152,28 +136,6 @@ namespace MyShop.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Colors");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "Wh",
-                            Name = "Trắng"
-                        },
-                        new
-                        {
-                            Id = "Ble",
-                            Name = "Xanh dương"
-                        },
-                        new
-                        {
-                            Id = "Bla",
-                            Name = "Đen"
-                        },
-                        new
-                        {
-                            Id = "Ye",
-                            Name = "Vàng"
-                        });
                 });
 
             modelBuilder.Entity("MyShop.Models.Image", b =>
@@ -188,8 +150,8 @@ namespace MyShop.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProductColorId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ProductColorId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -322,7 +284,7 @@ namespace MyShop.Migrations
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("UserId")
@@ -358,7 +320,7 @@ namespace MyShop.Migrations
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("OrderId", "ProductId");
@@ -383,10 +345,14 @@ namespace MyShop.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2022, 11, 28, 22, 8, 9, 909, DateTimeKind.Local).AddTicks(8541));
 
                     b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -414,11 +380,13 @@ namespace MyShop.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(MAX)");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("Visible")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.HasKey("Id");
 
@@ -431,8 +399,11 @@ namespace MyShop.Migrations
 
             modelBuilder.Entity("MyShop.Models.ProductColor", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ColorId")
                         .IsRequired()
@@ -445,55 +416,6 @@ namespace MyShop.Migrations
                     b.ToTable("ProductColors");
                 });
 
-            modelBuilder.Entity("MyShop.Models.ProductType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(MAX)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProductTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Áo thun"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Áo khoác"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Áo sơ mi"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Quần dài"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Quần short"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Quần lót"
-                        });
-                });
-
             modelBuilder.Entity("MyShop.Models.ProductVariant", b =>
                 {
                     b.Property<int>("Id")
@@ -503,10 +425,14 @@ namespace MyShop.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2022, 11, 28, 22, 8, 9, 909, DateTimeKind.Local).AddTicks(8889));
 
                     b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<decimal>("OriginalPrice")
                         .HasColumnType("decimal(18,2)");
@@ -514,9 +440,8 @@ namespace MyShop.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("ProductColorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ProductColorId")
+                        .HasColumnType("int");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -528,11 +453,13 @@ namespace MyShop.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("Visible")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.HasKey("Id");
 
@@ -580,7 +507,7 @@ namespace MyShop.Migrations
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -609,9 +536,13 @@ namespace MyShop.Migrations
 
             modelBuilder.Entity("MyShop.Models.Image", b =>
                 {
-                    b.HasOne("MyShop.Models.ProductColor", null)
+                    b.HasOne("MyShop.Models.ProductColor", "ProductColor")
                         .WithMany("Images")
-                        .HasForeignKey("ProductColorId");
+                        .HasForeignKey("ProductColorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductColor");
                 });
 
             modelBuilder.Entity("MyShop.Models.MAddress.Address", b =>
@@ -711,7 +642,7 @@ namespace MyShop.Migrations
             modelBuilder.Entity("MyShop.Models.ProductColor", b =>
                 {
                     b.HasOne("MyShop.Models.Color", "Color")
-                        .WithMany()
+                        .WithMany("ProductColors")
                         .HasForeignKey("ColorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -736,6 +667,11 @@ namespace MyShop.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("ProductColor");
+                });
+
+            modelBuilder.Entity("MyShop.Models.Color", b =>
+                {
+                    b.Navigation("ProductColors");
                 });
 
             modelBuilder.Entity("MyShop.Models.Order", b =>

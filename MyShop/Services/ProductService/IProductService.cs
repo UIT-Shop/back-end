@@ -6,8 +6,8 @@
         Task<ServiceResponse<Product>> CreateProduct(Product product);
 
         // Read
-        Task<ServiceResponse<List<Product>>> GetAdminProducts();
-        Task<ServiceResponse<List<Product>>> GetProductsAsync();
+        Task<ServiceResponse<ProductSearchResult>> GetAdminProducts(int page);
+        Task<ServiceResponse<ProductSearchResult>> GetProductsAsync(int page);
         Task<ServiceResponse<Product>> GetProductById(int productId);
         Task<ServiceResponse<List<Product>>> GetProductsByCategory(string categoryUrl);
         Task<ServiceResponse<ProductSearchResult>> SearchProducts(string searchText, int page);

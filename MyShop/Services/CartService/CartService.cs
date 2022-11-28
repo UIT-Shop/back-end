@@ -22,7 +22,6 @@
             {
                 var productVariant = await _context.ProductVariants
                     .Include(pv => pv.Product)
-                    .Include(pv => pv.ProductColor)
                     .FirstOrDefaultAsync(pv => pv.Id == item.ProductVariantId);
 
                 if (productVariant == null)
@@ -121,7 +120,7 @@
             return new ServiceResponse<bool> { Data = true };
         }
 
-        public async Task<ServiceResponse<bool>> RemoveItemFromCart(int productId, string productSize, string productColorId)
+        public async Task<ServiceResponse<bool>> RemoveItemFromCart(int productId, string productSize, int productColorId)
         {
             var dbCartItem = await _context.CartItems
                 .FirstOrDefaultAsync(ci => ci.ProductVariant.ProductId == productId

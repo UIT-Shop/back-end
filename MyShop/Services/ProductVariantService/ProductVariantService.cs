@@ -34,7 +34,7 @@
             return new ServiceResponse<bool> { Data = true };
         }
 
-        public async Task<ServiceResponse<ProductVariant>> GetProductVariant(int productId, string productColorId, string productSize)
+        public async Task<ServiceResponse<ProductVariant>> GetProductVariant(int productId, int productColorId, string productSize)
         {
             var productVariant = await _context.ProductVariants
                 .FirstOrDefaultAsync(p => p.ProductId == productId
