@@ -10,6 +10,7 @@ namespace MyShop.Models
         public string Name { get; set; } = String.Empty;
         public string Url { get; set; } = String.Empty;
         public string Gender { get; set; } = String.Empty;
+        public string Type { get; set; } = String.Empty;
         public string MetaTitle { get; set; } = String.Empty;
         public string MetaKeyword { get; set; } = String.Empty;
         public string MetaDiscription { get; set; } = String.Empty;

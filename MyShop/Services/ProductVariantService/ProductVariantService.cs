@@ -34,12 +34,12 @@
             return new ServiceResponse<bool> { Data = true };
         }
 
-        public async Task<ServiceResponse<ProductVariant>> GetProductVariant(int productId, string productColorId, string productTypeId)
+        public async Task<ServiceResponse<ProductVariant>> GetProductVariant(int productId, string productColorId, string productSize)
         {
             var productVariant = await _context.ProductVariants
                 .FirstOrDefaultAsync(p => p.ProductId == productId
                 && p.ProductColorId == productColorId
-                && p.ProductTypeId == productTypeId);
+                && p.ProductSize == productSize);
             return new ServiceResponse<ProductVariant> { Data = productVariant };
         }
 
@@ -64,7 +64,7 @@
             dbProductVariant.Price = productVariant.Price;
             dbProductVariant.OriginalPrice = productVariant.OriginalPrice;
             dbProductVariant.ProductColorId = productVariant.ProductColorId;
-            dbProductVariant.ProductTypeId = productVariant.ProductTypeId;
+            dbProductVariant.ProductSize = productVariant.ProductSize;
 
             await _context.SaveChangesAsync();
 

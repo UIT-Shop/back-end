@@ -97,9 +97,23 @@
 
             dbCategory.Name = category.Name;
             dbCategory.Url = category.Url;
+            dbCategory.Type = category.Type;
+            dbCategory.Gender = category.Gender;
+            dbCategory.MetaTitle = category.MetaTitle;
+            dbCategory.MetaDiscription = category.MetaDiscription;
+            dbCategory.MetaKeyword = category.MetaKeyword;
 
             await _context.SaveChangesAsync();
             return new ServiceResponse<Category> { Data = category };
+        }
+
+        public async Task<ServiceResponse<List<Category>>> GetCategories(string gender)
+        {
+            var categories = await _context.Categories.Where(c => c.Gender == gender).ToListAsync();
+            return new ServiceResponse<List<Category>>
+            {
+                Data = categories
+            };
         }
     }
 }

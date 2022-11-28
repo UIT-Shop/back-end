@@ -15,10 +15,7 @@
         {
             if (!_httpContextAccessor.HttpContext.User.IsInRole(Enum.GetName(typeof(Role), Role.Admin)))
                 return new ServiceResponse<Product> { Success = false, Message = "You are not allow to do this action" };
-            foreach (var variant in product.Variants)
-            {
-                variant.ProductType = null;
-            }
+
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
             return new ServiceResponse<Product> { Data = product };
@@ -50,8 +47,6 @@
                 Data = await _context.Products
                     .Where(p => !p.Deleted)
                     .Include(p => p.Variants.Where(v => !v.Deleted))
-                    .ThenInclude(v => v.ProductType)
-                    .Include(p => p.Variants.Where(v => !v.Deleted))
                     .ThenInclude(v => v.ProductColor.Images)
                     .ToListAsync()
             };
@@ -79,13 +74,9 @@
             Product product = _httpContextAccessor.HttpContext.User.IsInRole(Enum.GetName(typeof(Role), Role.Admin))
                 ? await _context.Products
                     .Include(p => p.Variants.Where(v => !v.Deleted))
-                    .ThenInclude(v => v.ProductType)
-                    .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
                     .ThenInclude(v => v.ProductColor.Images)
                     .FirstOrDefaultAsync(p => p.Id == productId && !p.Deleted)
                 : await _context.Products
-                    .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
-                    .ThenInclude(v => v.ProductType)
                     .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
                     .ThenInclude(v => v.ProductColor.Images)
                     .FirstOrDefaultAsync(p => p.Id == productId && !p.Deleted && p.Visible);
@@ -222,15 +213,14 @@
             {
                 var dbVariant = await _context.ProductVariants
                     .SingleOrDefaultAsync(v => v.ProductId == variant.ProductId &&
-                        v.ProductTypeId == variant.ProductTypeId);
+                        v.ProductSize == variant.ProductSize);
                 if (dbVariant == null)
                 {
-                    variant.ProductType = null;
                     _context.ProductVariants.Add(variant);
                 }
                 else
                 {
-                    dbVariant.ProductTypeId = variant.ProductTypeId;
+                    dbVariant.ProductSize = variant.ProductSize;
                     dbVariant.Price = variant.Price;
                     dbVariant.OriginalPrice = variant.OriginalPrice;
                     dbVariant.Visible = variant.Visible;

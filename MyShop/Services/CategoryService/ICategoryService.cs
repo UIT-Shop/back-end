@@ -7,6 +7,7 @@
 
         // Read
         Task<ServiceResponse<List<Category>>> GetCategories();
+        Task<ServiceResponse<List<Category>>> GetCategories(string gender);
         Task<ServiceResponse<Category>> GetCategory(int id);
 
         // Update

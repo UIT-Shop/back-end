@@ -22,7 +22,6 @@
             {
                 var productVariant = await _context.ProductVariants
                     .Include(pv => pv.Product)
-                    .Include(pv => pv.ProductType)
                     .Include(pv => pv.ProductColor)
                     .FirstOrDefaultAsync(pv => pv.Id == item.ProductVariantId);
 
@@ -46,8 +45,7 @@
                     Title = product.Title,
                     ImageUrl = productVariant.ProductColor.Images.Count() != 0 ? productVariant.ProductColor.Images.First().Data : "0",
                     Price = productVariant.Price,
-                    ProductType = productVariant.ProductType.Name,
-                    ProductTypeId = productVariant.ProductTypeId ?? "0",
+                    ProductSize = productVariant.ProductSize ?? "XL",
                     Quantity = item.Quantity
                 };
 
@@ -105,7 +103,7 @@
         {
             var dbCartItem = await _context.CartItems
                 .FirstOrDefaultAsync(ci => ci.ProductVariant.ProductId == cartItem.ProductVariant.ProductId
-                && ci.ProductVariant.ProductTypeId == cartItem.ProductVariant.ProductTypeId
+                && ci.ProductVariant.ProductSize == cartItem.ProductVariant.ProductSize
                 && ci.UserId == cartItem.UserId);
             if (dbCartItem == null)
             {
@@ -123,11 +121,11 @@
             return new ServiceResponse<bool> { Data = true };
         }
 
-        public async Task<ServiceResponse<bool>> RemoveItemFromCart(int productId, string productTypeId, string productColorId)
+        public async Task<ServiceResponse<bool>> RemoveItemFromCart(int productId, string productSize, string productColorId)
         {
             var dbCartItem = await _context.CartItems
                 .FirstOrDefaultAsync(ci => ci.ProductVariant.ProductId == productId
-                && ci.ProductVariant.ProductTypeId == productTypeId
+                && ci.ProductVariant.ProductSize == productSize
                 && ci.ProductVariant.ProductColorId == productColorId
                 && ci.UserId == _authService.GetUserId());
             if (dbCartItem == null)

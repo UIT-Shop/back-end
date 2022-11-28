@@ -7,7 +7,8 @@ namespace MyShop.Models
     {
         public string Id { get; set; }
         [Column(TypeName = "nvarchar(MAX)")]
-        public string Name { get; set; }
+        public Color Color { get; set; }
+        public string ColorId { get; set; }
 
         public List<Image> Images { get; set; } = new List<Image>();
     }

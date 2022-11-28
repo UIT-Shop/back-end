@@ -7,6 +7,7 @@
 
         // Read
         Task<ServiceResponse<List<Brand>>> GetBrands();
+        Task<ServiceResponse<Brand>> GetBrand(int id);
 
         // Update
         Task<ServiceResponse<Brand>> UpdateBrand(Brand brand);

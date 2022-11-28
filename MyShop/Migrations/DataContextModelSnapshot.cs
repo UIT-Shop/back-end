@@ -111,6 +111,10 @@ namespace MyShop.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(MAX)");
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -124,13 +128,51 @@ namespace MyShop.Migrations
                         {
                             Id = 1,
                             Name = "Áo thun tay dài",
+                            Type = "Áo thun",
                             Url = "ao-thun-tay-dai"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Áo thun tay dài",
+                            Name = "Áo thun tay ngắn",
+                            Type = "Áo thun",
                             Url = "ao-thun-tay-ngan"
+                        });
+                });
+
+            modelBuilder.Entity("MyShop.Models.Color", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Colors");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "Wh",
+                            Name = "Trắng"
+                        },
+                        new
+                        {
+                            Id = "Ble",
+                            Name = "Xanh dương"
+                        },
+                        new
+                        {
+                            Id = "Bla",
+                            Name = "Đen"
+                        },
+                        new
+                        {
+                            Id = "Ye",
+                            Name = "Vàng"
                         });
                 });
 
@@ -306,12 +348,9 @@ namespace MyShop.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ProductTypeId")
+                    b.Property<string>("ProductSize")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProductTypeId1")
-                        .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -325,8 +364,6 @@ namespace MyShop.Migrations
                     b.HasKey("OrderId", "ProductId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("ProductTypeId1");
 
                     b.ToTable("OrderItems");
                 });
@@ -397,35 +434,15 @@ namespace MyShop.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("ColorId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(MAX)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductColors");
+                    b.HasIndex("ColorId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = "Wh",
-                            Name = "Trắng"
-                        },
-                        new
-                        {
-                            Id = "Ble",
-                            Name = "Xanh dương"
-                        },
-                        new
-                        {
-                            Id = "Bla",
-                            Name = "Đen"
-                        },
-                        new
-                        {
-                            Id = "Ye",
-                            Name = "Vàng"
-                        });
+                    b.ToTable("ProductColors");
                 });
 
             modelBuilder.Entity("MyShop.Models.ProductType", b =>
@@ -508,13 +525,6 @@ namespace MyShop.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProductTypeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ProductTypeId1")
-                        .HasColumnType("int");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
@@ -529,8 +539,6 @@ namespace MyShop.Migrations
                     b.HasIndex("ProductColorId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("ProductTypeId1");
 
                     b.ToTable("ProductVariants");
                 });
@@ -676,17 +684,9 @@ namespace MyShop.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyShop.Models.ProductType", "ProductType")
-                        .WithMany()
-                        .HasForeignKey("ProductTypeId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Order");
 
                     b.Navigation("Product");
-
-                    b.Navigation("ProductType");
                 });
 
             modelBuilder.Entity("MyShop.Models.Product", b =>
@@ -708,6 +708,17 @@ namespace MyShop.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("MyShop.Models.ProductColor", b =>
+                {
+                    b.HasOne("MyShop.Models.Color", "Color")
+                        .WithMany()
+                        .HasForeignKey("ColorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Color");
+                });
+
             modelBuilder.Entity("MyShop.Models.ProductVariant", b =>
                 {
                     b.HasOne("MyShop.Models.ProductColor", "ProductColor")
@@ -722,15 +733,9 @@ namespace MyShop.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyShop.Models.ProductType", "ProductType")
-                        .WithMany()
-                        .HasForeignKey("ProductTypeId1");
-
                     b.Navigation("Product");
 
                     b.Navigation("ProductColor");
-
-                    b.Navigation("ProductType");
                 });
 
             modelBuilder.Entity("MyShop.Models.Order", b =>

@@ -19,8 +19,6 @@
             var order = await _context.Orders
                .Include(o => o.OrderItems)
                .ThenInclude(oi => oi.Product)
-               .Include(o => o.OrderItems)
-               .ThenInclude(oi => oi.ProductType)
                .Where(o => o.UserId == _authService.GetUserId() && o.Id == orderId)
                .OrderByDescending(o => o.OrderDate)
                .FirstOrDefaultAsync();
@@ -44,7 +42,7 @@
             {
                 ProductId = item.ProductId,
                 ImageUrl = item.Product.Variants.First().ProductColor.Images.First().Data,
-                ProductType = item.ProductType.Name,
+                ProductSize = item.ProductSize,
                 Quantity = item.Quantity,
                 Title = item.Product.Title,
                 TotalPrice = item.TotalPrice
@@ -94,7 +92,7 @@
             products.ForEach(product => orderItems.Add(new OrderItem
             {
                 ProductId = product.ProductId,
-                ProductTypeId = product.ProductTypeId,
+                ProductSize = product.ProductSize,
                 Quantity = product.Quantity,
                 TotalPrice = product.Price * product.Quantity
             }));

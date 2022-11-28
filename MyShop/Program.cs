@@ -7,10 +7,10 @@ global using MyShop.Services.AuthService;
 global using MyShop.Services.BrandService;
 global using MyShop.Services.CartService;
 global using MyShop.Services.CategoryService;
+global using MyShop.Services.ColorService;
 global using MyShop.Services.OrderService;
 global using MyShop.Services.PaymentService;
 global using MyShop.Services.ProductService;
-global using MyShop.Services.ProductTypeService;
 global using MyShop.Services.ProductVariantService;
 global using MyShop.Services.UserService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -65,6 +65,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IProductVariantService, ProductVariantService>();
+builder.Services.AddScoped<IColorService, ColorService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

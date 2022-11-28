@@ -22,6 +22,14 @@ namespace MyShop.Controllers
             return Ok(result);
         }
 
+        [HttpGet("id")]
+        public async Task<ActionResult<ServiceResponse<Brand>>> GetBrand(int id)
+        {
+            var response = await _brandService.GetBrand(id);
+            return !response.Success ? (ActionResult<ServiceResponse<Brand>>)BadRequest(response) : (ActionResult<ServiceResponse<Brand>>)Ok(response);
+
+        }
+
         [HttpPost, Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<Product>>> CreateBrand(Brand brand)
         {

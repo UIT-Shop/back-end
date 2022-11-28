@@ -33,7 +33,7 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<string>>> Login(UserLogin request)
         {
             var response = await _authService.Login(request.Email, request.Password);
-            return !response.Success ? (ActionResult<ServiceResponse<string>>)Unauthorized(response) : (ActionResult<ServiceResponse<string>>)Ok(response);
+            return !response.Success ? (ActionResult<ServiceResponse<string>>)BadRequest(response) : (ActionResult<ServiceResponse<string>>)Ok(response);
         }
 
         [HttpGet("check-authen")]

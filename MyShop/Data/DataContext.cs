@@ -12,11 +12,11 @@
             modelBuilder.Entity<OrderItem>()
                 .HasKey(oi => new { oi.OrderId, oi.ProductId });
 
-            modelBuilder.Entity<ProductColor>().HasData(
-                    new { Id = "Wh", Name = "Trắng", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now },
-                    new { Id = "Ble", Name = "Xanh dương", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now },
-                    new { Id = "Bla", Name = "Đen", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now },
-                    new { Id = "Ye", Name = "Vàng", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now }
+            modelBuilder.Entity<Color>().HasData(
+                    new { Id = "Wh", Name = "Trắng" },
+                    new { Id = "Ble", Name = "Xanh dương" },
+                    new { Id = "Bla", Name = "Đen" },
+                    new { Id = "Ye", Name = "Vàng" }
                 );
             modelBuilder.Entity<ProductType>().HasData(
                     new { Id = 1, Name = "Áo thun", CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now },
@@ -33,14 +33,16 @@
                     Id = 1,
                     Name = "Áo thun tay dài",
                     Url = "ao-thun-tay-dai",
+                    Type = "Áo thun",
                     CreatedDate = DateTime.Now,
                     UpdatedDate = DateTime.Now
                 },
                 new
                 {
                     Id = 2,
-                    Name = "Áo thun tay dài",
+                    Name = "Áo thun tay ngắn",
                     Url = "ao-thun-tay-ngan",
+                    Type = "Áo thun",
                     CreatedDate = DateTime.Now,
                     UpdatedDate = DateTime.Now
                 }
@@ -83,6 +85,7 @@
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Brand> Brands { get; set; }
+        public DbSet<Color> Colors { get; set; }
         public DbSet<ProductColor> ProductColors { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<ProductVariant> ProductVariants { get; set; }

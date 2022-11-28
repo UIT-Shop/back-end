@@ -22,6 +22,14 @@ namespace MyShop.Controllers
             return Ok(result);
         }
 
+        [HttpGet("gender/{gender}")]
+        public async Task<ActionResult<ServiceResponse<List<Category>>>> GetCategory(string gender)
+        {
+            var response = await _categoryService.GetCategories(gender);
+            return !response.Success ? (ActionResult<ServiceResponse<List<Category>>>)BadRequest(response) : (ActionResult<ServiceResponse<List<Category>>>)Ok(response);
+
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<ServiceResponse<Category>>> GetCategory(int id)
         {

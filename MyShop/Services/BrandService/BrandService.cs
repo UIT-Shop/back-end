@@ -38,6 +38,21 @@
             return new ServiceResponse<bool> { Data = true };
         }
 
+        public async Task<ServiceResponse<Brand>> GetBrand(int id)
+        {
+            var brand = await _context.Brands.FirstOrDefaultAsync(p => p.Id == id);
+            return brand == null
+                ? new ServiceResponse<Brand>
+                {
+                    Success = false,
+                    Message = "Brand not found"
+                }
+                : new ServiceResponse<Brand>
+                {
+                    Data = brand
+                };
+        }
+
         public async Task<ServiceResponse<List<Brand>>> GetBrands()
         {
             var brands = await _context.Brands.ToListAsync();
