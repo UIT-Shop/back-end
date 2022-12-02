@@ -50,14 +50,13 @@
             modelBuilder.Entity<ProductVariant>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
             modelBuilder.Entity<ProductVariant>().Property("Visible").HasDefaultValue(true);
             modelBuilder.Entity<ProductVariant>().Property("Deleted").HasDefaultValue(false);
-
         }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Color> Colors { get; set; }
-        public DbSet<ProductColor> ProductColors { get; set; }
+        //public DbSet<ProductColor> ProductColors { get; set; }
         public DbSet<ProductVariant> ProductVariants { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Province> Provinces { get; set; }

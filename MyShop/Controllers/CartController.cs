@@ -51,7 +51,7 @@ namespace MyShop.Controllers
         [HttpDelete("remove")]
         public async Task<ActionResult<ServiceResponse<bool>>> RemoveItemFromCart(ProductVariant productVariant)
         {
-            var result = await _cartService.RemoveItemFromCart(productVariant.ProductId, productVariant.ProductSize, productVariant.ProductColorId);
+            var result = await _cartService.RemoveItemFromCart(productVariant.ProductId, productVariant.ProductSize, productVariant.ColorId);
             return Ok(result);
         }
 

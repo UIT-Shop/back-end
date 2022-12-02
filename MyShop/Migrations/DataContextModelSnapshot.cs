@@ -126,8 +126,11 @@ namespace MyShop.Migrations
 
             modelBuilder.Entity("MyShop.Models.Color", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -146,16 +149,21 @@ namespace MyShop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Data")
+                    b.Property<int?>("ColorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductColorId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductColorId");
+                    b.HasIndex("ColorId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Images");
                 });
@@ -347,7 +355,7 @@ namespace MyShop.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 11, 28, 22, 8, 9, 909, DateTimeKind.Local).AddTicks(8541));
+                        .HasDefaultValue(new DateTime(2022, 12, 1, 20, 8, 54, 802, DateTimeKind.Local).AddTicks(9845));
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
@@ -397,25 +405,6 @@ namespace MyShop.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("MyShop.Models.ProductColor", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("ColorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ColorId");
-
-                    b.ToTable("ProductColors");
-                });
-
             modelBuilder.Entity("MyShop.Models.ProductVariant", b =>
                 {
                     b.Property<int>("Id")
@@ -424,10 +413,13 @@ namespace MyShop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("ColorId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 11, 28, 22, 8, 9, 909, DateTimeKind.Local).AddTicks(8889));
+                        .HasDefaultValue(new DateTime(2022, 12, 1, 20, 8, 54, 803, DateTimeKind.Local).AddTicks(20));
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
@@ -439,9 +431,6 @@ namespace MyShop.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ProductColorId")
-                        .HasColumnType("int");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -463,7 +452,7 @@ namespace MyShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductColorId");
+                    b.HasIndex("ColorId");
 
                     b.HasIndex("ProductId");
 
@@ -536,13 +525,19 @@ namespace MyShop.Migrations
 
             modelBuilder.Entity("MyShop.Models.Image", b =>
                 {
-                    b.HasOne("MyShop.Models.ProductColor", "ProductColor")
+                    b.HasOne("MyShop.Models.Color", "Color")
                         .WithMany("Images")
-                        .HasForeignKey("ProductColorId")
+                        .HasForeignKey("ColorId");
+
+                    b.HasOne("MyShop.Models.Product", "Product")
+                        .WithMany("Images")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ProductColor");
+                    b.Navigation("Color");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("MyShop.Models.MAddress.Address", b =>
@@ -639,22 +634,11 @@ namespace MyShop.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("MyShop.Models.ProductColor", b =>
-                {
-                    b.HasOne("MyShop.Models.Color", "Color")
-                        .WithMany("ProductColors")
-                        .HasForeignKey("ColorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Color");
-                });
-
             modelBuilder.Entity("MyShop.Models.ProductVariant", b =>
                 {
-                    b.HasOne("MyShop.Models.ProductColor", "ProductColor")
+                    b.HasOne("MyShop.Models.Color", "Color")
                         .WithMany()
-                        .HasForeignKey("ProductColorId")
+                        .HasForeignKey("ColorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -664,14 +648,14 @@ namespace MyShop.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.Navigation("Color");
 
-                    b.Navigation("ProductColor");
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("MyShop.Models.Color", b =>
                 {
-                    b.Navigation("ProductColors");
+                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("MyShop.Models.Order", b =>
@@ -681,12 +665,9 @@ namespace MyShop.Migrations
 
             modelBuilder.Entity("MyShop.Models.Product", b =>
                 {
-                    b.Navigation("Variants");
-                });
-
-            modelBuilder.Entity("MyShop.Models.ProductColor", b =>
-                {
                     b.Navigation("Images");
+
+                    b.Navigation("Variants");
                 });
 
             modelBuilder.Entity("MyShop.Models.User", b =>

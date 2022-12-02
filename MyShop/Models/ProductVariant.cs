@@ -11,8 +11,8 @@ namespace MyShop.Models
         public Product? Product { get; set; }
         public int ProductId { get; set; }
 
-        public ProductColor? ProductColor { get; set; }
-        public int ProductColorId { get; set; }
+        public Color? Color { get; set; }
+        public int ColorId { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }

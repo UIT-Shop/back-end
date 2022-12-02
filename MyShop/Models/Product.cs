@@ -16,6 +16,7 @@ namespace MyShop.Models
         public int BrandId { get; set; }
 
         public List<ProductVariant> Variants { get; set; } = new List<ProductVariant>();
+        public virtual List<Image> Images { get; set; } = new List<Image>();
 
         public string MetaTitle { get; set; } = String.Empty;
         public string MetaKeyword { get; set; } = String.Empty;

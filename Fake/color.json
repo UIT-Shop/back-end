@@ -1,1 +1,286 @@
-[{"Id": "WHITE/LILAC", "Name": "WHITE/LILAC"}, {"Id": "WHITE/TAN", "Name": "WHITE/TAN"}, {"Id": "LILAC", "Name": "LILAC"}, {"Id": "A46", "Name": "A46"}, {"Id": "WLX", "Name": "WLX"}, {"Id": "WWG", "Name": "WWG"}, {"Id": "ANC", "Name": "ANC"}, {"Id": "A4O", "Name": "A4O"}, {"Id": "A4M", "Name": "A4M"}, {"Id": "A4P", "Name": "A4P"}, {"Id": "A3T", "Name": "A3T"}, {"Id": "A4Q", "Name": "A4Q"}, {"Id": "A55", "Name": "A55"}, {"Id": "M14", "Name": "M14"}, {"Id": "BGG", "Name": "BGG"}, {"Id": "GBG", "Name": "GBG"}, {"Id": "BRW", "Name": "BRW"}, {"Id": "A16", "Name": "A16"}, {"Id": "BLACK/PINK", "Name": "BLACK/PINK"}, {"Id": "DUSTYPINK", "Name": "DUSTYPINK"}, {"Id": "AB7", "Name": "AB7"}, {"Id": "ADK", "Name": "ADK"}, {"Id": "AHL", "Name": "AHL"}, {"Id": "AHN", "Name": "AHN"}, {"Id": "ABE", "Name": "ABE"}, {"Id": "AHT", "Name": "AHT"}, {"Id": "AHU", "Name": "AHU"}, {"Id": "AFR", "Name": "AFR"}, {"Id": "AFX", "Name": "AFX"}, {"Id": "ADL", "Name": "ADL"}, {"Id": "001P", "Name": "001P"}, {"Id": "024A", "Name": "024A"}, {"Id": "990B", "Name": "990B"}, {"Id": "F67", "Name": "F67"}, {"Id": "A1Z", "Name": "A1Z"}, {"Id": "A1B", "Name": "A1B"}, {"Id": "A2G", "Name": "A2G"}, {"Id": "A36", "Name": "A36"}, {"Id": "A2H", "Name": "A2H"}, {"Id": "A2K", "Name": "A2K"}, {"Id": "A5K", "Name": "A5K"}, {"Id": "X7I", "Name": "X7I"}, {"Id": "A2F", "Name": "A2F"}, {"Id": "A1G", "Name": "A1G"}, {"Id": "ALU", "Name": "ALU"}, {"Id": "AL9", "Name": "AL9"}, {"Id": "ALA", "Name": "ALA"}, {"Id": "ALQ", "Name": "ALQ"}, {"Id": "A2C", "Name": "A2C"}, {"Id": "A2E", "Name": "A2E"}, {"Id": "ALV", "Name": "ALV"}, {"Id": "A5L", "Name": "A5L"}, {"Id": "A5M", "Name": "A5M"}, {"Id": "A5N", "Name": "A5N"}, {"Id": "A5C", "Name": "A5C"}, {"Id": "A5D", "Name": "A5D"}, {"Id": "A56", "Name": "A56"}, {"Id": "A57", "Name": "A57"}, {"Id": "F07", "Name": "F07"}, {"Id": "A5X", "Name": "A5X"}, {"Id": "A65", "Name": "A65"}, {"Id": "A67", "Name": "A67"}, {"Id": "A61", "Name": "A61"}, {"Id": "A2B", "Name": "A2B"}, {"Id": "A33", "Name": "A33"}, {"Id": "TRUE BLUE", "Name": "TRUE BLUE"}, {"Id": "ERMINE", "Name": "ERMINE"}, {"Id": "RUBY WINE", "Name": "RUBY WINE"}, {"Id": "SEAPORT", "Name": "SEAPORT"}, {"Id": "CHESTNUT", "Name": "CHESTNUT"}, {"Id": "IGUANA", "Name": "IGUANA"}, {"Id": "WINE", "Name": "WINE"}, {"Id": "CHACOAL", "Name": "CHACOAL"}, {"Id": "ECRU", "Name": "ECRU"}, {"Id": "CORDOVAN", "Name": "CORDOVAN"}, {"Id": "CANTALOUPE", "Name": "CANTALOUPE"}, {"Id": "YUCCA", "Name": "YUCCA"}, {"Id": "M.BLUE", "Name": "M.BLUE"}, {"Id": "D.GREEN", "Name": "D.GREEN"}, {"Id": "TRUEBLUE", "Name": "TRUEBLUE"}, {"Id": "TRUE ECKORED", "Name": "TRUE ECKORED"}, {"Id": "DKGREEN", "Name": "DKGREEN"}, {"Id": "ECKONAVY", "Name": "ECKONAVY"}, {"Id": "001B", "Name": "001B"}, {"Id": "001R", "Name": "001R"}, {"Id": "990Y", "Name": "990Y"}, {"Id": "A804", "Name": "A804"}, {"Id": "001G", "Name": "001G"}, {"Id": "001Y", "Name": "001Y"}, {"Id": "781P", "Name": "781P"}, {"Id": "823P", "Name": "823P"}, {"Id": "781Y", "Name": "781Y"}, {"Id": "A2Q", "Name": "A2Q"}, {"Id": "A2S", "Name": "A2S"}, {"Id": "A83", "Name": "A83"}, {"Id": "A6B", "Name": "A6B"}, {"Id": "A6C", "Name": "A6C"}, {"Id": "BLACK/DK GREY", "Name": "BLACK/DK GREY"}, {"Id": "CABARET", "Name": "CABARET"}, {"Id": "CREAM/TAN", "Name": "CREAM/TAN"}, {"Id": "DK. DENIM", "Name": "DK. DENIM"}, {"Id": "L.BLUE", "Name": "L.BLUE"}, {"Id": "LT PINK", "Name": "LT PINK"}, {"Id": "LT. DENIM", "Name": "LT. DENIM"}, {"Id": "PASTEL LILAC", "Name": "PASTEL LILAC"}, {"Id": "012B", "Name": "012B"}, {"Id": "012C", "Name": "012C"}, {"Id": "025A", "Name": "025A"}, {"Id": "990A", "Name": "990A"}, {"Id": "A0I", "Name": "A0I"}, {"Id": "A0J", "Name": "A0J"}, {"Id": "A0Y", "Name": "A0Y"}, {"Id": "A0Z", "Name": "A0Z"}, {"Id": "A12", "Name": "A12"}, {"Id": "A14", "Name": "A14"}, {"Id": "A1D", "Name": "A1D"}, {"Id": "A1U", "Name": "A1U"}, {"Id": "A23", "Name": "A23"}, {"Id": "A24", "Name": "A24"}, {"Id": "A28", "Name": "A28"}, {"Id": "A50", "Name": "A50"}, {"Id": "B56", "Name": "B56"}, {"Id": "C06", "Name": "C06"}, {"Id": "C10", "Name": "C10"}, {"Id": "C14", "Name": "C14"}, {"Id": "C18", "Name": "C18"}, {"Id": "C57", "Name": "C57"}, {"Id": "C61", "Name": "C61"}, {"Id": "CAMO", "Name": "CAMO"}, {"Id": "CLAY", "Name": "CLAY"}, {"Id": "CQ1", "Name": "CQ1"}, {"Id": "CREAM", "Name": "CREAM"}, {"Id": "CREAM/ORANGE", "Name": "CREAM/ORANGE"}, {"Id": "CREAM/PINK", "Name": "CREAM/PINK"}, {"Id": "DARK GREEN", "Name": "DARK GREEN"}, {"Id": "DARK PINK", "Name": "DARK PINK"}, {"Id": "DSW", "Name": "DSW"}, {"Id": "GKA", "Name": "GKA"}, {"Id": "GKB", "Name": "GKB"}, {"Id": "GKC", "Name": "GKC"}, {"Id": "GOLD", "Name": "GOLD"}, {"Id": "H03", "Name": "H03"}, {"Id": "HTR GREY", "Name": "HTR GREY"}, {"Id": "LIGHT BROWN", "Name": "LIGHT BROWN"}, {"Id": "LIGHT GREEN", "Name": "LIGHT GREEN"}, {"Id": "LIGHT GREY", "Name": "LIGHT GREY"}, {"Id": "NA6", "Name": "NA6"}, {"Id": "ROYAL", "Name": "ROYAL"}, {"Id": "ROYAL BLUE", "Name": "ROYAL BLUE"}, {"Id": "S03", "Name": "S03"}, {"Id": "SAGE", "Name": "SAGE"}, {"Id": "SILVER", "Name": "SILVER"}, {"Id": "STONE", "Name": "STONE"}, {"Id": "T73", "Name": "T73"}, {"Id": "V25", "Name": "V25"}, {"Id": "WHITE/FUCHSIA", "Name": "WHITE/FUCHSIA"}, {"Id": "WI2", "Name": "WI2"}, {"Id": "X1Y", "Name": "X1Y"}, {"Id": "012A", "Name": "012A"}, {"Id": "A05", "Name": "A05"}, {"Id": "A09", "Name": "A09"}, {"Id": "A0D", "Name": "A0D"}, {"Id": "A0E", "Name": "A0E"}, {"Id": "A0S", "Name": "A0S"}, {"Id": "A0V", "Name": "A0V"}, {"Id": "A15", "Name": "A15"}, {"Id": "A19", "Name": "A19"}, {"Id": "A1F", "Name": "A1F"}, {"Id": "A29", "Name": "A29"}, {"Id": "A2U", "Name": "A2U"}, {"Id": "A35", "Name": "A35"}, {"Id": "A40", "Name": "A40"}, {"Id": "A71", "Name": "A71"}, {"Id": "A72", "Name": "A72"}, {"Id": "A81", "Name": "A81"}, {"Id": "A84", "Name": "A84"}, {"Id": "A89", "Name": "A89"}, {"Id": "AMAZON GREEN", "Name": "AMAZON GREEN"}, {"Id": "BLACK DENIM", "Name": "BLACK DENIM"}, {"Id": "BLUE JAY", "Name": "BLUE JAY"}, {"Id": "BRICK", "Name": "BRICK"}, {"Id": "C16", "Name": "C16"}, {"Id": "CHARCOAL", "Name": "CHARCOAL"}, {"Id": "CLASSIC BLUE", "Name": "CLASSIC BLUE"}, {"Id": "D.GREY", "Name": "D.GREY"}, {"Id": "EMPIRE YELLOW", "Name": "EMPIRE YELLOW"}, {"Id": "FUCHSIA", "Name": "FUCHSIA"}, {"Id": "HEATHER", "Name": "HEATHER"}, {"Id": "L.GREY", "Name": "L.GREY"}, {"Id": "LAKE BLUE", "Name": "LAKE BLUE"}, {"Id": "LT BLUE", "Name": "LT BLUE"}, {"Id": "LT GREY", "Name": "LT GREY"}, {"Id": "LT STONE WASH", "Name": "LT STONE WASH"}, {"Id": "MAGENTA PURPLE", "Name": "MAGENTA PURPLE"}, {"Id": "MANDARIN ORANGE", "Name": "MANDARIN ORANGE"}, {"Id": "MAUVE", "Name": "MAUVE"}, {"Id": "MINT", "Name": "MINT"}, {"Id": "OLD GOLD", "Name": "OLD GOLD"}, {"Id": "OLIVE", "Name": "OLIVE"}, {"Id": "PEACH", "Name": "PEACH"}, {"Id": "PESTO", "Name": "PESTO"}, {"Id": "POWDER PINK", "Name": "POWDER PINK"}, {"Id": "R.ORANGE", "Name": "R.ORANGE"}, {"Id": "TAUPE", "Name": "TAUPE"}, {"Id": "TIDEPOOL", "Name": "TIDEPOOL"}, {"Id": "WHITE/GREEN", "Name": "WHITE/GREEN"}, {"Id": "WHITE/PINK", "Name": "WHITE/PINK"}, {"Id": "WHITE/SKY BLUE", "Name": "WHITE/SKY BLUE"}, {"Id": "A00", "Name": "A00"}, {"Id": "A01", "Name": "A01"}, {"Id": "A02", "Name": "A02"}, {"Id": "A03", "Name": "A03"}, {"Id": "A04", "Name": "A04"}, {"Id": "A06", "Name": "A06"}, {"Id": "A07", "Name": "A07"}, {"Id": "A08", "Name": "A08"}, {"Id": "A0A", "Name": "A0A"}, {"Id": "A0B", "Name": "A0B"}, {"Id": "A0C", "Name": "A0C"}, {"Id": "A0G", "Name": "A0G"}, {"Id": "A0H", "Name": "A0H"}, {"Id": "A0K", "Name": "A0K"}, {"Id": "A0L", "Name": "A0L"}, {"Id": "A0M", "Name": "A0M"}, {"Id": "A0N", "Name": "A0N"}, {"Id": "A0O", "Name": "A0O"}, {"Id": "A0P", "Name": "A0P"}, {"Id": "A0Q", "Name": "A0Q"}, {"Id": "A0T", "Name": "A0T"}, {"Id": "A0U", "Name": "A0U"}, {"Id": "A0W", "Name": "A0W"}, {"Id": "A0X", "Name": "A0X"}, {"Id": "A10", "Name": "A10"}, {"Id": "A17", "Name": "A17"}, {"Id": "A1A", "Name": "A1A"}, {"Id": "A1K", "Name": "A1K"}, {"Id": "A1M", "Name": "A1M"}, {"Id": "A1N", "Name": "A1N"}, {"Id": "A1O", "Name": "A1O"}, {"Id": "A1S", "Name": "A1S"}, {"Id": "A1Y", "Name": "A1Y"}, {"Id": "A20", "Name": "A20"}, {"Id": "A22", "Name": "A22"}, {"Id": "A27", "Name": "A27"}, {"Id": "A2D", "Name": "A2D"}, {"Id": "A2O", "Name": "A2O"}, {"Id": "A2V", "Name": "A2V"}, {"Id": "A2W", "Name": "A2W"}, {"Id": "A2Y", "Name": "A2Y"}, {"Id": "A32", "Name": "A32"}, {"Id": "A34", "Name": "A34"}, {"Id": "A3D", "Name": "A3D"}, {"Id": "A5T", "Name": "A5T"}, {"Id": "AAX", "Name": "AAX"}, {"Id": "AL1", "Name": "AL1"}, {"Id": "AL2", "Name": "AL2"}, {"Id": "AL3", "Name": "AL3"}, {"Id": "AL4", "Name": "AL4"}, {"Id": "AL5", "Name": "AL5"}, {"Id": "AL7", "Name": "AL7"}, {"Id": "AL8", "Name": "AL8"}, {"Id": "ALC", "Name": "ALC"}, {"Id": "ALD", "Name": "ALD"}, {"Id": "ALF", "Name": "ALF"}, {"Id": "ALH", "Name": "ALH"}, {"Id": "ALI", "Name": "ALI"}, {"Id": "ALJ", "Name": "ALJ"}, {"Id": "ALL", "Name": "ALL"}, {"Id": "ALM", "Name": "ALM"}, {"Id": "ALO", "Name": "ALO"}, {"Id": "ALP", "Name": "ALP"}, {"Id": "AMK", "Name": "AMK"}, {"Id": "BL WHITE", "Name": "BL WHITE"}, {"Id": "Black/Green", "Name": "Black/Green"}, {"Id": "Black/Red", "Name": "Black/Red"}, {"Id": "BlackDENIM", "Name": "BlackDENIM"}, {"Id": "BLUE", "Name": "BLUE"}, {"Id": "BLUE ATOLL", "Name": "BLUE ATOLL"}, {"Id": "Blue/Navy", "Name": "Blue/Navy"}, {"Id": "BROWN", "Name": "BROWN"}, {"Id": "BSS", "Name": "BSS"}, {"Id": "BZC", "Name": "BZC"}, {"Id": "C04", "Name": "C04"}, {"Id": "C23", "Name": "C23"}, {"Id": "DEEP WATER", "Name": "DEEP WATER"}, {"Id": "DK BLUE", "Name": "DK BLUE"}, {"Id": "DK. DENIM WASH", "Name": "DK. DENIM WASH"}, {"Id": "E26", "Name": "E26"}, {"Id": "ECKO NAVY", "Name": "ECKO NAVY"}, {"Id": "F.GREEN", "Name": "F.GREEN"}, {"Id": "G44", "Name": "G44"}, {"Id": "GALAPAGOS GREEN", "Name": "GALAPAGOS GREEN"}, {"Id": "GREEN", "Name": "GREEN"}, {"Id": "GREY", "Name": "GREY"}, {"Id": "GREY HEATHER", "Name": "GREY HEATHER"}, {"Id": "Grey/Blue", "Name": "Grey/Blue"}, {"Id": "GreyHEATHER", "Name": "GreyHEATHER"}, {"Id": "LT. DENIM WASH", "Name": "LT. DENIM WASH"}, {"Id": "MANGO", "Name": "MANGO"}, {"Id": "MID DENIM WASH", "Name": "MID DENIM WASH"}, {"Id": "MOSS", "Name": "MOSS"}, {"Id": "NAVY", "Name": "NAVY"}, {"Id": "Navy/Red", "Name": "Navy/Red"}, {"Id": "OFF WHITE", "Name": "OFF WHITE"}, {"Id": "ORANGE", "Name": "ORANGE"}, {"Id": "ORCHID", "Name": "ORCHID"}, {"Id": "PINK", "Name": "PINK"}, {"Id": "RED", "Name": "RED"}, {"Id": "Red/Grey", "Name": "Red/Grey"}, {"Id": "Red/Navy", "Name": "Red/Navy"}, {"Id": "RINSE BlackWASH", "Name": "RINSE BlackWASH"}, {"Id": "RINSE BLUE WASH", "Name": "RINSE BLUE WASH"}, {"Id": "SMOKE", "Name": "SMOKE"}, {"Id": "SPRING", "Name": "SPRING"}, {"Id": "T16", "Name": "T16"}, {"Id": "TAN", "Name": "TAN"}, {"Id": "TEAL", "Name": "TEAL"}, {"Id": "TRUE ECKO RED", "Name": "TRUE ECKO RED"}, {"Id": "VICTORIA BLUE", "Name": "VICTORIA BLUE"}, {"Id": "W71", "Name": "W71"}, {"Id": "WHITE/BLACK", "Name": "WHITE/BLACK"}, {"Id": "WHITE/BLUE", "Name": "WHITE/BLUE"}, {"Id": "WHITE/NAVY", "Name": "WHITE/NAVY"}, {"Id": "WHITE/RED", "Name": "WHITE/RED"}, {"Id": "WHITE/YELLOW", "Name": "WHITE/YELLOW"}, {"Id": "YELLOW", "Name": "YELLOW"}, {"Id": "B\u1ea1c", "Name": "B\u1ea1c"}, {"Id": "Beige", "Name": "Beige"}, {"Id": "\u0110en", "Name": "\u0110en"}, {"Id": "\u0110en-Xanh l\u00e1", "Name": "\u0110en-Xanh l\u00e1"}, {"Id": "\u0110\u1ecf", "Name": "\u0110\u1ecf"}, {"Id": "\u0110\u1ecf-\u0110en", "Name": "\u0110\u1ecf-\u0110en"}, {"Id": "\u0110\u1ecf r\u01b0\u1ee3u", "Name": "\u0110\u1ecf r\u01b0\u1ee3u"}, {"Id": "H\u1ed3ng", "Name": "H\u1ed3ng"}, {"Id": "H\u1ed3ng nh\u1ea1t", "Name": "H\u1ed3ng nh\u1ea1t"}, {"Id": "Hoa nh\u00ed h\u1ed3ng", "Name": "Hoa nh\u00ed h\u1ed3ng"}, {"Id": "Hoa nh\u00ed n\u00e2u", "Name": "Hoa nh\u00ed n\u00e2u"}, {"Id": "Hoa nh\u00ed t\u00edm", "Name": "Hoa nh\u00ed t\u00edm"}, {"Id": "Kem", "Name": "Kem"}, {"Id": "Xa\u0301m", "Name": "Xa\u0301m"}, {"Id": "X\u00e1m nh\u1ea1t", "Name": "X\u00e1m nh\u1ea1t"}, {"Id": "X\u00e1m r\u00eau", "Name": "X\u00e1m r\u00eau"}, {"Id": "Xanh", "Name": "Xanh"}, {"Id": "Xanh l\u00e1", "Name": "Xanh l\u00e1"}, {"Id": "Xanh d\u01b0\u01a1ng", "Name": "Xanh d\u01b0\u01a1ng"}, {"Id": "Xanh Navy", "Name": "Xanh Navy"}, {"Id": "Xanh ng\u1ecdc", "Name": "Xanh ng\u1ecdc"}, {"Id": "Xanh r\u00eau", "Name": "Xanh r\u00eau"}, {"Id": "Tr\u1eafng", "Name": "Tr\u1eafng"}, {"Id": "Tr\u1eafng-\u0110en", "Name": "Tr\u1eafng-\u0110en"}, {"Id": "Tr\u1eafng-H\u1ed3ng", "Name": "Tr\u1eafng-H\u1ed3ng"}, {"Id": "Tr\u1eafng Kem", "Name": "Tr\u1eafng Kem"}, {"Id": "Tr\u1eafng-Xanh d\u01b0\u01a1ng", "Name": "Tr\u1eafng-Xanh d\u01b0\u01a1ng"}, {"Id": "Tr\u1eafng h\u1ecda ti\u1ebft", "Name": "Tr\u1eafng h\u1ecda ti\u1ebft"}, {"Id": "T\u00edm", "Name": "T\u00edm"}, {"Id": "V\u00e0ng", "Name": "V\u00e0ng"}, {"Id": "V\u00e0ng-Cam", "Name": "V\u00e0ng-Cam"}, {"Id": "V\u00e0ng \u0110\u1ed3ng", "Name": "V\u00e0ng \u0110\u1ed3ng"}, {"Id": "Vi\u1ec1n h\u1ed3ng", "Name": "Vi\u1ec1n h\u1ed3ng"}, {"Id": "S-\u0110en", "Name": "S-\u0110en"}, {"Id": "Caro", "Name": "Caro"}, {"Id": "Khaki", "Name": "Khaki"}, {"Id": "Nhi\u1ec1u M\u00e0u", "Name": "Nhi\u1ec1u M\u00e0u"}, {"Id": "X\u00e1m - Xanh", "Name": "X\u00e1m - Xanh"}, {"Id": "Da beo", "Name": "Da beo"}, {"Id": "\u0110\u1ecf g\u1ea1ch", "Name": "\u0110\u1ecf g\u1ea1ch"}, {"Id": "BLACK", "Name": "BLACK"}, {"Id": "WHITE", "Name": "WHITE"}, {"Id": "C90", "Name": "C90"}, {"Id": "F83", "Name": "F83"}, {"Id": "PURPLE", "Name": "PURPLE"}, {"Id": "A0F", "Name": "A0F"}, {"Id": "A4N", "Name": "A4N"}, {"Id": "A63", "Name": "A63"}, {"Id": "B53", "Name": "B53"}, {"Id": "A5E", "Name": "A5E"}, {"Id": "A5F", "Name": "A5F"}, {"Id": "A7U", "Name": "A7U"}]
+[
+    {
+        "Id": "0",
+        "Name": "WHITE"
+    },
+    {
+        "Id": "1",
+        "Name": "OFF WHITE"
+    },
+    {
+        "Id": "2",
+        "Name": "LIGHT GRAY"
+    },
+    {
+        "Id": "3",
+        "Name": "GRAY"
+    },
+    {
+        "Id": "8",
+        "Name": "DARK GRAY"
+    },
+    {
+        "Id": "9",
+        "Name": "BLACK"
+    },
+    {
+        "Id": "10",
+        "Name": "PINK"
+    },
+    {
+        "Id": "17",
+        "Name": "RED"
+    },
+    {
+        "Id": "19",
+        "Name": "WINE"
+    },
+    {
+        "Id": "27",
+        "Name": "ORANGE"
+    },
+    {
+        "Id": "28",
+        "Name": "DARK ORANGE"
+    },
+    {
+        "Id": "30",
+        "Name": "NATURAL"
+    },
+    {
+        "Id": "32",
+        "Name": "BEIGE"
+    },
+    {
+        "Id": "33",
+        "Name": "KHAKI"
+    },
+    {
+        "Id": "34",
+        "Name": "BROWN"
+    },
+    {
+        "Id": "38",
+        "Name": "DARK BROWN"
+    },
+    {
+        "Id": "43",
+        "Name": "YELLOW"
+    },
+    {
+        "Id": "49",
+        "Name": "MUSTARD"
+    },
+    {
+        "Id": "55",
+        "Name": "GREEN"
+    },
+    {
+        "Id": "56",
+        "Name": "OLIVE"
+    },
+    {
+        "Id": "58",
+        "Name": "DARK GREEN"
+    },
+    {
+        "Id": "60",
+        "Name": "LIGHT BLUE"
+    },
+    {
+        "Id": "67",
+        "Name": "BLUE"
+    },
+    {
+        "Id": "69",
+        "Name": "NAVY"
+    },
+    {
+        "Id": "74",
+        "Name": "PURPLE"
+    },
+    {
+        "Id": "80",
+        "Name": "80"
+    },
+    {
+        "Id": "91",
+        "Name": "91"
+    },
+    {
+        "Id": "4",
+        "Name": "4"
+    },
+    {
+        "Id": "5",
+        "Name": "5"
+    },
+    {
+        "Id": "6",
+        "Name": "6"
+    },
+    {
+        "Id": "7",
+        "Name": "7"
+    },
+    {
+        "Id": "11",
+        "Name": "11"
+    },
+    {
+        "Id": "12",
+        "Name": "12"
+    },
+    {
+        "Id": "13",
+        "Name": "13"
+    },
+    {
+        "Id": "14",
+        "Name": "14"
+    },
+    {
+        "Id": "15",
+        "Name": "15"
+    },
+    {
+        "Id": "16",
+        "Name": "16"
+    },
+    {
+        "Id": "18",
+        "Name": "18"
+    },
+    {
+        "Id": "22",
+        "Name": "22"
+    },
+    {
+        "Id": "23",
+        "Name": "23"
+    },
+    {
+        "Id": "24",
+        "Name": "24"
+    },
+    {
+        "Id": "25",
+        "Name": "25"
+    },
+    {
+        "Id": "26",
+        "Name": "26"
+    },
+    {
+        "Id": "31",
+        "Name": "31"
+    },
+    {
+        "Id": "35",
+        "Name": "35"
+    },
+    {
+        "Id": "36",
+        "Name": "36"
+    },
+    {
+        "Id": "37",
+        "Name": "37"
+    },
+    {
+        "Id": "39",
+        "Name": "39"
+    },
+    {
+        "Id": "41",
+        "Name": "41"
+    },
+    {
+        "Id": "42",
+        "Name": "42"
+    },
+    {
+        "Id": "44",
+        "Name": "44"
+    },
+    {
+        "Id": "45",
+        "Name": "45"
+    },
+    {
+        "Id": "46",
+        "Name": "46"
+    },
+    {
+        "Id": "47",
+        "Name": "47"
+    },
+    {
+        "Id": "48",
+        "Name": "48"
+    },
+    {
+        "Id": "51",
+        "Name": "51"
+    },
+    {
+        "Id": "52",
+        "Name": "52"
+    },
+    {
+        "Id": "53",
+        "Name": "53"
+    },
+    {
+        "Id": "54",
+        "Name": "54"
+    },
+    {
+        "Id": "57",
+        "Name": "57"
+    },
+    {
+        "Id": "59",
+        "Name": "59"
+    },
+    {
+        "Id": "61",
+        "Name": "61"
+    },
+    {
+        "Id": "62",
+        "Name": "62"
+    },
+    {
+        "Id": "63",
+        "Name": "63"
+    },
+    {
+        "Id": "64",
+        "Name": "64"
+    },
+    {
+        "Id": "65",
+        "Name": "65"
+    },
+    {
+        "Id": "66",
+        "Name": "66"
+    },
+    {
+        "Id": "68",
+        "Name": "68"
+    },
+    {
+        "Id": "75",
+        "Name": "75"
+    },
+    {
+        "Id": "76",
+        "Name": "76"
+    },
+    {
+        "Id": "78",
+        "Name": "78"
+    }
+]

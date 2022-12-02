@@ -38,7 +38,7 @@
         {
             var productVariant = await _context.ProductVariants
                 .FirstOrDefaultAsync(p => p.ProductId == productId
-                && p.ProductColorId == productColorId
+                && p.ColorId == productColorId
                 && p.ProductSize == productSize);
             return new ServiceResponse<ProductVariant> { Data = productVariant };
         }
@@ -63,7 +63,7 @@
 
             dbProductVariant.Price = productVariant.Price;
             dbProductVariant.OriginalPrice = productVariant.OriginalPrice;
-            dbProductVariant.ProductColorId = productVariant.ProductColorId;
+            dbProductVariant.ColorId = productVariant.ColorId;
             dbProductVariant.ProductSize = productVariant.ProductSize;
 
             await _context.SaveChangesAsync();

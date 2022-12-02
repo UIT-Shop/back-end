@@ -19,6 +19,9 @@
             var order = await _context.Orders
                .Include(o => o.OrderItems)
                .ThenInclude(oi => oi.Product)
+               .ThenInclude(p => p.Variants)
+               .ThenInclude(pv => pv.Color)
+               .ThenInclude(c => c.Images)
                .Where(o => o.UserId == _authService.GetUserId() && o.Id == orderId)
                .OrderByDescending(o => o.OrderDate)
                .FirstOrDefaultAsync();
@@ -41,7 +44,7 @@
             orderDetailsResponse.Products.Add(new OrderDetailsProductResponse
             {
                 ProductId = item.ProductId,
-                ImageUrl = item.Product.Variants.First().ProductColor.Images.First().Data,
+                ImageUrl = item.Product.Variants.First().Color.Images.First().Url,
                 ProductSize = item.ProductSize,
                 Quantity = item.Quantity,
                 Title = item.Product.Title,
@@ -74,7 +77,7 @@
                     $"{o.OrderItems.First().Product.Title} and" +
                     $" {o.OrderItems.Count - 1} more..." :
                     o.OrderItems.First().Product.Title,
-                ProductImageUrl = o.OrderItems.First().Product.Variants.First().ProductColor.Images.First().Data
+                ProductImageUrl = o.OrderItems.First().Product.Variants.First().Color.Images.First().Url
             }));
 
             response.Data = orderResponse;

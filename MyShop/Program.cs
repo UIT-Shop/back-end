@@ -56,7 +56,7 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
-builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductService, MyShop.Services.ProductService.ProductService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<IAddressService, AddressService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -89,6 +89,11 @@ builder.Services.AddCors(options =>
     var frontend_URL = configuration.GetValue<string>("frontend_url");
     options.AddDefaultPolicy(builder => { builder.WithOrigins(frontend_URL).AllowAnyMethod().AllowAnyHeader(); });
 });
+
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
 
 var app = builder.Build();
 

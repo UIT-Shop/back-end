@@ -22,6 +22,8 @@
             {
                 var productVariant = await _context.ProductVariants
                     .Include(pv => pv.Product)
+                    .Include(pv => pv.Color)
+                    .ThenInclude(c => c.Images)
                     .FirstOrDefaultAsync(pv => pv.Id == item.ProductVariantId);
 
                 if (productVariant == null)
@@ -42,7 +44,7 @@
                 {
                     ProductId = product.Id,
                     Title = product.Title,
-                    ImageUrl = productVariant.ProductColor.Images.Count() != 0 ? productVariant.ProductColor.Images.First().Data : "0",
+                    ImageUrl = productVariant.Color.Images.Count() != 0 ? productVariant.Color.Images.First().Url : "0",
                     Price = productVariant.Price,
                     ProductSize = productVariant.ProductSize ?? "XL",
                     Quantity = item.Quantity
@@ -125,7 +127,7 @@
             var dbCartItem = await _context.CartItems
                 .FirstOrDefaultAsync(ci => ci.ProductVariant.ProductId == productId
                 && ci.ProductVariant.ProductSize == productSize
-                && ci.ProductVariant.ProductColorId == productColorId
+                && ci.ProductVariant.ColorId == productColorId
                 && ci.UserId == _authService.GetUserId());
             if (dbCartItem == null)
             {

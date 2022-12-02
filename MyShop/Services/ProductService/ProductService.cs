@@ -45,11 +45,12 @@
             var allProducts = await _context.Products
                     .Where(p => !p.Deleted)
                     .ToListAsync();
-            var pageResults = 2f;
+            var pageResults = 20f;
             var pageCount = Math.Ceiling(allProducts.Count / pageResults);
             var products = await _context.Products
                                 .Where(p => !p.Deleted)
                                 .Include(p => p.Variants.Where(v => !v.Deleted))
+                                .ThenInclude(pv => pv.Color).ThenInclude(pc => pc.Images)
                                 .Skip((page - 1) * (int)pageResults)
                                 .Take((int)pageResults)
                                 .ToListAsync();
@@ -113,6 +114,7 @@
             var products = await _context.Products
                                 .Where(p => p.Visible && !p.Deleted)
                                 .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
+                                .ThenInclude(pv => pv.Color).ThenInclude(pc => pc.Images)
                                 .Skip((page - 1) * (int)pageResults)
                                 .Take((int)pageResults)
                                 .ToListAsync();
@@ -207,7 +209,7 @@
         {
             var dbProduct = await _context.Products
                 .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
-                .ThenInclude(v => v.ProductColor.Images)
+                .ThenInclude(v => v.Color.Images)
                 .FirstOrDefaultAsync(p => p.Id == product.Id);
 
             if (dbProduct == null)

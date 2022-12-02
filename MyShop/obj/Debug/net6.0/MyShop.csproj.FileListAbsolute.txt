@@ -68,3 +68,6 @@ C:\Users\Asus\Downloads\Git\DA2\back-end\MyShop\obj\Debug\net6.0\staticwebassets
 C:\Users\Asus\Downloads\Git\DA2\back-end\MyShop\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.MyShop.props
 C:\Users\Asus\Downloads\Git\DA2\back-end\MyShop\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.MyShop.props
 C:\Users\Asus\Downloads\Git\DA2\back-end\MyShop\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\Asus\Downloads\Git\DA2\back-end\MyShop\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\Asus\Downloads\Git\DA2\back-end\MyShop\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\Asus\Downloads\Git\DA2\back-end\MyShop\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
