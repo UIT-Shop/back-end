@@ -50,7 +50,7 @@
             var products = await _context.Products
                                 .Where(p => !p.Deleted)
                                 .Include(p => p.Variants.Where(v => !v.Deleted))
-                                .ThenInclude(pv => pv.Color).ThenInclude(pc => pc.Images)
+                                .Include(pc => pc.Images)
                                 .Skip((page - 1) * (int)pageResults)
                                 .Take((int)pageResults)
                                 .ToListAsync();
@@ -114,7 +114,7 @@
             var products = await _context.Products
                                 .Where(p => p.Visible && !p.Deleted)
                                 .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
-                                .ThenInclude(pv => pv.Color).ThenInclude(pc => pc.Images)
+                                .Include(pc => pc.Images)
                                 .Skip((page - 1) * (int)pageResults)
                                 .Take((int)pageResults)
                                 .ToListAsync();

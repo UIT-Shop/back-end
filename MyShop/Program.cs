@@ -8,6 +8,7 @@ global using MyShop.Services.BrandService;
 global using MyShop.Services.CartService;
 global using MyShop.Services.CategoryService;
 global using MyShop.Services.ColorService;
+global using MyShop.Services.ImageService;
 global using MyShop.Services.OrderService;
 global using MyShop.Services.PaymentService;
 global using MyShop.Services.ProductService;
@@ -56,7 +57,7 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
-builder.Services.AddScoped<IProductService, MyShop.Services.ProductService.ProductService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<IAddressService, AddressService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -66,6 +67,7 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IProductVariantService, ProductVariantService>();
 builder.Services.AddScoped<IColorService, ColorService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
