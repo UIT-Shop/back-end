@@ -17,8 +17,8 @@ SELECT Id, Name  FROM OPENROWSET  (
     SINGLE_CLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )
     WITH  (
-            Id		int				'$.Id', 
-            Name	Nvarchar(MAX)	'$.Name' 
+            Id			int				'$.Id', 
+            Name		Nvarchar(MAX)	'$.Name' 
         ) AS [Colors]
 GO
 SET IDENTITY_INSERT Colors OFF
@@ -32,11 +32,11 @@ SELECT Id, Name, Url, Gender, Type  FROM OPENROWSET  (
     SINGLE_CLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )
     WITH  (
-            Id		Nvarchar(MAX)		'$.Id', 
-            Name	Nvarchar(MAX)		'$.Name' ,
-			Url		Nvarchar(MAX)		'$.URL',
-			Gender  Nvarchar(MAX)		'$.Gender',
-			Type	Nvarchar(MAX)		'$.Type'
+            Id			int					'$.Id', 
+            Name		Nvarchar(MAX)		'$.Name' ,
+			Url			Nvarchar(MAX)		'$.URL',
+			Gender  	Nvarchar(MAX)		'$.Gender',
+			Type		Nvarchar(MAX)		'$.Type'
         ) AS [Categories]
 GO
 SET IDENTITY_INSERT Categories OFF
@@ -50,11 +50,11 @@ SELECT Id, Title, Description, CategoryId, BrandId  FROM OPENROWSET  (
     SINGLE_CLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )
     WITH  (
-            Id				int					'$.Id', 
-            Title			Nvarchar(MAX)		'$.title' ,
-			Description		Nvarchar(MAX)		'$.description',
-			CategoryId		int					'$.categoryId',
-			BrandId			int					'$.brandId'
+            Id				int				'$.Id', 
+            Title			Nvarchar(MAX)	'$.title' ,
+			Description		Nvarchar(MAX)	'$.description',
+			CategoryId		int				'$.categoryId',
+			BrandId			int				'$.brandId'
         ) AS [Products]
 GO
 SET IDENTITY_INSERT Products OFF
@@ -66,12 +66,12 @@ SELECT ProductId, ColorId, Price, OriginalPrice, Quantity, ProductSize  FROM OPE
     SINGLE_CLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )
     WITH  (
-            ProductId		int					'$.ProductId', 
-            ColorId			int					'$.ColorId' ,
-			Price			decimal(18,2)		'$.price',
-			OriginalPrice	decimal(18,2)		'$.originalPrice',
-			Quantity		int					'$.quantity',
-			ProductSize		Nvarchar(5)			'$.productSize'			
+        ProductId		int					'$.ProductId', 
+        ColorId			int					'$.ColorId' ,
+		Price			decimal(18,2)		'$.price',
+		OriginalPrice	decimal(18,2)		'$.originalPrice',
+		Quantity		int					'$.quantity',
+		ProductSize		Nvarchar(5)			'$.productSize'			
         ) AS [ProductVariants]
 GO
 
@@ -83,7 +83,7 @@ SELECT Id, Url, ColorId,ProductId  FROM OPENROWSET  (
     SINGLE_CLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )
     WITH  (
-            Id		Nvarchar(MAX)		'$.Id', 
+            Id			int					'$.Id', 
 			Url			Nvarchar(MAX)		'$.URL' ,
 			ColorId		int					'$.ColorId',
 			ProductId	int					'$.ProductId'
