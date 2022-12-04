@@ -15,6 +15,13 @@
         {
             if (!_httpContextAccessor.HttpContext.User.IsInRole(Enum.GetName(typeof(Role), Role.Admin)))
                 return new ServiceResponse<Image> { Success = false, Message = "You are not allow to do this action" };
+            if (image.ColorId != null)
+            {
+                var dbImage = await _context.Images
+                .FirstOrDefaultAsync(p => p.ProductId == image.ProductId && p.ColorId == image.ColorId);
+                if (dbImage != null)
+                    return new ServiceResponse<Image> { Data = null, Message = "Only have one picture for each color of product" };
+            }
 
             _context.Images.Add(image);
             await _context.SaveChangesAsync();

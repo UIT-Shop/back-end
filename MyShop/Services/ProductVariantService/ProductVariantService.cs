@@ -30,6 +30,7 @@
                     Message = "Product Variant not found."
                 };
             }
+            dbProductVariant.Deleted = true;
             await _context.SaveChangesAsync();
             return new ServiceResponse<bool> { Data = true };
         }
