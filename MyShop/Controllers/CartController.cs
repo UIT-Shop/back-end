@@ -41,17 +41,10 @@ namespace MyShop.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("remove/{productId}/{productSize}/{productColorId}")]
-        public async Task<ActionResult<ServiceResponse<bool>>> RemoveItemFromCart(int productId, string productSize, int productColorId)
+        [HttpDelete("remove/{productVariantId}")]
+        public async Task<ActionResult<ServiceResponse<bool>>> RemoveItemFromCart(int productVariantId)
         {
-            var result = await _cartService.RemoveItemFromCart(productId, productSize, productColorId);
-            return Ok(result);
-        }
-
-        [HttpDelete("remove")]
-        public async Task<ActionResult<ServiceResponse<bool>>> RemoveItemFromCart(ProductVariant productVariant)
-        {
-            var result = await _cartService.RemoveItemFromCart(productVariant.ProductId, productVariant.ProductSize, productVariant.ColorId);
+            var result = await _cartService.RemoveItemFromCart(productVariantId);
             return Ok(result);
         }
 

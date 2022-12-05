@@ -8,6 +8,6 @@
         Task<ServiceResponse<List<CartProductResponse>>> GetDbCartProducts(int? userId = null);
         Task<ServiceResponse<bool>> AddToCart(CartItem cartItem);
         Task<ServiceResponse<bool>> UpdateQuantity(CartItem cartItem);
-        Task<ServiceResponse<bool>> RemoveItemFromCart(int productId, string productSize, int productColorId);
+        Task<ServiceResponse<bool>> RemoveItemFromCart(int productVariantId);
     }
 }

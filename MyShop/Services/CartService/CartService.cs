@@ -43,10 +43,12 @@
                 var cartProduct = new CartProductResponse
                 {
                     ProductId = product.Id,
+                    ProductVariantId = productVariant.Id,
                     Title = product.Title,
                     ImageUrl = productVariant.Color.Images.Count() != 0 ? productVariant.Color.Images.First().Url : "0",
                     Price = productVariant.Price,
                     ProductSize = productVariant.ProductSize ?? "XL",
+                    Color = productVariant.Color.Name,
                     Quantity = item.Quantity
                 };
 
@@ -122,12 +124,10 @@
             return new ServiceResponse<bool> { Data = true };
         }
 
-        public async Task<ServiceResponse<bool>> RemoveItemFromCart(int productId, string productSize, int productColorId)
+        public async Task<ServiceResponse<bool>> RemoveItemFromCart(int productVariantId)
         {
             var dbCartItem = await _context.CartItems
-                .FirstOrDefaultAsync(ci => ci.ProductVariant.ProductId == productId
-                && ci.ProductVariant.ProductSize == productSize
-                && ci.ProductVariant.ColorId == productColorId
+                .FirstOrDefaultAsync(ci => ci.ProductVariantId == productVariantId
                 && ci.UserId == _authService.GetUserId());
             if (dbCartItem == null)
             {
