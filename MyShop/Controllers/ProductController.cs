@@ -43,10 +43,10 @@ namespace MyShop.Controllers
             return !result.Success ? (ActionResult<ServiceResponse<Product>>)BadRequest(result) : (ActionResult<ServiceResponse<Product>>)Ok(result);
         }
 
-        [HttpGet("Category/{categoryUrl}")]
-        public async Task<ActionResult<ServiceResponse<Product>>> GetProductsByCategory(string categoryUrl)
+        [HttpGet("Category/{categoryId}")]
+        public async Task<ActionResult<ServiceResponse<Product>>> GetProductsByCategory(int categoryId, [Required] int page)
         {
-            var result = await _productService.GetProductsByCategory(categoryUrl);
+            var result = await _productService.GetProductsByCategory(categoryId, page);
             return !result.Success ? (ActionResult<ServiceResponse<Product>>)BadRequest(result) : (ActionResult<ServiceResponse<Product>>)Ok(result);
         }
 

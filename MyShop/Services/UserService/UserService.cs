@@ -10,7 +10,7 @@
         }
         public async Task<ServiceResponse<List<User>>> GetUsers()
         {
-            var users = await _context.Users.ToListAsync();
+            var users = await _context.Users.Where(u => !u.Deleted).ToListAsync();
             return new ServiceResponse<List<User>> { Data = users };
         }
         public async Task<ServiceResponse<bool>> DeleteUser(int userId)
@@ -69,6 +69,25 @@
 
             await _context.SaveChangesAsync();
             return await GetUserInfo(user.Id);
+        }
+
+        public async Task<ServiceResponse<User>> ChangeRole(int userId, Role role)
+        {
+            var dbUser = await _context.Users.FindAsync(userId);
+            if (dbUser == null)
+            {
+                return new ServiceResponse<User>
+                {
+                    Success = false,
+                    Data = null,
+                    Message = "User not found."
+                };
+            }
+
+            dbUser.Role = role;
+
+            await _context.SaveChangesAsync();
+            return await GetUserInfo(userId);
         }
     }
 }

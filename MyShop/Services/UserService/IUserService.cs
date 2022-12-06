@@ -8,6 +8,7 @@
 
         // Update
         Task<ServiceResponse<User>> UpdateUser(User user);
+        Task<ServiceResponse<User>> ChangeRole(int userId, Role role);
 
         // Delete
         Task<ServiceResponse<bool>> DeleteUser(int userId);

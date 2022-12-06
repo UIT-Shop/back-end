@@ -9,7 +9,7 @@
         Task<ServiceResponse<ProductSearchResult>> GetAdminProducts(int page);
         Task<ServiceResponse<ProductSearchResult>> GetProductsAsync(int page);
         Task<ServiceResponse<Product>> GetProductById(int productId);
-        Task<ServiceResponse<List<Product>>> GetProductsByCategory(string categoryUrl);
+        Task<ServiceResponse<ProductSearchResult>> GetProductsByCategory(int categoryId, int page);
         Task<ServiceResponse<ProductSearchResult>> SearchProducts(string searchText, int page);
         Task<ServiceResponse<List<string>>> SearchSuggestionProducts(string searchText);
 

@@ -19,11 +19,7 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<List<User>>>> GetUsers()
         {
             var result = await _userService.GetUsers();
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
+            return !result.Success ? (ActionResult<ServiceResponse<List<User>>>)BadRequest(result) : (ActionResult<ServiceResponse<List<User>>>)Ok(result);
         }
 
 
@@ -31,33 +27,28 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<List<User>>>> GetUserInfo(int userId)
         {
             var result = await _userService.GetUserInfo(userId);
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
+            return !result.Success ? (ActionResult<ServiceResponse<List<User>>>)BadRequest(result) : (ActionResult<ServiceResponse<List<User>>>)Ok(result);
         }
 
         [HttpPut()]
         public async Task<ActionResult<ServiceResponse<List<User>>>> UpdateUser(User user)
         {
             var result = await _userService.UpdateUser(user);
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
+            return !result.Success ? (ActionResult<ServiceResponse<List<User>>>)BadRequest(result) : (ActionResult<ServiceResponse<List<User>>>)Ok(result);
+        }
+
+        [HttpPut("{userId}/role/{role}")]
+        public async Task<ActionResult<ServiceResponse<List<User>>>> ChangeRole(int userId, Role role)
+        {
+            var result = await _userService.ChangeRole(userId, role);
+            return !result.Success ? (ActionResult<ServiceResponse<List<User>>>)BadRequest(result) : (ActionResult<ServiceResponse<List<User>>>)Ok(result);
         }
 
         [HttpDelete("{userId}"), Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<List<User>>>> DeleteUser(int userId)
         {
             var result = await _userService.DeleteUser(userId);
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
+            return !result.Success ? (ActionResult<ServiceResponse<List<User>>>)BadRequest(result) : (ActionResult<ServiceResponse<List<User>>>)Ok(result);
         }
     }
 }

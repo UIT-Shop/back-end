@@ -22,7 +22,8 @@ namespace MyShop.Controllers
             var response = await _authService.Register(
                 new User
                 {
-                    Email = request.Email
+                    Email = request.Email,
+                    Name = request.Name ?? "",
                 },
                 request.Password);
 
@@ -44,10 +45,10 @@ namespace MyShop.Controllers
         }
 
         [HttpPost("change-password"), Authorize]
-        public async Task<ActionResult<ServiceResponse<bool>>> ChangePassword([FromBody] string newPassword)
+        public async Task<ActionResult<ServiceResponse<bool>>> ChangePassword(UserChangePassword userChangePassword)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var response = await _authService.ChangePassword(int.Parse(userId), newPassword);
+            var response = await _authService.ChangePassword(int.Parse(userId), userChangePassword.Password);
 
             return !response.Success ? (ActionResult<ServiceResponse<bool>>)BadRequest(response) : (ActionResult<ServiceResponse<bool>>)Ok(response);
         }
