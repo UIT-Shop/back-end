@@ -23,7 +23,9 @@ namespace MyShop.Models
         [IgnoreDataMember]
         [JsonIgnore]
         public byte[] PasswordSalt { get; set; }
-        public Address? Address { get; set; }
+        public virtual Address? Address { get; set; }
+        public int? AddressId { get; set; }
+
         public string Phone { get; set; } = String.Empty;
         public Role Role { get; set; } = Role.Customer;
 

@@ -5,12 +5,18 @@
         private readonly DataContext _context;
         private readonly ICartService _cartService;
         private readonly IAuthService _authService;
+        private readonly IAddressService _addressService;
+        private readonly IUserService _userService;
+        private readonly ISaleService _saleService;
 
-        public OrderService(DataContext context, ICartService cartService, IAuthService authService)
+        public OrderService(DataContext context, ICartService cartService, IAuthService authService, IAddressService addressService, IUserService userService, ISaleService saleService)
         {
             _context = context;
             _cartService = cartService;
             _authService = authService;
+            _addressService = addressService;
+            _userService = userService;
+            _saleService = saleService;
         }
 
         public async Task<ServiceResponse<OrderDetailsResponse>> GetOrderDetails(int orderId)
@@ -18,11 +24,10 @@
             var response = new ServiceResponse<OrderDetailsResponse>();
             var order = await _context.Orders
                .Include(o => o.OrderItems)
-               .ThenInclude(oi => oi.Product)
-               .ThenInclude(p => p.Variants)
-               .ThenInclude(pv => pv.Color)
-               .ThenInclude(c => c.Images)
-               .Where(o => o.UserId == _authService.GetUserId() && o.Id == orderId)
+               .ThenInclude(oi => oi.Product).ThenInclude(p => p.Images)
+               .Include(o => o.User)
+               .Include(o => o.Address).ThenInclude(a => a.Ward).ThenInclude(w => w.District).ThenInclude(d => d.Province)
+               .Where(o => o.Id == orderId)
                .OrderByDescending(o => o.OrderDate)
                .FirstOrDefaultAsync();
 
@@ -37,6 +42,9 @@
             {
                 OrderDate = order.OrderDate,
                 TotalPrice = order.TotalPrice,
+                User = order.User,
+                Status = order.Status,
+                Address = order.Address,
                 Products = new List<OrderDetailsProductResponse>()
             };
 
@@ -44,12 +52,13 @@
             orderDetailsResponse.Products.Add(new OrderDetailsProductResponse
             {
                 ProductId = item.ProductId,
-                ImageUrl = item.Product.Variants.First().Color.Images.First().Url,
+                ImageUrl = item.Product.Images.First().Url,
                 ProductSize = item.ProductSize,
+                ProductColor = item.ProductColor,
                 Quantity = item.Quantity,
                 Title = item.Product.Title,
                 TotalPrice = item.TotalPrice
-            }));
+            })); ;
 
             response.Data = orderDetailsResponse;
 
@@ -62,7 +71,7 @@
             var orders = await _context.Orders
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Product)
-                .ThenInclude(opv => opv.Variants)
+                .ThenInclude(opi => opi.Images)
                 .Where(o => o.UserId == _authService.GetUserId())
                 .OrderByDescending(o => o.OrderDate)
                 .ToListAsync();
@@ -77,7 +86,7 @@
                     $"{o.OrderItems.First().Product.Title} and" +
                     $" {o.OrderItems.Count - 1} more..." :
                     o.OrderItems.First().Product.Title,
-                ProductImageUrl = o.OrderItems.First().Product.Variants.First().Color.Images.First().Url
+                ProductImageUrl = o.OrderItems.First().Product.Images.First().Url
             }));
 
             response.Data = orderResponse;
@@ -85,8 +94,45 @@
             return response;
         }
 
-        public async Task<ServiceResponse<bool>> PlaceOrder(int userId)
+        public async Task<ServiceResponse<List<OrderOverviewResponse>>> GetOrdersAdmin()
         {
+            var response = new ServiceResponse<List<OrderOverviewResponse>>();
+            var orders = await _context.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .ThenInclude(op => op.Images)
+                .OrderByDescending(o => o.OrderDate)
+                .ToListAsync();
+
+            var orderResponse = new List<OrderOverviewResponse>();
+            orders.ForEach(o => orderResponse.Add(new OrderOverviewResponse
+            {
+                Id = o.Id,
+                OrderDate = o.OrderDate,
+                TotalPrice = o.TotalPrice,
+                Product = o.OrderItems.Count > 1 ?
+                    $"{o.OrderItems.First().Product.Title} and" +
+                    $" {o.OrderItems.Count - 1} more..." :
+                    o.OrderItems.First().Product.Title,
+                ProductImageUrl = o.OrderItems.First().Product.Images.First().Url,
+                Status = o.Status,
+            }));
+
+            response.Data = orderResponse;
+
+            return response;
+        }
+
+        public async Task<ServiceResponse<bool>> PlaceOrder(Address? address)
+        {
+            var userId = _authService.GetUserId();
+            if (address == null)
+            {
+                var user = (await _userService.GetUserInfo(userId)).Data;
+                if (user.Address == null) return new ServiceResponse<bool> { Data = false, Success = false, Message = "Please add address" };
+                address = user.Address;
+            }
+            else address = (await _addressService.AddOrUpdateAddress(address)).Data;
             var products = (await _cartService.GetDbCartProducts(userId)).Data;
             decimal totalPrice = 0;
             products.ForEach(product => totalPrice += product.Price * product.Quantity);
@@ -96,6 +142,7 @@
             {
                 ProductId = product.ProductId,
                 ProductSize = product.ProductSize,
+                ProductColor = product.Color,
                 Quantity = product.Quantity,
                 TotalPrice = product.Price * product.Quantity
             }));
@@ -105,7 +152,9 @@
                 UserId = userId,
                 OrderDate = DateTime.Now,
                 TotalPrice = totalPrice,
-                OrderItems = orderItems
+                OrderItems = orderItems,
+                Status = Status.Waiting,
+                AddressId = address.Id
             };
 
             _context.Orders.Add(order);
@@ -114,6 +163,24 @@
                 .Where(ci => ci.UserId == userId));
 
             await _context.SaveChangesAsync();
+
+            return new ServiceResponse<bool> { Data = true };
+        }
+
+        public async Task<ServiceResponse<bool>> UpdateStatus(int orderId, Status status)
+        {
+            var response = new ServiceResponse<bool>();
+            var order = await _context.Orders.FindAsync(orderId);
+            if (order == null)
+            {
+                response.Success = false;
+                response.Message = "Order not found.";
+                return response;
+            }
+            order.Status = status;
+            await _context.SaveChangesAsync();
+            if (status == Status.Delivered)
+                await _saleService.CreateOrUpdateSaleAsync(order.TotalPrice);
 
             return new ServiceResponse<bool> { Data = true };
         }

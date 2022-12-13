@@ -13,6 +13,7 @@ global using MyShop.Services.OrderService;
 global using MyShop.Services.PaymentService;
 global using MyShop.Services.ProductService;
 global using MyShop.Services.ProductVariantService;
+global using MyShop.Services.SaleService;
 global using MyShop.Services.UserService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -69,6 +70,7 @@ builder.Services.AddScoped<IProductVariantService, ProductVariantService>();
 builder.Services.AddScoped<IColorService, ColorService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISaleService, SaleService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {

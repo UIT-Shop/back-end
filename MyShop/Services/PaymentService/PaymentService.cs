@@ -8,18 +8,21 @@ namespace MyShop.Services.PaymentService
         private readonly ICartService _cartService;
         private readonly IAuthService _authService;
         private readonly IOrderService _orderService;
+        private readonly IUserService _userService;
 
         const string secret = "whsec_cq1WH9CX9U1zxU9EpbBVvWOhfb6e5ysR";
 
         public PaymentService(ICartService cartService,
             IAuthService authService,
-            IOrderService orderService)
+            IOrderService orderService,
+            IUserService userService)
         {
             StripeConfiguration.ApiKey = "sk_test_51HnFFuJWja1dketA1LY3VQds3XWpByD5GE8laKrxyNldWKnXXdktvITJiG3PYNDMwpSkrAv33d7JjvHDEUGPPo2E00vkDMlVIb";
 
             _cartService = cartService;
             _authService = authService;
             _orderService = orderService;
+            _userService = userService;
         }
 
         public async Task<Session> CreateCheckoutSession()
@@ -78,8 +81,8 @@ namespace MyShop.Services.PaymentService
                 if (stripeEvent.Type == Events.CheckoutSessionCompleted)
                 {
                     var session = stripeEvent.Data.Object as Session;
-                    var user = await _authService.GetUserByEmail(session.CustomerEmail);
-                    await _orderService.PlaceOrder(user.Id);
+                    //var user = (await _userService.GetUserInfo(await _authService.GetUserId)).data;
+                    await _orderService.PlaceOrder(null);
                 }
 
                 return new ServiceResponse<bool> { Data = true };

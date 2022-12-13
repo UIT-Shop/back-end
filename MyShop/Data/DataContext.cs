@@ -10,7 +10,17 @@
                 .HasKey(ci => new { ci.UserId, ci.ProductVariantId });
 
             modelBuilder.Entity<OrderItem>()
-                .HasKey(oi => new { oi.OrderId, oi.ProductId });
+                .HasKey(oi => new { oi.OrderId, oi.ProductId, oi.ProductColor, oi.ProductSize });
+
+            //modelBuilder.Entity<User>()
+            //.HasOne(a => a.Address)
+            //.WithOne(a => a.User)
+            //.HasForeignKey<Address>(c => c.UserId);
+
+            //modelBuilder.Entity<Order>()
+            //.HasOne(a => a.Address)
+            //.WithOne(a => a.Order)
+            //.HasForeignKey<Address>(c => c.UserId);
 
             modelBuilder.Entity<Brand>().HasData(
                 new
@@ -50,13 +60,16 @@
             modelBuilder.Entity<ProductVariant>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
             modelBuilder.Entity<ProductVariant>().Property("Visible").HasDefaultValue(true);
             modelBuilder.Entity<ProductVariant>().Property("Deleted").HasDefaultValue(false);
+            modelBuilder.Entity<Product>().Property("Rating").HasDefaultValue(5.0);
+            modelBuilder.Entity<Sale>().Property("Totals").HasDefaultValue(0);
         }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Color> Colors { get; set; }
-        //public DbSet<ProductColor> ProductColors { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Sale> Sales { get; set; }
         public DbSet<ProductVariant> ProductVariants { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Province> Provinces { get; set; }
@@ -67,6 +80,7 @@
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<ImageComment> ImageComments { get; set; }
 
         public override int SaveChanges()
         {

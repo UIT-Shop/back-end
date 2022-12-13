@@ -62,6 +62,18 @@
               "target": "Package",
               "version": "[6.0.10, )"
             },
+            "Microsoft.ML": {
+              "target": "Package",
+              "version": "[1.7.1, )"
+            },
+            "Microsoft.ML.FastTree": {
+              "target": "Package",
+              "version": "[1.7.1, )"
+            },
+            "Microsoft.ML.TimeSeries": {
+              "target": "Package",
+              "version": "[1.7.1, )"
+            },
             "Stripe.net": {
               "target": "Package",
               "version": "[40.16.0, )"

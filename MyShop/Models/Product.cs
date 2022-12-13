@@ -22,6 +22,8 @@ namespace MyShop.Models
         public string MetaKeyword { get; set; } = String.Empty;
         public string MetaDiscription { get; set; } = String.Empty;
 
+        //[Column(TypeName = "decimal(5,1)")]
+        public double? Rating { get; set; } = 5;
         public bool Visible { get; set; } = true;
         public bool Deleted { get; set; } = false;
         [NotMapped]

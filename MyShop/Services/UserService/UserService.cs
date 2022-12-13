@@ -3,10 +3,12 @@
     public class UserService : IUserService
     {
         private readonly DataContext _context;
+        private readonly IAddressService _addressService;
 
-        public UserService(DataContext context)
+        public UserService(DataContext context, IAddressService addressService)
         {
             _context = context;
+            _addressService = addressService;
         }
         public async Task<ServiceResponse<List<User>>> GetUsers()
         {
@@ -62,10 +64,13 @@
                 };
             }
 
+            var dbAddress = (await _addressService.AddOrUpdateAddress(user.Address)).Data;
+
             dbUser.Name = user.Name;
             dbUser.Phone = user.Phone;
             dbUser.Role = user.Role;
-            dbUser.Address = user.Address;
+            dbUser.Address = dbAddress;
+            dbUser.AddressId = dbAddress.Id;
 
             await _context.SaveChangesAsync();
             return await GetUserInfo(user.Id);

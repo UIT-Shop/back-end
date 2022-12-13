@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace MyShop.Controllers
 {
@@ -21,10 +20,31 @@ namespace MyShop.Controllers
             return Ok(result);
         }
 
+        [HttpGet("admin")]
+        public async Task<ActionResult<ServiceResponse<List<OrderOverviewResponse>>>> GetOrdersAdmin()
+        {
+            var result = await _orderService.GetOrdersAdmin();
+            return Ok(result);
+        }
+
         [HttpGet("{orderId}")]
         public async Task<ActionResult<ServiceResponse<OrderDetailsResponse>>> GetOrdersDetails(int orderId)
         {
             var result = await _orderService.GetOrderDetails(orderId);
+            return Ok(result);
+        }
+
+        [HttpPost()]
+        public async Task<ActionResult<ServiceResponse<OrderDetailsResponse>>> PlaceOrder(Address address)
+        {
+            var result = await _orderService.PlaceOrder(address);
+            return Ok(result);
+        }
+
+        [HttpPut("{orderId}/{status}")]
+        public async Task<ActionResult<ServiceResponse<OrderDetailsResponse>>> UpdateStatus(int orderId, Status status)
+        {
+            var result = await _orderService.UpdateStatus(orderId, status);
             return Ok(result);
         }
     }

@@ -11,6 +11,9 @@ namespace MyShop.Models
         public DateTime OrderDate { get; set; }
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalPrice { get; set; }
+        public User User { get; set; }
+        public Status Status { get; set; }
+        public Address Address { get; set; }
         public List<OrderDetailsProductResponse> Products { get; set; }
     }
 }

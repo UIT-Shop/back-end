@@ -141,6 +141,34 @@ namespace MyShop.Migrations
                     b.ToTable("Colors");
                 });
 
+            modelBuilder.Entity("MyShop.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CommentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("MyShop.Models.Image", b =>
                 {
                     b.Property<int>("Id")
@@ -168,6 +196,28 @@ namespace MyShop.Migrations
                     b.ToTable("Images");
                 });
 
+            modelBuilder.Entity("MyShop.Models.ImageComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.ToTable("ImageComments");
+                });
+
             modelBuilder.Entity("MyShop.Models.MAddress.Address", b =>
                 {
                     b.Property<int>("Id")
@@ -180,16 +230,10 @@ namespace MyShop.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.Property<int>("WardId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.HasIndex("WardId");
 
@@ -280,7 +324,7 @@ namespace MyShop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("AddressId")
+                    b.Property<int>("AddressId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
@@ -288,6 +332,9 @@ namespace MyShop.Migrations
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
@@ -315,12 +362,14 @@ namespace MyShop.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("ProductColor")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProductSize")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -331,7 +380,7 @@ namespace MyShop.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("OrderId", "ProductId");
+                    b.HasKey("OrderId", "ProductId", "ProductColor", "ProductSize");
 
                     b.HasIndex("ProductId");
 
@@ -355,7 +404,7 @@ namespace MyShop.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 12, 1, 20, 8, 54, 802, DateTimeKind.Local).AddTicks(9845));
+                        .HasDefaultValue(new DateTime(2022, 12, 12, 18, 35, 59, 514, DateTimeKind.Local).AddTicks(7180));
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
@@ -383,6 +432,11 @@ namespace MyShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("");
+
+                    b.Property<double?>("Rating")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(5.0);
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -419,7 +473,7 @@ namespace MyShop.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 12, 1, 20, 8, 54, 803, DateTimeKind.Local).AddTicks(20));
+                        .HasDefaultValue(new DateTime(2022, 12, 12, 18, 35, 59, 514, DateTimeKind.Local).AddTicks(7511));
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
@@ -459,6 +513,22 @@ namespace MyShop.Migrations
                     b.ToTable("ProductVariants");
                 });
 
+            modelBuilder.Entity("MyShop.Models.Sale", b =>
+                {
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("Totals")
+                        .HasColumnType("real");
+
+                    b.Property<float>("Year")
+                        .HasColumnType("real");
+
+                    b.HasKey("Date");
+
+                    b.ToTable("Sales");
+                });
+
             modelBuilder.Entity("MyShop.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -466,6 +536,9 @@ namespace MyShop.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("AddressId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -501,6 +574,8 @@ namespace MyShop.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AddressId");
+
                     b.ToTable("Users");
                 });
 
@@ -523,6 +598,17 @@ namespace MyShop.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("MyShop.Models.Comment", b =>
+                {
+                    b.HasOne("MyShop.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("MyShop.Models.Image", b =>
                 {
                     b.HasOne("MyShop.Models.Color", "Color")
@@ -540,14 +626,19 @@ namespace MyShop.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("MyShop.Models.MAddress.Address", b =>
+            modelBuilder.Entity("MyShop.Models.ImageComment", b =>
                 {
-                    b.HasOne("MyShop.Models.User", null)
-                        .WithOne("Address")
-                        .HasForeignKey("MyShop.Models.MAddress.Address", "UserId")
+                    b.HasOne("MyShop.Models.Comment", "Comment")
+                        .WithMany("ImageComments")
+                        .HasForeignKey("CommentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Comment");
+                });
+
+            modelBuilder.Entity("MyShop.Models.MAddress.Address", b =>
+                {
                     b.HasOne("MyShop.Models.MAddress.Ward", "Ward")
                         .WithMany()
                         .HasForeignKey("WardId")
@@ -583,7 +674,9 @@ namespace MyShop.Migrations
                 {
                     b.HasOne("MyShop.Models.MAddress.Address", "Address")
                         .WithMany()
-                        .HasForeignKey("AddressId");
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("MyShop.Models.User", "User")
                         .WithMany()
@@ -653,9 +746,23 @@ namespace MyShop.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("MyShop.Models.User", b =>
+                {
+                    b.HasOne("MyShop.Models.MAddress.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
+                    b.Navigation("Address");
+                });
+
             modelBuilder.Entity("MyShop.Models.Color", b =>
                 {
                     b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("MyShop.Models.Comment", b =>
+                {
+                    b.Navigation("ImageComments");
                 });
 
             modelBuilder.Entity("MyShop.Models.Order", b =>
@@ -668,11 +775,6 @@ namespace MyShop.Migrations
                     b.Navigation("Images");
 
                     b.Navigation("Variants");
-                });
-
-            modelBuilder.Entity("MyShop.Models.User", b =>
-                {
-                    b.Navigation("Address");
                 });
 #pragma warning restore 612, 618
         }

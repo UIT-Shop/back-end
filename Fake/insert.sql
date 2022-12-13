@@ -1,4 +1,6 @@
-﻿DELETE FROM ProductVariants
+﻿USE myShop
+GO
+DELETE FROM ProductVariants
 GO
 DELETE FROM Images
 GO
@@ -7,6 +9,8 @@ GO
 DELETE FROM Categories
 GO
 DELETE FROM colors
+GO
+DELETE FROM Sales
 GO
 
 SET IDENTITY_INSERT Colors ON
@@ -90,4 +94,17 @@ SELECT Id, Url, ColorId,ProductId  FROM OPENROWSET  (
         ) AS [Images]
 GO
 SET IDENTITY_INSERT Images OFF
+GO
+
+SET DATEFORMAT DMY;
+INSERT INTO Sales (Date, Year, Totals)
+SELECT Date, Year, Totals  FROM OPENROWSET  (
+    BULK 'D:/sales.json', 
+    SINGLE_CLOB) AS [Json]    
+    CROSS APPLY OPENJSON ( BulkColumn, '$' )
+    WITH  (
+            Date		Date	'$.Date', 
+            Year		Real	'$.Year', 
+			Totals		Real	'$.Totals' 
+        ) AS [Sales]
 GO

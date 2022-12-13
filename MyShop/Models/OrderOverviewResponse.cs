@@ -14,5 +14,6 @@ namespace MyShop.Models
         public decimal TotalPrice { get; set; }
         public string Product { get; set; }
         public string ProductImageUrl { get; set; }
+        public Status Status { get; set; }
     }
 }

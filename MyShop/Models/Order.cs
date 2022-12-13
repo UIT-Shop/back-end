@@ -3,6 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyShop.Models
 {
+    public enum Status
+    {
+        Waiting,
+        Received,
+        Delivering,
+        Delivered,
+        Cancelled
+    }
+
     public class Order
     {
         public int Id { get; set; }
@@ -14,8 +23,10 @@ namespace MyShop.Models
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalPrice { get; set; }
+        public Status Status { get; set; } = Status.Waiting;
         public List<OrderItem> OrderItems { get; set; }
 
-        public Address? Address { get; set; }
+        public virtual Address? Address { get; set; }
+        public int AddressId { get; set; }
     }
 }
