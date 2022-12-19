@@ -9,10 +9,12 @@ namespace MyShop.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
+        private readonly ICommentService _commentService;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, ICommentService commentService)
         {
             _productService = productService;
+            _commentService = commentService;
         }
 
         [HttpGet("admin"), Authorize(Roles = "Admin")]
@@ -29,11 +31,28 @@ namespace MyShop.Controllers
             return !result.Success ? (ActionResult<ServiceResponse<ProductSearchResult>>)BadRequest(result) : (ActionResult<ServiceResponse<ProductSearchResult>>)Ok(result);
         }
 
-        [HttpPost("test")]
-        public async Task<ActionResult<ServiceResponse<string>>> Test()
+        [HttpGet("training"), Authorize]
+        public ActionResult<ServiceResponse<bool>> Traning()
         {
-            var result = new ServiceResponse<string>() { Message = "Test", Data = null };
-            return !result.Success ? (ActionResult<ServiceResponse<string>>)BadRequest(result) : (ActionResult<ServiceResponse<string>>)Ok(result);
+            _commentService.ReTrainData();
+            return new ServiceResponse<bool> { Data = true };
+        }
+
+        [HttpGet("recommend"), Authorize]
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> Recommend()
+        {
+            var productIds = await _productService.GetListProductIds();
+            var recommendOutputs = _commentService.GetRecommend(productIds.Data);
+            List<int> recommendProductIds = new List<int>();
+            Console.WriteLine("=============== Top recommend ===============");
+            Console.WriteLine("ProductId\t\t\tPredictScore");
+            foreach (var recommendOutput in recommendOutputs)
+            {
+                recommendProductIds.Add(recommendOutput.ProductId);
+                Console.WriteLine($"{recommendOutput.ProductId}\t\t\t{recommendOutput.Score}");
+            }
+            var result = await _productService.GetProducts(recommendProductIds);
+            return (ActionResult<ServiceResponse<List<Product>>>)Ok(result);
         }
 
         [HttpGet("{productId:int}")]

@@ -7,6 +7,6 @@
         Task<ServiceResponse<List<ProductVariant>>> AddProductVariant(ProductVariant productVariant);
         Task<ServiceResponse<List<ProductVariant>>> UpdateProductVariant(ProductVariant productVariant);
         Task<ServiceResponse<bool>> DeleteProductVariant(int productVariantId);
-
+        Task<ServiceResponse<ProductVariant>> GetProductVariant(int productVariantId);
     }
 }

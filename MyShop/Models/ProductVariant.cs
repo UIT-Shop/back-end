@@ -29,5 +29,10 @@ namespace MyShop.Models
         public bool Editing { get; set; } = false;
         [NotMapped]
         public bool IsNew { get; set; } = false;
+
+        public static implicit operator ProductVariant(ServiceResponse<ProductVariant> v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

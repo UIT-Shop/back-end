@@ -64,15 +64,19 @@
             },
             "Microsoft.ML": {
               "target": "Package",
-              "version": "[1.7.1, )"
+              "version": "[2.0.0, )"
             },
             "Microsoft.ML.FastTree": {
               "target": "Package",
-              "version": "[1.7.1, )"
+              "version": "[2.0.0, )"
+            },
+            "Microsoft.ML.Recommender": {
+              "target": "Package",
+              "version": "[0.20.0, )"
             },
             "Microsoft.ML.TimeSeries": {
               "target": "Package",
-              "version": "[1.7.1, )"
+              "version": "[2.0.0, )"
             },
             "Stripe.net": {
               "target": "Package",

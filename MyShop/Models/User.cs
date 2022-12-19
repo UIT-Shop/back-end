@@ -19,10 +19,10 @@ namespace MyShop.Models
         public string Email { get; set; } = String.Empty;
         [IgnoreDataMember]
         [JsonIgnore]
-        public byte[] PasswordHash { get; set; }
+        public byte[]? PasswordHash { get; set; }
         [IgnoreDataMember]
         [JsonIgnore]
-        public byte[] PasswordSalt { get; set; }
+        public byte[]? PasswordSalt { get; set; }
         public virtual Address? Address { get; set; }
         public int? AddressId { get; set; }
 

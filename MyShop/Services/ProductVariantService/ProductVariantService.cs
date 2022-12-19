@@ -44,11 +44,21 @@
             return new ServiceResponse<ProductVariant> { Data = productVariant };
         }
 
+        public async Task<ServiceResponse<ProductVariant>> GetProductVariant(int productVariantId)
+        {
+            var productVariant = await _context.ProductVariants
+                .Include(pv => pv.Product).ThenInclude(p => p.Images)
+                .FirstOrDefaultAsync(p => p.Id == productVariantId);
+            return new ServiceResponse<ProductVariant> { Data = productVariant };
+        }
+
         public async Task<ServiceResponse<List<ProductVariant>>> GetProductVariants(int productId)
         {
             var productVariants = await _context.ProductVariants.Where(v => v.ProductId == productId).ToListAsync();
             return new ServiceResponse<List<ProductVariant>> { Data = productVariants };
         }
+
+
 
         public async Task<ServiceResponse<List<ProductVariant>>> UpdateProductVariant(ProductVariant productVariant)
         {

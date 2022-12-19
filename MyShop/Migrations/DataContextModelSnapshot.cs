@@ -156,13 +156,21 @@ namespace MyShop.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Rating")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
+
+                    b.Property<int>("ProductVariantId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Rating")
+                        .HasColumnType("real");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductVariantId");
 
                     b.HasIndex("UserId");
 
@@ -404,7 +412,7 @@ namespace MyShop.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 12, 12, 18, 35, 59, 514, DateTimeKind.Local).AddTicks(7180));
+                        .HasDefaultValue(new DateTime(2022, 12, 19, 3, 48, 18, 871, DateTimeKind.Local).AddTicks(9900));
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
@@ -473,7 +481,7 @@ namespace MyShop.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 12, 12, 18, 35, 59, 514, DateTimeKind.Local).AddTicks(7511));
+                        .HasDefaultValue(new DateTime(2022, 12, 19, 3, 48, 18, 872, DateTimeKind.Local).AddTicks(81));
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
@@ -519,7 +527,9 @@ namespace MyShop.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<float>("Totals")
-                        .HasColumnType("real");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("real")
+                        .HasDefaultValue(0f);
 
                     b.Property<float>("Year")
                         .HasColumnType("real");
@@ -541,10 +551,14 @@ namespace MyShop.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2022, 12, 19, 3, 48, 18, 872, DateTimeKind.Local).AddTicks(1903));
 
                     b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -555,19 +569,21 @@ namespace MyShop.Migrations
                         .HasColumnType("nvarchar(MAX)");
 
                     b.Property<byte[]>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<byte[]>("PasswordSalt")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
 
                     b.Property<int>("Role")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -600,11 +616,19 @@ namespace MyShop.Migrations
 
             modelBuilder.Entity("MyShop.Models.Comment", b =>
                 {
+                    b.HasOne("MyShop.Models.ProductVariant", "ProductVariant")
+                        .WithMany()
+                        .HasForeignKey("ProductVariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MyShop.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ProductVariant");
 
                     b.Navigation("User");
                 });

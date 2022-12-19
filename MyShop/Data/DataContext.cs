@@ -61,7 +61,16 @@
             modelBuilder.Entity<ProductVariant>().Property("Visible").HasDefaultValue(true);
             modelBuilder.Entity<ProductVariant>().Property("Deleted").HasDefaultValue(false);
             modelBuilder.Entity<Product>().Property("Rating").HasDefaultValue(5.0);
+
             modelBuilder.Entity<Sale>().Property("Totals").HasDefaultValue(0);
+
+            modelBuilder.Entity<User>().Property("Deleted").HasDefaultValue(false);
+            modelBuilder.Entity<User>().Property("Role").HasDefaultValue(Role.Customer);
+            modelBuilder.Entity<User>().Property("Phone").HasDefaultValue(String.Empty);
+            modelBuilder.Entity<User>().Property("AddressId").HasDefaultValue(null);
+            modelBuilder.Entity<User>().Property("PasswordHash").HasDefaultValue(null);
+            modelBuilder.Entity<User>().Property("PasswordSalt").HasDefaultValue(null);
+            modelBuilder.Entity<User>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
         }
 
         public DbSet<Product> Products { get; set; }

@@ -81,6 +81,15 @@
             return response;
         }
 
+        public async Task<ServiceResponse<List<int>>> GetListProductIds()
+        {
+            var products = await _context.Products.ToListAsync();
+            List<int> listId = new List<int>();
+            foreach (var product in products) { listId.Add(product.Id); }
+
+            return new ServiceResponse<List<int>> { Data = listId };
+        }
+
         public async Task<ServiceResponse<Product>> GetProductById(int productId)
         {
             var response = new ServiceResponse<Product>();
@@ -104,6 +113,15 @@
             }
 
             return response;
+        }
+
+        public async Task<ServiceResponse<List<Product>>> GetProducts(List<int> ids)
+        {
+            List<Product> products = await _context.Products
+                    .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
+                    .Include(p => p.Images)
+                    .Where(p => ids.Contains(p.Id)).ToListAsync();
+            return new ServiceResponse<List<Product>> { Data = products };
         }
 
         public async Task<ServiceResponse<ProductSearchResult>> GetProductsAsync(int page)

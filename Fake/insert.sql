@@ -12,6 +12,10 @@ DELETE FROM colors
 GO
 DELETE FROM Sales
 GO
+DELETE FROM Comments
+GO
+DELETE FROM Users
+GO
 
 SET IDENTITY_INSERT Colors ON
 GO
@@ -64,8 +68,10 @@ GO
 SET IDENTITY_INSERT Products OFF
 GO
 
-INSERT INTO ProductVariants (ProductId, ColorId, Price, OriginalPrice, Quantity, ProductSize)
-SELECT ProductId, ColorId, Price, OriginalPrice, Quantity, ProductSize  FROM OPENROWSET  (
+SET IDENTITY_INSERT ProductVariants ON
+GO
+INSERT INTO ProductVariants (Id, ProductId, ColorId, Price, OriginalPrice, Quantity, ProductSize)
+SELECT Id, ProductId, ColorId, Price, OriginalPrice, Quantity, ProductSize  FROM OPENROWSET  (
     BULK 'D:/variants.json', 
     SINGLE_CLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )
@@ -75,8 +81,11 @@ SELECT ProductId, ColorId, Price, OriginalPrice, Quantity, ProductSize  FROM OPE
 		Price			decimal(18,2)		'$.price',
 		OriginalPrice	decimal(18,2)		'$.originalPrice',
 		Quantity		int					'$.quantity',
-		ProductSize		Nvarchar(5)			'$.productSize'			
+		ProductSize		Nvarchar(5)			'$.productSize',
+		Id				int					'$.Id'
         ) AS [ProductVariants]
+GO
+SET IDENTITY_INSERT ProductVariants OFF
 GO
 
 SET IDENTITY_INSERT Images ON
@@ -97,6 +106,7 @@ SET IDENTITY_INSERT Images OFF
 GO
 
 SET DATEFORMAT DMY;
+GO
 INSERT INTO Sales (Date, Year, Totals)
 SELECT Date, Year, Totals  FROM OPENROWSET  (
     BULK 'D:/sales.json', 
@@ -107,4 +117,44 @@ SELECT Date, Year, Totals  FROM OPENROWSET  (
             Year		Real	'$.Year', 
 			Totals		Real	'$.Totals' 
         ) AS [Sales]
+GO
+
+SET IDENTITY_INSERT Users ON
+GO
+INSERT INTO Users (Id, Name, Email, Role)
+SELECT Id, Name, Email, Role FROM OPENROWSET  (
+    BULK 'D:/users.json', 
+    SINGLE_CLOB) AS [Json]    
+    CROSS APPLY OPENJSON ( BulkColumn, '$' )
+    WITH  (
+            Id				int				'$.id', 
+            Name			Nvarchar(MAX)	'$.name', 
+			Email			Nvarchar(MAX)	'$.email',
+			Role			int				'$.role'
+        ) AS [Users]
+GO
+SET IDENTITY_INSERT Users OFF
+GO
+
+-- Set default password is 'string'
+UPDATE Users
+SET PasswordHash = CONVERT(VARBINARY(max), '0x916345A0A2CE77E985CECB7CEA20298B7A443D66AD43C6CBB06A915376F204729D86EF18BA15561F1EB8ED1F8CC30D44E28BCDD4513D106A5782ECC1D29F8F8B', 1),
+	PasswordSalt = CONVERT(VARBINARY(max), '0xF19B4CC587AB67449FC183AB984ABE4623EA0B572AE0EBAD592607F498CF60B909ED70A02B963BFFC63F336A9FF018A5BB73C217ECB88EC7F4643C309C20EC94931096031093F87D0244F6551F4ABE54DA0C581658A8642896BEF19240876114C3A9D0FCBFD98B74B5AA4415E0C2591156761563B8AF03C9B0C8E7E8DF238D60', 1)
+GO
+
+SET DATEFORMAT YMD;
+GO
+INSERT INTO Comments (UserId, ProductVariantId, Rating, Content, CommentDate, ProductId)
+SELECT UserId, productVariantId, Rating, Content, CommentDate, ProductId FROM OPENROWSET  (
+    BULK 'D:/comments.json', 
+    SINGLE_CLOB) AS [Json]    
+    CROSS APPLY OPENJSON ( BulkColumn, '$' )
+    WITH  (
+            UserId				int				'$.userId', 
+            productVariantId	int				'$.productVariantId', 
+			Rating				Real			'$.rating',
+			Content				Nvarchar(MAX)	'$.content',
+			CommentDate			DateTime		'$.timestamp',
+			ProductId			int				'$.productId'
+        ) AS [Comments]
 GO
