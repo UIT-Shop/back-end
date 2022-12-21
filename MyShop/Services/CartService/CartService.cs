@@ -104,11 +104,12 @@
 
         public async Task<ServiceResponse<bool>> UpdateQuantity(CartItem cartItem)
         {
-            var dbCartItem = await _context.CartItems
-                .FirstOrDefaultAsync(ci => ci.ProductVariant.ProductId == cartItem.ProductVariant.ProductId
-                && ci.ProductVariant.ProductSize == cartItem.ProductVariant.ProductSize
+            cartItem.UserId = _authService.GetUserId();
+
+            var sameItem = await _context.CartItems
+                .FirstOrDefaultAsync(ci => ci.ProductVariantId == cartItem.ProductVariantId
                 && ci.UserId == cartItem.UserId);
-            if (dbCartItem == null)
+            if (sameItem == null)
             {
                 return new ServiceResponse<bool>
                 {
@@ -118,7 +119,7 @@
                 };
             }
 
-            dbCartItem.Quantity = cartItem.Quantity;
+            sameItem.Quantity = cartItem.Quantity;
             await _context.SaveChangesAsync();
 
             return new ServiceResponse<bool> { Data = true };

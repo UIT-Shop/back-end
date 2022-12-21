@@ -99,6 +99,7 @@
                     .ThenInclude(pv => pv.Color).Include(p => p.Images)
                     .FirstOrDefaultAsync(p => p.Id == productId && !p.Deleted)
                 : await _context.Products
+                    .Include(p => p.Category).Include(p => p.Brand)
                     .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
                     .ThenInclude(pv => pv.Color).Include(p => p.Images)
                     .FirstOrDefaultAsync(p => p.Id == productId && !p.Deleted && p.Visible);
