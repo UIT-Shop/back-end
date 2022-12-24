@@ -9,19 +9,30 @@ namespace MyShop.Services.CommentService
     {
         private readonly DataContext _context;
         private readonly IAuthService _authService;
+        private readonly IUserService _userService;
+        private readonly IProductService _productService;
 
-        public CommentService(DataContext context, IAuthService authService)
+        public CommentService(DataContext context, IAuthService authService, IUserService userService, IProductService productService)
         {
             _context = context;
             _authService = authService;
+            _userService = userService;
+            _productService = productService;
         }
 
-        public async Task<ServiceResponse<List<Comment>>> GetComments(int productId)
+        public async Task<ServiceResponse<List<Comment>>> GetComments(int productId, int page)
         {
-            var comments = await _context.Comments
-                .Include(c => c.User).Include(c => c.ProductVariant)
-                .Where(c => c.ProductVariant.ProductId == productId)
-                .ToListAsync();
+            //var count = _context.Comments.Where(c => c.ProductId == productId).Count();
+            //Console.WriteLine($"by count: {count}");
+            var allComments = await _context.Comments.Where(c => c.ProductId == productId).ToListAsync();
+            //Console.WriteLine($"by list: {allComments.Count}");
+            var pageResults = 10f;
+            var pageCount = Math.Ceiling(allComments.Count / pageResults);
+            var comments = allComments
+                .OrderByDescending(c => c.CommentDate)
+                .Skip((page - 1) * (int)pageResults)
+                .Take((int)pageResults)
+                .ToList();
             return new ServiceResponse<List<Comment>>
             {
                 Data = comments
@@ -30,7 +41,12 @@ namespace MyShop.Services.CommentService
 
         public async Task<ServiceResponse<Comment>> AddComment(Comment comment)
         {
-            var productVariant = await _context.ProductVariants.FindAsync(comment.ProductVariantId);
+            var userId = _authService.GetUserId();
+            var userInfo = await _userService.GetUserInfo(userId);
+            var productVariant = await _context.ProductVariants
+                .Include(pv => pv.Color).Include(pv => pv.Product)
+                .Where(pv => pv.Id == comment.ProductVariantId)
+                .FirstOrDefaultAsync();
             if (productVariant == null)
                 return new ServiceResponse<Comment>
                 {
@@ -39,10 +55,20 @@ namespace MyShop.Services.CommentService
                     Message = "Variant not found"
                 };
             comment.ProductId = productVariant.ProductId;
+            comment.ProductColor = productVariant.Color.Name;
+            comment.ProductSize = productVariant.ProductSize;
+            comment.ProductTitle = productVariant.Product.Title;
+            comment.UserName = userInfo.Data.Name;
             _context.Comments.Add(comment);
+
             await _context.SaveChangesAsync();
+
+            _productService.UpdateRating(productVariant.ProductId);
+
             return new ServiceResponse<Comment> { Data = comment };
         }
+
+
 
         public void ReTrainData()
         {
@@ -211,7 +237,6 @@ namespace MyShop.Services.CommentService
             public int ProductId { get; set; }
         }
         #endregion
-        //eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidXNlcjEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJ1c2VyMUBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTY3MTQ4NjQ2Nn0.i0FkJeUQ3x-LrZOB-XgnWZzh07WsX_1hhnW_A6kHGHOIvrNU3LaZzF9atDFw08X8lSfn46kEgf4jeCimWgC6TQ
 
         /// <summary>
         /// model output class for MLModel.

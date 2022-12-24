@@ -6,7 +6,7 @@
         Task<bool> UserExists(string email);
         Task<ServiceResponse<string>> Login(string email, string password);
         Task<ServiceResponse<bool>> ChangePassword(int userId, string newPassword);
-        Task<ServiceResponse<int>> CheckAuthen();
+        Task<ServiceResponse<string>> CheckAuthen();
         int GetUserId();
         string GetUserEmail();
     }

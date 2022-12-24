@@ -38,7 +38,7 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<OrderDetailsResponse>>> PlaceOrder(Address address)
         {
             var result = await _orderService.PlaceOrder(address);
-            return Ok(result);
+            return result.Success == false ? (ActionResult<ServiceResponse<OrderDetailsResponse>>)BadRequest(result) : (ActionResult<ServiceResponse<OrderDetailsResponse>>)Ok(result);
         }
 
         [HttpPut("{orderId}/{status}")]

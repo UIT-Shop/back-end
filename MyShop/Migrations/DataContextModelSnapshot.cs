@@ -156,8 +156,20 @@ namespace MyShop.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ProductColor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ProductSize")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductVariantId")
                         .HasColumnType("int");
@@ -168,11 +180,11 @@ namespace MyShop.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductVariantId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -412,7 +424,7 @@ namespace MyShop.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 12, 19, 3, 48, 18, 871, DateTimeKind.Local).AddTicks(9900));
+                        .HasDefaultValue(new DateTime(2022, 12, 23, 3, 41, 58, 346, DateTimeKind.Local).AddTicks(2312));
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
@@ -441,10 +453,10 @@ namespace MyShop.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("");
 
-                    b.Property<double?>("Rating")
+                    b.Property<float?>("Rating")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("float")
-                        .HasDefaultValue(5.0);
+                        .HasColumnType("real")
+                        .HasDefaultValue(5f);
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -481,7 +493,7 @@ namespace MyShop.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 12, 19, 3, 48, 18, 872, DateTimeKind.Local).AddTicks(81));
+                        .HasDefaultValue(new DateTime(2022, 12, 23, 3, 41, 58, 346, DateTimeKind.Local).AddTicks(2450));
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
@@ -553,7 +565,7 @@ namespace MyShop.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 12, 19, 3, 48, 18, 872, DateTimeKind.Local).AddTicks(1903));
+                        .HasDefaultValue(new DateTime(2022, 12, 23, 3, 41, 58, 346, DateTimeKind.Local).AddTicks(3651));
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
@@ -596,25 +608,6 @@ namespace MyShop.Migrations
                 });
 
             modelBuilder.Entity("MyShop.Models.CartItem", b =>
-                {
-                    b.HasOne("MyShop.Models.ProductVariant", "ProductVariant")
-                        .WithMany()
-                        .HasForeignKey("ProductVariantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MyShop.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ProductVariant");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("MyShop.Models.Comment", b =>
                 {
                     b.HasOne("MyShop.Models.ProductVariant", "ProductVariant")
                         .WithMany()

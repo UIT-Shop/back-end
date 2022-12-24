@@ -86,7 +86,8 @@
                     $"{o.OrderItems.First().Product.Title} and" +
                     $" {o.OrderItems.Count - 1} more..." :
                     o.OrderItems.First().Product.Title,
-                ProductImageUrl = o.OrderItems.First().Product.Images.First().Url
+                ProductImageUrl = o.OrderItems.First().Product.Images.First().Url,
+                Status = o.Status,
             }));
 
             response.Data = orderResponse;
@@ -134,6 +135,7 @@
             }
             else address = (await _addressService.AddOrUpdateAddress(address)).Data;
             var products = (await _cartService.GetDbCartProducts(userId)).Data;
+            if (products == null || products.Count == 0) return new ServiceResponse<bool> { Data = false, Success = false, Message = "There is no cart item" };
             decimal totalPrice = 0;
             products.ForEach(product => totalPrice += product.Price * product.Quantity);
 

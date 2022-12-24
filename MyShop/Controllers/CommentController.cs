@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyShop.Controllers
 {
@@ -22,9 +23,9 @@ namespace MyShop.Controllers
         }
 
         [HttpGet("{productId}")]
-        public async Task<ActionResult<ServiceResponse<List<Comment>>>> GetComments(int productId)
+        public async Task<ActionResult<ServiceResponse<List<Comment>>>> GetComments(int productId, [Required] int page)
         {
-            var result = await _commentService.GetComments(productId);
+            var result = await _commentService.GetComments(productId, page);
             return Ok(result);
         }
     }

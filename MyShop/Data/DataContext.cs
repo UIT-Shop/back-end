@@ -60,7 +60,7 @@
             modelBuilder.Entity<ProductVariant>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
             modelBuilder.Entity<ProductVariant>().Property("Visible").HasDefaultValue(true);
             modelBuilder.Entity<ProductVariant>().Property("Deleted").HasDefaultValue(false);
-            modelBuilder.Entity<Product>().Property("Rating").HasDefaultValue(5.0);
+            modelBuilder.Entity<Product>().Property("Rating").HasDefaultValue(5f);
 
             modelBuilder.Entity<Sale>().Property("Totals").HasDefaultValue(0);
 

@@ -41,7 +41,7 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<string>>> CheckAuthen()
         {
             var response = await _authService.CheckAuthen();
-            return response.Success ? (ActionResult<ServiceResponse<string>>)Ok(response) : (ActionResult<ServiceResponse<string>>)StatusCode(((int)HttpStatusCode.Forbidden), response);
+            return response.Success ? (ActionResult<ServiceResponse<string>>)Ok(response) : (ActionResult<ServiceResponse<string>>)StatusCode(((int)HttpStatusCode.Unauthorized), response);
         }
 
         [HttpPost("change-password"), Authorize]

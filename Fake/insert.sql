@@ -68,6 +68,34 @@ GO
 SET IDENTITY_INSERT Products OFF
 GO
 
+CREATE TABLE tmp
+(
+   Id int,
+   Rating float
+);
+GO
+
+INSERT INTO tmp (Id, Rating)
+SELECT Id, Rating  FROM OPENROWSET  (
+    BULK 'D:/rating.json', 
+    SINGLE_CLOB) AS [Json]    
+    CROSS APPLY OPENJSON ( BulkColumn, '$' )
+    WITH  (
+            Id				int		'$.Id', 
+            Rating			float	'$.Rating'
+        )  AS [Rating]
+GO
+
+UPDATE      Products
+SET         Rating = t2.Rating
+FROM        Products t1
+INNER JOIN  tmp t2 
+ON          t1.Id = t2.Id
+GO
+
+DROP TABLE tmp
+GO
+
 SET IDENTITY_INSERT ProductVariants ON
 GO
 INSERT INTO ProductVariants (Id, ProductId, ColorId, Price, OriginalPrice, Quantity, ProductSize)
@@ -144,17 +172,22 @@ GO
 
 SET DATEFORMAT YMD;
 GO
-INSERT INTO Comments (UserId, ProductVariantId, Rating, Content, CommentDate, ProductId)
-SELECT UserId, productVariantId, Rating, Content, CommentDate, ProductId FROM OPENROWSET  (
+INSERT INTO Comments (UserId, ProductVariantId, Rating, Content, CommentDate, ProductId, ProductTitle, UserName, ProductSize, ProductColor)
+SELECT UserId, ProductVariantId, Rating, Content, CommentDate, ProductId, ProductTitle, UserName, ProductSize, ProductColor FROM OPENROWSET  (
     BULK 'D:/comments.json', 
-    SINGLE_CLOB) AS [Json]    
+    SINGLE_NCLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )
     WITH  (
-            UserId				int				'$.userId', 
-            productVariantId	int				'$.productVariantId', 
-			Rating				Real			'$.rating',
-			Content				Nvarchar(MAX)	'$.content',
-			CommentDate			DateTime		'$.timestamp',
-			ProductId			int				'$.productId'
+            UserId				int				'$.UserId', 
+            ProductVariantId	int				'$.ProductVariantId', 
+			Rating				Real			'$.Rating',
+			Content				Nvarchar(MAX)	'$.Content',
+			CommentDate			DateTime		'$.CommentDate',
+			ProductId			int				'$.ProductId',
+			ProductTitle		Nvarchar(MAX)	'$.Title',
+			UserName			Nvarchar(MAX)	'$.UserName',
+			ProductSize			Nvarchar(MAX)	'$.Size',
+			ProductColor		Nvarchar(MAX)	'$.Color'
         ) AS [Comments]
 GO
+

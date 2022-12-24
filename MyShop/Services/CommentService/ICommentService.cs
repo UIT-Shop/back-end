@@ -4,7 +4,7 @@ namespace MyShop.Services.CommentService
 {
     public interface ICommentService
     {
-        Task<ServiceResponse<List<Comment>>> GetComments(int productId);
+        Task<ServiceResponse<List<Comment>>> GetComments(int productId, int page);
 
         void ReTrainData();
 

@@ -148,11 +148,13 @@ namespace MyShop.Services.AuthService
             return new ServiceResponse<bool> { Data = true, Message = "Password has been changed." };
         }
 
-        public async Task<ServiceResponse<int>> CheckAuthen()
+        public async Task<ServiceResponse<string>> CheckAuthen()
         {
-            return !_httpContextAccessor.HttpContext.User.IsInRole(Enum.GetName(typeof(Role), Role.Admin))
-                ? new ServiceResponse<int> { Success = false, Message = "You are not allow to access this page" }
-                : new ServiceResponse<int> { Message = "OK" };
+            return _httpContextAccessor.HttpContext.User.IsInRole(Enum.GetName(typeof(Role), Role.Customer))
+                ? new ServiceResponse<string> { Message = "OK", Data = "Customer" }
+                : !_httpContextAccessor.HttpContext.User.IsInRole(Enum.GetName(typeof(Role), Role.Admin))
+                ? new ServiceResponse<string> { Success = false, Message = "You are not allow to access this page" }
+                : new ServiceResponse<string> { Message = "OK", Data = "Admin" };
         }
     }
 }

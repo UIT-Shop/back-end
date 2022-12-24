@@ -94,7 +94,8 @@ var configuration = provider.GetService<IConfiguration>();
 builder.Services.AddCors(options =>
 {
     var frontend_URL = configuration.GetValue<string>("frontend_url");
-    options.AddDefaultPolicy(builder => { builder.WithOrigins(frontend_URL).AllowAnyMethod().AllowAnyHeader(); });
+    var admin_URL = configuration.GetValue<string>("admin_url");
+    options.AddDefaultPolicy(builder => { builder.WithOrigins(frontend_URL, admin_URL).AllowAnyMethod().AllowAnyHeader(); });
 });
 
 builder.Services.AddControllersWithViews()

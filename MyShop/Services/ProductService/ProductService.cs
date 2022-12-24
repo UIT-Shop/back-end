@@ -42,11 +42,11 @@
 
         public async Task<ServiceResponse<ProductSearchResult>> GetAdminProducts(int page)
         {
-            var allProducts = await _context.Products
+            var allProducts = _context.Products
                     .Where(p => !p.Deleted)
-                    .ToListAsync();
+                    .Count();
             var pageResults = 20f;
-            var pageCount = Math.Ceiling(allProducts.Count / pageResults);
+            var pageCount = Math.Ceiling(allProducts / pageResults);
             var products = await _context.Products
                                 .Where(p => !p.Deleted)
                                 .Include(p => p.Variants.Where(v => !v.Deleted))
@@ -127,11 +127,11 @@
 
         public async Task<ServiceResponse<ProductSearchResult>> GetProductsAsync(int page)
         {
-            var allProducts = await _context.Products
+            var allProducts = _context.Products
                     .Where(p => p.Visible && !p.Deleted)
-                    .ToListAsync();
+                    .Count();
             var pageResults = 20f;
-            var pageCount = Math.Ceiling(allProducts.Count / pageResults);
+            var pageCount = Math.Ceiling(allProducts / pageResults);
             var products = await _context.Products
                                 .Where(p => p.Visible && !p.Deleted)
                                 .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
@@ -154,12 +154,12 @@
 
         public async Task<ServiceResponse<ProductSearchResult>> GetProductsByCategory(int categoryId, int page)
         {
-            var allProducts = await _context.Products
+            var allProducts = _context.Products
                     .Where(p => p.CategoryId == categoryId &&
                         p.Visible && !p.Deleted)
-                    .ToListAsync();
+                    .Count();
             var pageResults = 20f;
-            var pageCount = Math.Ceiling(allProducts.Count / pageResults);
+            var pageCount = Math.Ceiling(allProducts / pageResults);
             var products = await _context.Products
                     .Where(p => p.CategoryId == categoryId &&
                         p.Visible && !p.Deleted)
@@ -289,6 +289,18 @@
 
             await _context.SaveChangesAsync();
             return new ServiceResponse<Product> { Data = product };
+        }
+
+        public async Task<bool> UpdateRating(int productId)
+        {
+            var averageRating = _context.Comments
+                .Where(c => c.ProductId == productId)
+                .Average(c => c.Rating);
+            var dbProduct = await _context.Products
+                .FirstOrDefaultAsync(p => p.Id == productId);
+            dbProduct.Rating = averageRating;
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         private async Task<List<Product>> FindProductsBySearchText(string searchText)
