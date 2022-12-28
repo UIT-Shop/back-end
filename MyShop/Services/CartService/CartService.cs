@@ -40,12 +40,16 @@
                     continue;
                 }
 
+                var imageUrl = "0";
+                if (productVariant.Color.Images.Count() != 0)
+                    imageUrl = productVariant.Color.Images.FirstOrDefault(i => i.ProductId == productVariant.ProductId && i.ColorId == productVariant.ColorId).Url;
+
                 var cartProduct = new CartProductResponse
                 {
                     ProductId = product.Id,
                     ProductVariantId = productVariant.Id,
                     Title = product.Title,
-                    ImageUrl = productVariant.Color.Images.Count() != 0 ? productVariant.Color.Images.First().Url : "0",
+                    ImageUrl = imageUrl,
                     Price = productVariant.Price,
                     ProductSize = productVariant.ProductSize ?? "XL",
                     Color = productVariant.Color.Name,

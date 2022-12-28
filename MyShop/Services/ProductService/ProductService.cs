@@ -291,11 +291,9 @@
             return new ServiceResponse<Product> { Data = product };
         }
 
-        public async Task<bool> UpdateRating(int productId)
+        public async Task<bool> UpdateRating(int productId, List<Comment> comments)
         {
-            var averageRating = _context.Comments
-                .Where(c => c.ProductId == productId)
-                .Average(c => c.Rating);
+            var averageRating = comments.Average(c => c.Rating);
             var dbProduct = await _context.Products
                 .FirstOrDefaultAsync(p => p.Id == productId);
             dbProduct.Rating = averageRating;

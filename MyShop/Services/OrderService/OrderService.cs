@@ -24,7 +24,7 @@
             var response = new ServiceResponse<OrderDetailsResponse>();
             var order = await _context.Orders
                .Include(o => o.OrderItems)
-               .ThenInclude(oi => oi.Product).ThenInclude(p => p.Images)
+               .ThenInclude(oi => oi.Product).ThenInclude(p => p.Images).ThenInclude(i => i.Color)
                .Include(o => o.User)
                .Include(o => o.Address).ThenInclude(a => a.Ward).ThenInclude(w => w.District).ThenInclude(d => d.Province)
                .Where(o => o.Id == orderId)
@@ -49,16 +49,23 @@
             };
 
             order.OrderItems.ForEach(item =>
-            orderDetailsResponse.Products.Add(new OrderDetailsProductResponse
             {
-                ProductId = item.ProductId,
-                ImageUrl = item.Product.Images.First().Url,
-                ProductSize = item.ProductSize,
-                ProductColor = item.ProductColor,
-                Quantity = item.Quantity,
-                Title = item.Product.Title,
-                TotalPrice = item.TotalPrice
-            })); ;
+                var imageUrl = "0";
+                if (item.Product.Images.Count() != 0)
+                    imageUrl = item.Product.Images.FirstOrDefault(i => i.ProductId == item.ProductId && i.Color != null && i.Color.Name == item.ProductColor).Url;
+
+                orderDetailsResponse.Products.Add(new OrderDetailsProductResponse
+                {
+                    ProductId = item.ProductId,
+                    ImageUrl = imageUrl,
+                    ProductSize = item.ProductSize,
+                    ProductColor = item.ProductColor,
+                    Quantity = item.Quantity,
+                    Title = item.Product.Title,
+                    TotalPrice = item.TotalPrice
+                });
+            });
+
 
             response.Data = orderDetailsResponse;
 

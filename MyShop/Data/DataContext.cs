@@ -12,15 +12,8 @@
             modelBuilder.Entity<OrderItem>()
                 .HasKey(oi => new { oi.OrderId, oi.ProductId, oi.ProductColor, oi.ProductSize });
 
-            //modelBuilder.Entity<User>()
-            //.HasOne(a => a.Address)
-            //.WithOne(a => a.User)
-            //.HasForeignKey<Address>(c => c.UserId);
-
-            //modelBuilder.Entity<Order>()
-            //.HasOne(a => a.Address)
-            //.WithOne(a => a.Order)
-            //.HasForeignKey<Address>(c => c.UserId);
+            modelBuilder.Entity<RatingPerProduct>()
+                .HasKey(r => new { r.UserId, r.ProductId });
 
             modelBuilder.Entity<Brand>().HasData(
                 new
@@ -90,6 +83,7 @@
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<ImageComment> ImageComments { get; set; }
+        public DbSet<RatingPerProduct> Ratings { get; set; }
 
         public override int SaveChanges()
         {

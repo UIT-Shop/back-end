@@ -9,12 +9,14 @@ namespace MyShop.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
-        private readonly ICommentService _commentService;
+        private readonly IRatingService _commentService;
+        private readonly IRatingService _ratingService;
 
-        public ProductController(IProductService productService, ICommentService commentService)
+        public ProductController(IProductService productService, IRatingService commentService, IRatingService ratingService)
         {
             _productService = productService;
             _commentService = commentService;
+            _ratingService = ratingService;
         }
 
         [HttpGet("admin"), Authorize(Roles = "Admin")]
@@ -34,7 +36,7 @@ namespace MyShop.Controllers
         [HttpGet("training"), Authorize]
         public ActionResult<ServiceResponse<bool>> Traning()
         {
-            _commentService.ReTrainData();
+            _ratingService.ReTrainData();
             return new ServiceResponse<bool> { Data = true };
         }
 
@@ -42,7 +44,7 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<List<Product>>>> Recommend()
         {
             var productIds = await _productService.GetListProductIds();
-            var recommendOutputs = _commentService.GetRecommend(productIds.Data);
+            var recommendOutputs = _ratingService.GetRecommend(productIds.Data);
             List<int> recommendProductIds = new List<int>();
             Console.WriteLine("=============== Top recommend ===============");
             Console.WriteLine("ProductId\t\t\tPredictScore");

@@ -22,7 +22,7 @@ namespace MyShop.Controllers
             return Ok(result);
         }
 
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<ServiceResponse<Brand>>> GetBrand(int id)
         {
             var response = await _brandService.GetBrand(id);

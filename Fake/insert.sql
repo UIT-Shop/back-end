@@ -77,7 +77,7 @@ GO
 
 INSERT INTO tmp (Id, Rating)
 SELECT Id, Rating  FROM OPENROWSET  (
-    BULK 'D:/rating.json', 
+    BULK 'D:/ratingProduct.json', 
     SINGLE_CLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )
     WITH  (
@@ -94,6 +94,18 @@ ON          t1.Id = t2.Id
 GO
 
 DROP TABLE tmp
+GO
+
+INSERT INTO Ratings (UserId, ProductId, Rating)
+SELECT UserId, ProductId, Rating  FROM OPENROWSET  (
+    BULK 'D:/ratingUser.json', 
+    SINGLE_CLOB) AS [Json]    
+    CROSS APPLY OPENJSON ( BulkColumn, '$' )
+    WITH  (
+            UserId			int		'$.UserId',
+			ProductId		int		'$.ProductId',
+            Rating			float	'$.Rating'
+        )  AS [Rating]
 GO
 
 SET IDENTITY_INSERT ProductVariants ON

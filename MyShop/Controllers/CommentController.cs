@@ -9,10 +9,12 @@ namespace MyShop.Controllers
     public class CommentController : ControllerBase
     {
         private readonly ICommentService _commentService;
+        private readonly IRatingService _ratingService;
 
-        public CommentController(ICommentService commentService)
+        public CommentController(ICommentService commentService, IRatingService ratingService)
         {
             _commentService = commentService;
+            _ratingService = ratingService;
         }
 
         [HttpPost(), Authorize]

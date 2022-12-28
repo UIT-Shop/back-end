@@ -17,7 +17,7 @@
 
         // Update
         Task<ServiceResponse<Product>> UpdateProduct(Product product);
-        Task<bool> UpdateRating(int productId);
+        Task<bool> UpdateRating(int productId, List<Comment> listComment);
 
         // Delete
         Task<ServiceResponse<bool>> DeleteProduct(int productId);
