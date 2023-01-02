@@ -41,9 +41,10 @@ namespace MyShop.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<Address>>> AddOrUpdateAddress(Address address)
+        public async Task<ActionResult<ServiceResponse<Address>>> AddAddress(Address address)
         {
-            return await _addressService.AddOrUpdateAddress(address);
+            return await _addressService.AddAddress(address);
         }
     }
 }
+

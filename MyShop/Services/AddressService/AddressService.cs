@@ -11,19 +11,27 @@
             _authService = authService;
         }
 
-        public async Task<ServiceResponse<Address>> AddOrUpdateAddress(Address address)
+        public async Task<ServiceResponse<Address>> AddAddress(Address address)
         {
             var response = new ServiceResponse<Address>();
-            var dbAddress = (await GetAddress()).Data;
-            address.Ward = await _context.Wards.FindAsync(address.WardId);
+            if (address == null || address.WardId == null)
+            {
+                response.Data = null;
+                response.Success = false;
+                return response;
+            }
+            var dbAddress = await _context.Addresses.FirstOrDefaultAsync(ad => ad.WardId == address.WardId && ad.Street == address.Street);
+
             if (dbAddress == null)
             {
-                //address.UserId = _authService.GetUserId();
+                address.Ward = await _context.Wards.FindAsync(address.WardId);
                 _context.Addresses.Add(address);
+                await _context.SaveChangesAsync();
+                response.Data = address;
             }
+            else
+                response.Data = dbAddress;
 
-            await _context.SaveChangesAsync();
-            response.Data = address;
             return response;
         }
 

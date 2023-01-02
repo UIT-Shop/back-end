@@ -82,7 +82,7 @@ namespace MyShop.Services.PaymentService
                 {
                     var session = stripeEvent.Data.Object as Session;
                     //var user = (await _userService.GetUserInfo(await _authService.GetUserId)).data;
-                    await _orderService.PlaceOrder(null);
+                    await _orderService.PlaceOrder(null, null, null);
                 }
 
                 return new ServiceResponse<bool> { Data = true };

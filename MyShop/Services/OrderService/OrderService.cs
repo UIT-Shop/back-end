@@ -131,16 +131,18 @@
             return response;
         }
 
-        public async Task<ServiceResponse<bool>> PlaceOrder(Address? address)
+        public async Task<ServiceResponse<bool>> PlaceOrder(string? name, string? phone, Address? address)
         {
             var userId = _authService.GetUserId();
+            var user = (await _userService.GetUserInfo(userId)).Data;
+            if (name == null || name.Trim().Length == 0) name = user.Name;
+            if (phone == null || phone.Trim().Length == 0) phone = user.Phone;
             if (address == null)
             {
-                var user = (await _userService.GetUserInfo(userId)).Data;
                 if (user.Address == null) return new ServiceResponse<bool> { Data = false, Success = false, Message = "Please add address" };
                 address = user.Address;
             }
-            else address = (await _addressService.AddOrUpdateAddress(address)).Data;
+            else address = (await _addressService.AddAddress(address)).Data;
             var products = (await _cartService.GetDbCartProducts(userId)).Data;
             if (products == null || products.Count == 0) return new ServiceResponse<bool> { Data = false, Success = false, Message = "There is no cart item" };
             decimal totalPrice = 0;
@@ -159,6 +161,8 @@
             var order = new Order
             {
                 UserId = userId,
+                Name = name,
+                Phone = phone,
                 OrderDate = DateTime.Now,
                 TotalPrice = totalPrice,
                 OrderItems = orderItems,

@@ -13,7 +13,7 @@ INSERT INTO Provinces (Id, Name, Code) VALUES
 (10, N'Bà Rịa Vũng Tàu', N'VT'),
 (11, N'Đắk Lắk', N'DDL'),
 (12, N'Cần Thơ', N'CT'),
-(13, N'Bình Thuận  N', N'BTH'),
+(13, N'Bình Thuận', N'BTH'),
 (14, N'Lâm Đồng', N'LDD'),
 (15, N'Thừa Thiên Huế', N'TTH'),
 (16, N'Kiên Giang', N'KG'),

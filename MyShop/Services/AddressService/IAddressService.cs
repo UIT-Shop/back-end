@@ -7,6 +7,6 @@
         Task<ServiceResponse<List<District>>> GetDistricts(int provinceId);
         Task<ServiceResponse<List<Ward>>> GetWards(int districtId, int provinceId);
 
-        Task<ServiceResponse<Address>> AddOrUpdateAddress(Address address);
+        Task<ServiceResponse<Address>> AddAddress(Address address);
     }
 }

@@ -17,6 +17,8 @@ namespace MyShop.Models
         public int Id { get; set; }
         public User? User { get; set; }
         public int UserId { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:HH:mm:ss dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime OrderDate { get; set; } = DateTime.Now;

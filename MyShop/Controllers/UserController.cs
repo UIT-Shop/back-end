@@ -23,7 +23,7 @@ namespace MyShop.Controllers
         }
 
 
-        [HttpGet("{userId}")]
+        [HttpGet("info/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<User>>>> GetUserInfo(int userId)
         {
             var result = await _userService.GetUserInfo(userId);
