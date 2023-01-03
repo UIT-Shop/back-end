@@ -12,6 +12,8 @@ namespace MyShop.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalPrice { get; set; }
         public User User { get; set; }
+        public string? Name { get; set; }
+        public string? Phone { get; set; }
         public Status Status { get; set; }
         public Address Address { get; set; }
         public List<OrderDetailsProductResponse> Products { get; set; }

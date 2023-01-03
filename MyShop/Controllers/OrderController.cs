@@ -35,9 +35,10 @@ namespace MyShop.Controllers
         }
 
         [HttpPost()]
-        public async Task<ActionResult<ServiceResponse<OrderDetailsResponse>>> PlaceOrder(string name, string phone, Address address)
+        public async Task<ActionResult<ServiceResponse<OrderDetailsResponse>>> PlaceOrder(OrderInput orderInput)
         {
-            var result = await _orderService.PlaceOrder(name, phone, address);
+            var address = new Address() { WardId = orderInput.WardId, Street = orderInput.street };
+            var result = await _orderService.PlaceOrder(orderInput.Name, orderInput.Phone, address);
             return result.Success == false ? (ActionResult<ServiceResponse<OrderDetailsResponse>>)BadRequest(result) : (ActionResult<ServiceResponse<OrderDetailsResponse>>)Ok(result);
         }
 

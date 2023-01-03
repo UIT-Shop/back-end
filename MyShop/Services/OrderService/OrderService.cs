@@ -43,6 +43,8 @@
                 OrderDate = order.OrderDate,
                 TotalPrice = order.TotalPrice,
                 User = order.User,
+                Name = order.Name,
+                Phone = order.Phone,
                 Status = order.Status,
                 Address = order.Address,
                 Products = new List<OrderDetailsProductResponse>()
