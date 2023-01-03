@@ -126,7 +126,7 @@ namespace MyShop.Services.AuthService
             return jwt;
         }
 
-        public async Task<ServiceResponse<bool>> ChangePassword(int userId, string newPassword)
+        public async Task<ServiceResponse<bool>> ChangePassword(int userId, string oldPassword, string newPassword)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user == null)
@@ -136,6 +136,11 @@ namespace MyShop.Services.AuthService
                     Success = false,
                     Message = "User not found."
                 };
+            }
+
+            if (!VerifyPasswordHash(oldPassword, user.PasswordHash, user.PasswordSalt))
+            {
+                return new ServiceResponse<bool> { Success = false, Data = false, Message = "Wrong old password" };
             }
 
             CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);

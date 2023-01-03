@@ -48,7 +48,7 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<bool>>> ChangePassword(UserChangePassword userChangePassword)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var response = await _authService.ChangePassword(int.Parse(userId), userChangePassword.Password);
+            var response = await _authService.ChangePassword(int.Parse(userId), userChangePassword.OldPassword, userChangePassword.NewPassword);
 
             return !response.Success ? (ActionResult<ServiceResponse<bool>>)BadRequest(response) : (ActionResult<ServiceResponse<bool>>)Ok(response);
         }
