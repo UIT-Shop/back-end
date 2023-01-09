@@ -62,6 +62,7 @@
                     ImageUrl = imageUrl,
                     ProductSize = item.ProductSize,
                     ProductColor = item.ProductColor,
+                    ProductVariantID = item.ProductVariantId,
                     Quantity = item.Quantity,
                     Title = item.Product.Title,
                     TotalPrice = item.TotalPrice
@@ -156,6 +157,7 @@
                 ProductId = product.ProductId,
                 ProductSize = product.ProductSize,
                 ProductColor = product.Color,
+                ProductVariantId = product.ProductVariantId,
                 Quantity = product.Quantity,
                 TotalPrice = product.Price * product.Quantity
             }));
