@@ -1,3 +1,5 @@
+USE myShop
+GO
 SET IDENTITY_INSERT Provinces ON
 GO
 INSERT INTO Provinces (Id, Name, Code) VALUES

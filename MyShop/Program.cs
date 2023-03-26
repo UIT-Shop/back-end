@@ -17,17 +17,48 @@ global using MyShop.Services.ProductVariantService;
 global using MyShop.Services.RatingService;
 global using MyShop.Services.SaleService;
 global using MyShop.Services.UserService;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+var configurationBuilder = new ConfigurationBuilder()
+                            .SetBasePath(builder.Environment.ContentRootPath)
+                            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+                            .AddEnvironmentVariables();
 
+builder.Configuration.AddConfiguration(configurationBuilder.Build());
 // Add services to the container.
+
+//var defaultConnectionString = string.Empty;
+
+//if (builder.Environment.EnvironmentName == "Development")
+//{
+//    defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+//}
+//else
+//{
+//    // Use connection string provided at runtime by Heroku.
+//    var connectionUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+//    connectionUrl = connectionUrl.Replace("postgres://", string.Empty);
+//    var userPassSide = connectionUrl.Split("@")[0];
+//    var hostSide = connectionUrl.Split("@")[1];
+
+//    var user = userPassSide.Split(":")[0];
+//    var password = userPassSide.Split(":")[1];
+//    var host = hostSide.Split("/")[0];
+//    var database = hostSide.Split("/")[1].Split("?")[0];
+//    defaultConnectionString = $"Host={host};Database={database};Username={user};Password={password};SSL Mode=Require;Trust Server Certificate=true";
+//}
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    //options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -99,6 +130,12 @@ builder.Services.AddCors(options =>
     var admin_URL = configuration.GetValue<string>("admin_url");
     options.AddDefaultPolicy(builder => { builder.WithOrigins(frontend_URL, admin_URL).AllowAnyMethod().AllowAnyHeader(); });
 });
+
+builder.Services.AddSingleton(FirebaseApp.Create(new AppOptions()
+{
+    Credential = GoogleCredential.FromJson(configuration.GetValue<string>("FIREBASE_CONFIG"))
+}));
+//builder.Services.AddFirebaseAuthentication();
 
 builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson(options =>

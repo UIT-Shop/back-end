@@ -10,10 +10,12 @@ namespace MyShop.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IUserService _userService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IUserService userService)
         {
             _authService = authService;
+            _userService = userService;
         }
 
         [HttpPost("register")]
@@ -34,7 +36,13 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<string>>> Login(UserLogin request)
         {
             var response = await _authService.Login(request.Email, request.Password);
-            return !response.Success ? (ActionResult<ServiceResponse<string>>)BadRequest(response) : (ActionResult<ServiceResponse<string>>)Ok(response);
+            if (response.Success)
+            {
+                //await _authService.SendEmail(user);
+                await _userService.SetVerifiedEmail(request.Email, request.Password);
+                return Ok(response);
+            }
+            return BadRequest(response);
         }
 
         [HttpGet("check-authen")]

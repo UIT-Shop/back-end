@@ -6,6 +6,7 @@
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //modelBuilder.HasDefaultSchema("public");
             modelBuilder.Entity<CartItem>()
                 .HasKey(ci => new { ci.UserId, ci.ProductVariantId });
 
@@ -60,6 +61,7 @@
             modelBuilder.Entity<User>().Property("Deleted").HasDefaultValue(false);
             modelBuilder.Entity<User>().Property("Role").HasDefaultValue(Role.Customer);
             modelBuilder.Entity<User>().Property("Phone").HasDefaultValue(String.Empty);
+            modelBuilder.Entity<User>().Property("IsEmailVerified").HasDefaultValue(false);
             modelBuilder.Entity<User>().Property("AddressId").HasDefaultValue(null);
             modelBuilder.Entity<User>().Property("PasswordHash").HasDefaultValue(null);
             modelBuilder.Entity<User>().Property("PasswordSalt").HasDefaultValue(null);
@@ -124,7 +126,7 @@
             {
                 Console.WriteLine(error.Message);
             }
-
         }
+
     }
 }

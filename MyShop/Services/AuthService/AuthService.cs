@@ -1,15 +1,17 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Firebase.Auth;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 
 namespace MyShop.Services.AuthService
 {
-    public class AuthService : IAuthService
+    public class AuthService : MyShop.Services.AuthService.IAuthService
     {
         private readonly DataContext _context;
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private const string API_KEY = "AIzaSyDRz4mCzJhNWnJh5KriLOQF1zPdBqZu03Y";
 
         public AuthService(DataContext context,
             IConfiguration configuration,
@@ -53,7 +55,7 @@ namespace MyShop.Services.AuthService
             return response;
         }
 
-        public async Task<ServiceResponse<int>> Register(User user, string password)
+        public async Task<ServiceResponse<int>> Register(MyShop.Models.User user, string password)
         {
             if (await UserExists(user.Email))
             {
@@ -72,6 +74,10 @@ namespace MyShop.Services.AuthService
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
+            FirebaseAuthProvider firebaseAuthProvider = new FirebaseAuthProvider(new FirebaseConfig(API_KEY));
+
+            var userCredential = await firebaseAuthProvider.CreateUserWithEmailAndPasswordAsync(user.Email, password);
+            await firebaseAuthProvider.SendEmailVerificationAsync(userCredential.FirebaseToken);
             return new ServiceResponse<int> { Data = user.Id, Message = "Registration successful!" };
         }
 
@@ -101,7 +107,7 @@ namespace MyShop.Services.AuthService
             }
         }
 
-        private string CreateToken(User user)
+        private string CreateToken(MyShop.Models.User user)
         {
             List<Claim> claims = new List<Claim>
             {

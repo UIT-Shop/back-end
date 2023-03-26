@@ -17,6 +17,8 @@ namespace MyShop.Models
         [Column(TypeName = "nvarchar(MAX)")]
         public string Name { get; set; } = String.Empty;
         public string Email { get; set; } = String.Empty;
+        public bool IsEmailVerified { get; set; } = false;
+
         [IgnoreDataMember]
         [JsonIgnore]
         public byte[]? PasswordHash { get; set; }

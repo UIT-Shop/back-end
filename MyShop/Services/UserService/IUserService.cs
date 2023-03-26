@@ -8,6 +8,7 @@
 
         // Update
         Task<ServiceResponse<User>> UpdateUser(User user);
+        Task<ServiceResponse<User>> SetVerifiedEmail(string email, string password);
         Task<ServiceResponse<User>> ChangeRole(int userId, Role role);
 
         // Delete

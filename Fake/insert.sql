@@ -4,6 +4,8 @@ DELETE FROM ProductVariants
 GO
 DELETE FROM Images
 GO
+DELETE FROM Ratings
+GO
 DELETE FROM Products
 GO
 DELETE FROM Categories
@@ -187,7 +189,7 @@ GO
 INSERT INTO Comments (UserId, ProductVariantId, Rating, Content, CommentDate, ProductId, ProductTitle, UserName, ProductSize, ProductColor)
 SELECT UserId, ProductVariantId, Rating, Content, CommentDate, ProductId, ProductTitle, UserName, ProductSize, ProductColor FROM OPENROWSET  (
     BULK 'D:/comments.json', 
-    SINGLE_NCLOB) AS [Json]    
+    SINGLE_CLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )
     WITH  (
             UserId				int				'$.UserId', 
@@ -196,10 +198,10 @@ SELECT UserId, ProductVariantId, Rating, Content, CommentDate, ProductId, Produc
 			Content				Nvarchar(MAX)	'$.Content',
 			CommentDate			DateTime		'$.CommentDate',
 			ProductId			int				'$.ProductId',
-			ProductTitle		Nvarchar(MAX)	'$.Title',
+			ProductTitle		Nvarchar(MAX)	'$.ProductTitle',
 			UserName			Nvarchar(MAX)	'$.UserName',
-			ProductSize			Nvarchar(MAX)	'$.Size',
-			ProductColor		Nvarchar(MAX)	'$.Color'
+			ProductSize			Nvarchar(MAX)	'$.ProductSize',
+			ProductColor		Nvarchar(MAX)	'$.ProductColor'
         ) AS [Comments]
 GO
 
