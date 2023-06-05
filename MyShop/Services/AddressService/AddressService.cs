@@ -35,6 +35,24 @@
             return response;
         }
 
+        public async Task<ServiceResponse<Address>> GetAddressById(int addressId)
+        {
+            var address = await _context.Addresses.Include(ad => ad.Ward)
+                            .ThenInclude(w => w.District)
+                            .ThenInclude(d => d.Province)
+                            .FirstOrDefaultAsync(p => p.Id == addressId);
+            return address == null
+                ? new ServiceResponse<Address>
+                {
+                    Success = false,
+                    Message = "Address not found"
+                }
+                : new ServiceResponse<Address>
+                {
+                    Data = address
+                };
+        }
+
         public async Task<ServiceResponse<Address>> GetAddress()
         {
             int userId = _authService.GetUserId();

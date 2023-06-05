@@ -114,12 +114,22 @@ namespace MyShop.Services.UserService
                 };
             }
 
-            FirebaseAuthProvider firebaseAuthProvider = new FirebaseAuthProvider(new FirebaseConfig(API_KEY));
+            if (user.IsEmailVerified == true)
+                return await GetUserInfo(user.Id);
 
-            var userCredential = await firebaseAuthProvider.SignInWithEmailAndPasswordAsync(email, password);
-            user.IsEmailVerified = userCredential.User.IsEmailVerified;
+            try
+            {
+                FirebaseAuthProvider firebaseAuthProvider = new FirebaseAuthProvider(new FirebaseConfig(API_KEY));
 
-            await _context.SaveChangesAsync();
+                var userCredential = await firebaseAuthProvider.SignInWithEmailAndPasswordAsync(email, password);
+                user.IsEmailVerified = userCredential.User.IsEmailVerified;
+
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+
+            }
             return await GetUserInfo(user.Id);
         }
     }

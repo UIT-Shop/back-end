@@ -76,6 +76,7 @@
             dbProductVariant.OriginalPrice = productVariant.OriginalPrice;
             dbProductVariant.ColorId = productVariant.ColorId;
             dbProductVariant.ProductSize = productVariant.ProductSize;
+            dbProductVariant.Quantity = productVariant.Quantity;
 
             await _context.SaveChangesAsync();
 

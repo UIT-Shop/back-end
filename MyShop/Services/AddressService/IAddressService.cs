@@ -3,6 +3,7 @@
     public interface IAddressService
     {
         Task<ServiceResponse<Address>> GetAddress();
+        Task<ServiceResponse<Address>> GetAddressById(int addressId);
         Task<ServiceResponse<List<Province>>> GetProvinces();
         Task<ServiceResponse<List<District>>> GetDistricts(int provinceId);
         Task<ServiceResponse<List<Ward>>> GetWards(int districtId, int provinceId);

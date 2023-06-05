@@ -50,8 +50,8 @@ namespace MyShop.Services.SaleService
 
             IDataView dataView = loader.Load(dbSource);
 
-            IDataView firstYearData = mlContext.Data.FilterRowsByColumn(dataView, "Year", upperBound: 2022.11);
-            IDataView secondYearData = mlContext.Data.FilterRowsByColumn(dataView, "Year", lowerBound: 1);
+            IDataView firstYearData = mlContext.Data.FilterRowsByColumn(dataView, "Year", upperBound: 2022.12);
+            IDataView secondYearData = mlContext.Data.FilterRowsByColumn(dataView, "Year", lowerBound: 2023.01);
 
             var forecastingPipeline = mlContext.Forecasting.ForecastBySsa(
                 outputColumnName: "ForecastedSales",
@@ -59,7 +59,7 @@ namespace MyShop.Services.SaleService
                 windowSize: 7,
                 seriesLength: 30,
                 trainSize: 365,
-                horizon: 120,
+                horizon: 365,
                 confidenceLevel: 0.95f,
                 confidenceLowerBoundColumn: "LowerBoundSales",
                 confidenceUpperBoundColumn: "UpperBoundSales");
@@ -144,7 +144,8 @@ namespace MyShop.Services.SaleService
 
         public async Task<ServiceResponse<List<Sale>>> GetSales()
         {
-            var sales = await _context.Sales.OrderByDescending(s => s.Date).Take(120).ToListAsync();
+            DateTime today = DateTime.Now;
+            var sales = await _context.Sales.Where(s => s.Date.Year == today.Year).ToListAsync();
             return new ServiceResponse<List<Sale>>
             {
                 Data = sales

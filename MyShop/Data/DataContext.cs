@@ -31,6 +31,10 @@
             modelBuilder.Entity<Product>().Property<System.Nullable<DateTime>>("UpdatedDate");
             modelBuilder.Entity<ProductVariant>().Property<DateTime>("CreatedDate");
             modelBuilder.Entity<ProductVariant>().Property<System.Nullable<DateTime>>("UpdatedDate");
+            modelBuilder.Entity<ProductVariantStore>().Property<DateTime>("CreatedDate");
+            modelBuilder.Entity<ProductVariantStore>().Property<System.Nullable<DateTime>>("UpdatedDate");
+            modelBuilder.Entity<Warehouse>().Property<DateTime>("CreatedDate");
+            modelBuilder.Entity<Warehouse>().Property<System.Nullable<DateTime>>("UpdatedDate");
             modelBuilder.Entity<User>().Property<DateTime>("CreatedDate");
             modelBuilder.Entity<User>().Property<System.Nullable<DateTime>>("UpdatedDate");
             modelBuilder.Entity<CartItem>().Property<DateTime>("CreatedDate");
@@ -66,6 +70,17 @@
             modelBuilder.Entity<User>().Property("PasswordHash").HasDefaultValue(null);
             modelBuilder.Entity<User>().Property("PasswordSalt").HasDefaultValue(null);
             modelBuilder.Entity<User>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
+
+            modelBuilder.Entity<ProductVariantStore>().Property("ProductVariantId").HasDefaultValue(null);
+            modelBuilder.Entity<ProductVariantStore>().Property("WarehouseId").HasDefaultValue(null);
+            modelBuilder.Entity<ProductVariantStore>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
+            modelBuilder.Entity<ProductVariantStore>().Property("Deleted").HasDefaultValue(false);
+
+            modelBuilder.Entity<Warehouse>().Property("Deleted").HasDefaultValue(false);
+            modelBuilder.Entity<Warehouse>().Property("Name").HasDefaultValue(String.Empty);
+            modelBuilder.Entity<Warehouse>().Property("Phone").HasDefaultValue(String.Empty);
+            modelBuilder.Entity<Warehouse>().Property("AddressId").HasDefaultValue(null);
+            modelBuilder.Entity<Warehouse>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
         }
 
         public DbSet<Product> Products { get; set; }
@@ -75,11 +90,13 @@
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Sale> Sales { get; set; }
         public DbSet<ProductVariant> ProductVariants { get; set; }
+        public DbSet<ProductVariantStore> ProductVariantStores { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Province> Provinces { get; set; }
         public DbSet<Ward> Wards { get; set; }
         public DbSet<District> Districts { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Warehouse> Warehouses { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }

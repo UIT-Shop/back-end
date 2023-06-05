@@ -14,9 +14,11 @@ global using MyShop.Services.OrderService;
 global using MyShop.Services.PaymentService;
 global using MyShop.Services.ProductService;
 global using MyShop.Services.ProductVariantService;
+global using MyShop.Services.ProductVariantStoreService;
 global using MyShop.Services.RatingService;
 global using MyShop.Services.SaleService;
 global using MyShop.Services.UserService;
+global using MyShop.Services.WarehouseService;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -101,11 +103,13 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IProductVariantService, ProductVariantService>();
+builder.Services.AddScoped<IProductVariantStoreService, ProductVariantStoreService>();
 builder.Services.AddScoped<IColorService, ColorService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISaleService, SaleService>();
+builder.Services.AddScoped<IWarehouseService, WarehouseService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

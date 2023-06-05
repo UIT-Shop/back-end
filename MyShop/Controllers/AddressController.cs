@@ -6,7 +6,7 @@ namespace MyShop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+
     public class AddressController : ControllerBase
     {
         private readonly IAddressService _addressService;
@@ -16,6 +16,7 @@ namespace MyShop.Controllers
             _addressService = addressService;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<ServiceResponse<Address>>> GetAddress()
         {
@@ -26,6 +27,13 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<List<Province>>>> GetProvinces()
         {
             return await _addressService.GetProvinces();
+        }
+
+
+        [HttpGet("addressById/{id}")]
+        public async Task<ActionResult<ServiceResponse<Address>>> GetAddressById(int id)
+        {
+            return await _addressService.GetAddressById(id);
         }
 
         [HttpGet("provinces/{provinceId}/districts")]

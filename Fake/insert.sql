@@ -1,5 +1,7 @@
 ﻿USE myShop
 GO
+DELETE FROM ProductVariantStores
+GO
 DELETE FROM ProductVariants
 GO
 DELETE FROM Images
@@ -39,7 +41,7 @@ GO
 INSERT INTO Categories (Id, Name, Url, Gender, Type)
 SELECT Id, Name, Url, Gender, Type  FROM OPENROWSET  (
     BULK 'D:/categories.json', 
-    SINGLE_CLOB) AS [Json]    
+    SINGLE_NCLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )
     WITH  (
             Id			int					'$.Id', 
@@ -57,7 +59,7 @@ GO
 INSERT INTO Products (Id, Title, Description, CategoryId, BrandId)
 SELECT Id, Title, Description, CategoryId, BrandId  FROM OPENROWSET  (
     BULK 'D:/product.json', 
-    SINGLE_CLOB) AS [Json]    
+    SINGLE_NCLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )
     WITH  (
             Id				int				'$.Id', 
@@ -166,7 +168,7 @@ GO
 INSERT INTO Users (Id, Name, Email, Role)
 SELECT Id, Name, Email, Role FROM OPENROWSET  (
     BULK 'D:/users.json', 
-    SINGLE_CLOB) AS [Json]    
+    SINGLE_NCLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )
     WITH  (
             Id				int				'$.id', 
@@ -189,7 +191,7 @@ GO
 INSERT INTO Comments (UserId, ProductVariantId, Rating, Content, CommentDate, ProductId, ProductTitle, UserName, ProductSize, ProductColor)
 SELECT UserId, ProductVariantId, Rating, Content, CommentDate, ProductId, ProductTitle, UserName, ProductSize, ProductColor FROM OPENROWSET  (
     BULK 'D:/comments.json', 
-    SINGLE_CLOB) AS [Json]    
+    SINGLE_NCLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )
     WITH  (
             UserId				int				'$.UserId', 
@@ -204,4 +206,36 @@ SELECT UserId, ProductVariantId, Rating, Content, CommentDate, ProductId, Produc
 			ProductColor		Nvarchar(MAX)	'$.ProductColor'
         ) AS [Comments]
 GO
+
+INSERT INTO ProductVariantStores (ProductVariantId, WarehouseId, BuyPrice, Quantity, DateInput, LotCode)
+SELECT ProductVariantId, WarehouseId, BuyPrice, Quantity, DateInput, LotCode  FROM OPENROWSET  (
+    BULK 'D:/store.json', 
+    SINGLE_CLOB) AS [Json]    
+    CROSS APPLY OPENJSON ( BulkColumn, '$' )
+    WITH  (
+        ProductVariantId	int					'$.ProductVariantId', 
+        WarehouseId			int					'$.WarehouseId' ,
+		BuyPrice			decimal(18,2)		'$.BuyPrice',
+		Quantity			int					'$.Quantity',
+		DateInput			DateTime			'$.DateInput',
+		LotCode				Varchar(MAX)		'$.LotCode'
+        ) AS [ProductVariantStores]
+GO
+
+--Update comments
+UPDATE comments
+SET UserName = (select name from users where users.id=comments.UserId)
+GO
+UPDATE comments
+SET ProductVariantId = (
+SELECT MAX(Id)
+FROM productVariants where productVariants.productId=comments.productId)
+GO
+UPDATE comments
+SET ProductTitle = (select products.Title from productVariants inner join products on productVariants.productId = products.id
+	where productVariants.id=comments.ProductVariantId),
+	ProductSize = (select ProductSize from productVariants 
+	where productVariants.id=comments.ProductVariantId),
+	ProductColor = (select colors.Name from productVariants inner join colors on productVariants.colorId = colors.id
+	where productVariants.id=comments.ProductVariantId)
 
