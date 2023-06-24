@@ -33,7 +33,7 @@ namespace MyShop.Controllers
             return !result.Success ? (ActionResult<ServiceResponse<ProductSearchResult>>)BadRequest(result) : (ActionResult<ServiceResponse<ProductSearchResult>>)Ok(result);
         }
 
-        [HttpGet("training"), Authorize]
+        [HttpGet("training")]
         public ActionResult<ServiceResponse<bool>> Traning()
         {
             _ratingService.ReTrainData();
@@ -61,6 +61,13 @@ namespace MyShop.Controllers
         public async Task<ActionResult<ServiceResponse<Product>>> GetProduct(int productId)
         {
             var result = await _productService.GetProductById(productId);
+            return !result.Success ? (ActionResult<ServiceResponse<Product>>)BadRequest(result) : (ActionResult<ServiceResponse<Product>>)Ok(result);
+        }
+
+        [HttpGet("topSale")]
+        public async Task<ActionResult<ServiceResponse<Product>>> GetTopSaleProducts()
+        {
+            var result = await _productService.GetTopSaleProducts();
             return !result.Success ? (ActionResult<ServiceResponse<Product>>)BadRequest(result) : (ActionResult<ServiceResponse<Product>>)Ok(result);
         }
 

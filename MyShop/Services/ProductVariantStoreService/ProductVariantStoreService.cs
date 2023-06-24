@@ -17,40 +17,24 @@
             ProductVariantStore productVariantStore = await _context.ProductVariantStores
                     .Where(p => p.WarehouseId == productVariantStoreInput.WarehouseId && p.ProductVariantId == variant.Id && p.LotCode == productVariantStoreInput.LotCode)
                     .FirstOrDefaultAsync();
+            variant.Quantity += productVariantStoreInput.Quantity;
+            _productVariantService.UpdateProductVariant(variant);
+
             if (productVariantStore != null)
             {
                 productVariantStore.Quantity += productVariantStoreInput.Quantity;
+                productVariantStore.Stock = variant.Quantity;
                 await _context.SaveChangesAsync();
             }
             else
             {
-                if (productVariantStoreInput.Quantity > 0)
-                {
-                    productVariantStore = new ProductVariantStore
-                    {
-                        ProductVariantId = variant.Id,
-                        WarehouseId = productVariantStoreInput.WarehouseId,
-                        BuyPrice = productVariantStoreInput.BuyPrice,
-                        Quantity = productVariantStoreInput.Quantity,
-                        DateInput = productVariantStoreInput.DateInput,
-                        LotCode = productVariantStoreInput.LotCode,
-                        Note = productVariantStoreInput.Note
-                    };
-                    _context.ProductVariantStores.Add(productVariantStore);
-                    await _context.SaveChangesAsync();
-                }
-                else
+                if (productVariantStoreInput.Quantity < 0)
                 {
                     productVariantStore = await _context.ProductVariantStores
                         .Where(p => p.WarehouseId == productVariantStoreInput.WarehouseId && p.ProductVariantId == variant.Id)
                         .OrderBy(p => p.LotCode)
                         .FirstOrDefaultAsync();
-                    if (productVariantStore != null)
-                    {
-                        productVariantStore.Quantity += productVariantStoreInput.Quantity;
-                        await _context.SaveChangesAsync();
-                    }
-                    else
+                    if (productVariantStore == null)
                         return new ServiceResponse<bool>
                         {
                             Success = false,
@@ -58,12 +42,20 @@
                             Message = "Không tồn tại sản phẩm " + variant.Id.ToString() + " trong kho hàng"
                         };
                 }
+                productVariantStore = new ProductVariantStore
+                {
+                    ProductVariantId = variant.Id,
+                    WarehouseId = productVariantStoreInput.WarehouseId,
+                    BuyPrice = productVariantStoreInput.BuyPrice,
+                    Quantity = productVariantStoreInput.Quantity,
+                    Stock = variant.Quantity,
+                    DateInput = productVariantStoreInput.DateInput,
+                    LotCode = productVariantStoreInput.LotCode,
+                    Note = productVariantStoreInput.Note
+                };
+                _context.ProductVariantStores.Add(productVariantStore);
+                await _context.SaveChangesAsync();
             }
-
-
-            variant.Quantity += productVariantStoreInput.Quantity;
-            _productVariantService.UpdateProductVariant(variant);
-
 
             return new ServiceResponse<bool> { Data = true };
         }
@@ -78,7 +70,18 @@
                 .FirstOrDefaultAsync();
             if (productVariantStore != null)
             {
-                productVariantStore.Quantity -= productVariantStoreInput.Quantity;
+                productVariantStore = new ProductVariantStore
+                {
+                    ProductVariantId = variant.Id,
+                    WarehouseId = productVariantStoreInput.WarehouseId,
+                    BuyPrice = productVariantStoreInput.BuyPrice,
+                    Quantity = -productVariantStoreInput.Quantity,
+                    Stock = variant.Quantity,
+                    DateInput = productVariantStoreInput.DateInput,
+                    LotCode = productVariantStoreInput.LotCode,
+                    Note = productVariantStoreInput.Note
+                };
+                _context.ProductVariantStores.Add(productVariantStore);
                 await _context.SaveChangesAsync();
             }
             else
@@ -95,6 +98,7 @@
             if (productVariantStore != null)
             {
                 productVariantStore.Quantity += productVariantStoreInput.Quantity;
+                productVariantStore.Stock += productVariantStoreInput.Quantity;
                 await _context.SaveChangesAsync();
             }
             else
@@ -105,6 +109,7 @@
                     WarehouseId = productVariantStoreInput.WarehouseId,
                     BuyPrice = productVariantStoreInput.BuyPrice,
                     Quantity = productVariantStoreInput.Quantity,
+                    Stock = variant.Quantity,
                     DateInput = productVariantStoreInput.DateInput,
                     LotCode = productVariantStoreInput.LotCode,
                     Note = productVariantStoreInput.Note

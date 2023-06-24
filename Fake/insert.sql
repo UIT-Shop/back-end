@@ -74,18 +74,18 @@ GO
 
 CREATE TABLE tmp
 (
-   Id int,
+   ProductId int,
    Rating float
 );
 GO
 
-INSERT INTO tmp (Id, Rating)
-SELECT Id, Rating  FROM OPENROWSET  (
+INSERT INTO tmp (ProductId, Rating)
+SELECT ProductId, Rating  FROM OPENROWSET  (
     BULK 'D:/ratingProduct.json', 
     SINGLE_CLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )
     WITH  (
-            Id				int		'$.Id', 
+            ProductId		int		'$.Id', 
             Rating			float	'$.Rating'
         )  AS [Rating]
 GO
@@ -94,7 +94,7 @@ UPDATE      Products
 SET         Rating = t2.Rating
 FROM        Products t1
 INNER JOIN  tmp t2 
-ON          t1.Id = t2.Id
+ON          t1.Id = t2.ProductId
 GO
 
 DROP TABLE tmp
@@ -217,6 +217,7 @@ SELECT ProductVariantId, WarehouseId, BuyPrice, Quantity, DateInput, LotCode  FR
         WarehouseId			int					'$.WarehouseId' ,
 		BuyPrice			decimal(18,2)		'$.BuyPrice',
 		Quantity			int					'$.Quantity',
+		Stock				int					'$.Stock',
 		DateInput			DateTime			'$.DateInput',
 		LotCode				Varchar(MAX)		'$.LotCode'
         ) AS [ProductVariantStores]

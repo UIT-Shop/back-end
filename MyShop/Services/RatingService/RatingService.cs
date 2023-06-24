@@ -90,6 +90,7 @@ namespace MyShop.Services.RatingService
             var prediction = model.Transform(testDataView);
             var metrics = mlContext.Regression.Evaluate(prediction, labelColumnName: "Rating", scoreColumnName: "Score");
             Console.WriteLine("The model evaluation metrics RootMeanSquaredError:" + metrics.RootMeanSquaredError);
+            Console.WriteLine("RSquared: " + (-metrics.RSquared).ToString());
             Console.WriteLine("=============== End of process ===============");
             return model;
         }
@@ -114,9 +115,9 @@ namespace MyShop.Services.RatingService
                 LabelColumnName = @"Rating",
                 MatrixColumnIndexColumnName = @"UserId",
                 MatrixRowIndexColumnName = @"ProductId",
-                ApproximationRank = 139,
-                LearningRate = 0.0217322913231859,
-                NumberOfIterations = 676,
+                ApproximationRank = 20,
+                LearningRate = 0.0024122579826735,
+                NumberOfIterations = 67600,
                 Quiet = true
             };
 

@@ -19,6 +19,8 @@ namespace MyShop.Models
 
         public int Quantity { get; set; }
 
+        public int Stock { get; set; }
+
         public bool Deleted { get; set; } = false;
 
         public DateTime DateInput { get; set; }

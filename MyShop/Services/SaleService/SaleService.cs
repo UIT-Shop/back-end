@@ -50,7 +50,7 @@ namespace MyShop.Services.SaleService
 
             IDataView dataView = loader.Load(dbSource);
 
-            IDataView firstYearData = mlContext.Data.FilterRowsByColumn(dataView, "Year", upperBound: 2022.12);
+            IDataView firstYearData = mlContext.Data.FilterRowsByColumn(dataView, "Year", upperBound: 2023.01);
             IDataView secondYearData = mlContext.Data.FilterRowsByColumn(dataView, "Year", lowerBound: 2023.01);
 
             var forecastingPipeline = mlContext.Forecasting.ForecastBySsa(
@@ -60,13 +60,13 @@ namespace MyShop.Services.SaleService
                 seriesLength: 30,
                 trainSize: 365,
                 horizon: 365,
-                confidenceLevel: 0.95f,
+                confidenceLevel: 0.5f,
                 confidenceLowerBoundColumn: "LowerBoundSales",
                 confidenceUpperBoundColumn: "UpperBoundSales");
 
             SsaForecastingTransformer forecaster = forecastingPipeline.Fit(firstYearData);
 
-            //Evaluate(secondYearData, forecaster, mlContext);
+            Evaluate(secondYearData, forecaster, mlContext);
 
             var forecastEngine = forecaster.CreateTimeSeriesEngine<Sale, PredictSale>(mlContext);
             try { forecastEngine.CheckPoint(mlContext, modelPath); } catch (Exception ex) { }
@@ -107,8 +107,8 @@ namespace MyShop.Services.SaleService
             // Output metrics
             Console.WriteLine("Evaluation Metrics");
             Console.WriteLine("---------------------");
-            Console.WriteLine($"Mean Absolute Error: {MAE:F3}");
-            Console.WriteLine($"Root Mean Squared Error: {RMSE:F3}\n");
+            Console.WriteLine($"Mean Absolute Error: {MAE / 1000:F3}");
+            Console.WriteLine($"Root Mean Squared Error: {RMSE / 1000:F3}\n");
         }
 
         static void Forecast(IDataView testData, int horizon, TimeSeriesPredictionEngine<Sale, PredictSale> forecaster, MLContext mlContext)

@@ -121,6 +121,7 @@
             List<Product> products = await _context.Products
                     .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
                     .Include(p => p.Images)
+                    .Include(p => p.Category)
                     .Where(p => ids.Contains(p.Id)).ToListAsync();
             return new ServiceResponse<List<Product>> { Data = products };
         }
@@ -309,6 +310,25 @@
                                     p.Visible && !p.Deleted)
                                 .Include(p => p.Variants)
                                 .ToListAsync();
+        }
+
+        public async Task<ServiceResponse<List<Product>>> GetTopSaleProducts()
+        {
+            int topCount = 10;
+            var orderItems = await _context.OrderItems
+                                .Include(o => o.Order)
+                                .Where(o => o.Order.Status != Status.Cancelled)
+                                .GroupBy(oi => oi.ProductId)
+                                .Select(o => new
+                                {
+                                    ProductId = o.Key,
+                                    SumQuantities = o.Sum(p => p.Quantity)
+                                })
+                                .Take(topCount).OrderByDescending(o => o.SumQuantities)
+                                .ToListAsync();
+            List<int> ids = (List<int>?)orderItems.Select(o => o.ProductId);
+            var products = GetProducts(ids).Result.Data;
+            return new ServiceResponse<List<Product>> { Data = products };
         }
     }
 }

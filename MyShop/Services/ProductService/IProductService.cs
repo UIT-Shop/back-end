@@ -14,6 +14,7 @@
         Task<ServiceResponse<List<string>>> SearchSuggestionProducts(string searchText);
         Task<ServiceResponse<List<int>>> GetListProductIds();
         Task<ServiceResponse<List<Product>>> GetProducts(List<int> id);
+        Task<ServiceResponse<List<Product>>> GetTopSaleProducts();
 
         // Update
         Task<ServiceResponse<Product>> UpdateProduct(Product product);
