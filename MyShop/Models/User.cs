@@ -19,6 +19,9 @@ namespace MyShop.Models
         public string Email { get; set; } = String.Empty;
         public bool IsEmailVerified { get; set; } = false;
 
+        public int Height { get; set; }
+        public int Weight { get; set; }
+
         [IgnoreDataMember]
         [JsonIgnore]
         public byte[]? PasswordHash { get; set; }

@@ -43,28 +43,33 @@
             modelBuilder.Entity<Order>().Property<System.Nullable<DateTime>>("UpdatedDate");
             modelBuilder.Entity<OrderItem>().Property<DateTime>("CreatedDate");
             modelBuilder.Entity<OrderItem>().Property<System.Nullable<DateTime>>("UpdatedDate");
+            modelBuilder.Entity<Comment>().Property<DateTime>("CreatedDate");
+            modelBuilder.Entity<Comment>().Property<System.Nullable<DateTime>>("UpdatedDate");
 
             modelBuilder.Entity<Category>().Property("Gender").HasDefaultValue("Nam");
             modelBuilder.Entity<Category>().Property("MetaTitle").HasDefaultValue(String.Empty);
             modelBuilder.Entity<Category>().Property("MetaKeyword").HasDefaultValue(String.Empty);
             modelBuilder.Entity<Category>().Property("MetaDiscription").HasDefaultValue(String.Empty);
+
             modelBuilder.Entity<Product>().Property("MetaTitle").HasDefaultValue(String.Empty);
             modelBuilder.Entity<Product>().Property("MetaKeyword").HasDefaultValue(String.Empty);
             modelBuilder.Entity<Product>().Property("MetaDiscription").HasDefaultValue(String.Empty);
-
             modelBuilder.Entity<Product>().Property("Visible").HasDefaultValue(true);
             modelBuilder.Entity<Product>().Property("Deleted").HasDefaultValue(false);
             modelBuilder.Entity<Product>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
+            modelBuilder.Entity<Product>().Property("Rating").HasDefaultValue(5f);
+
             modelBuilder.Entity<ProductVariant>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
             modelBuilder.Entity<ProductVariant>().Property("Visible").HasDefaultValue(true);
             modelBuilder.Entity<ProductVariant>().Property("Deleted").HasDefaultValue(false);
-            modelBuilder.Entity<Product>().Property("Rating").HasDefaultValue(5f);
 
             modelBuilder.Entity<Sale>().Property("Totals").HasDefaultValue(0);
 
             modelBuilder.Entity<User>().Property("Deleted").HasDefaultValue(false);
             modelBuilder.Entity<User>().Property("Role").HasDefaultValue(Role.Customer);
             modelBuilder.Entity<User>().Property("Phone").HasDefaultValue(String.Empty);
+            modelBuilder.Entity<User>().Property("Height").HasDefaultValue(150);
+            modelBuilder.Entity<User>().Property("Weight").HasDefaultValue(50);
             modelBuilder.Entity<User>().Property("IsEmailVerified").HasDefaultValue(false);
             modelBuilder.Entity<User>().Property("AddressId").HasDefaultValue(null);
             modelBuilder.Entity<User>().Property("PasswordHash").HasDefaultValue(null);
@@ -73,6 +78,7 @@
 
             modelBuilder.Entity<ProductVariantStore>().Property("ProductVariantId").HasDefaultValue(null);
             modelBuilder.Entity<ProductVariantStore>().Property("WarehouseId").HasDefaultValue(null);
+            modelBuilder.Entity<ProductVariantStore>().Property("Stock").HasDefaultValue(0);
             modelBuilder.Entity<ProductVariantStore>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
             modelBuilder.Entity<ProductVariantStore>().Property("Deleted").HasDefaultValue(false);
 
@@ -81,6 +87,21 @@
             modelBuilder.Entity<Warehouse>().Property("Phone").HasDefaultValue(String.Empty);
             modelBuilder.Entity<Warehouse>().Property("AddressId").HasDefaultValue(null);
             modelBuilder.Entity<Warehouse>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
+
+            modelBuilder.Entity<Order>().Property("Name").HasDefaultValue(String.Empty);
+            modelBuilder.Entity<Order>().Property("Phone").HasDefaultValue(String.Empty);
+            modelBuilder.Entity<Order>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
+            modelBuilder.Entity<Order>().Property("OrderDate").HasDefaultValue(DateTime.Now);
+
+            modelBuilder.Entity<OrderItem>().Property("ProductSize").HasDefaultValue(String.Empty);
+            modelBuilder.Entity<OrderItem>().Property("ProductColor").HasDefaultValue(String.Empty);
+            modelBuilder.Entity<OrderItem>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
+
+            modelBuilder.Entity<Comment>().Property("ProductSize").HasDefaultValue(String.Empty);
+            modelBuilder.Entity<Comment>().Property("ProductColor").HasDefaultValue(String.Empty);
+            modelBuilder.Entity<Comment>().Property("ProductTitle").HasDefaultValue(String.Empty);
+            modelBuilder.Entity<Comment>().Property("UserName").HasDefaultValue(String.Empty);
+            modelBuilder.Entity<OrderItem>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
         }
 
         public DbSet<Product> Products { get; set; }

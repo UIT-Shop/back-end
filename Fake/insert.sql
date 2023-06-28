@@ -1,6 +1,12 @@
 ﻿USE myShop
 GO
+DELETE FROM OrderItems
+GO
+DELETE FROM Orders
+GO
 DELETE FROM ProductVariantStores
+GO
+DELETE FROM Warehouses
 GO
 DELETE FROM ProductVariants
 GO
@@ -20,13 +26,15 @@ DELETE FROM Comments
 GO
 DELETE FROM Users
 GO
+DELETE FROM Addresses
+GO
 
 SET IDENTITY_INSERT Colors ON
 GO
 INSERT INTO Colors (Id, Name)
 SELECT Id, Name  FROM OPENROWSET  (
     BULK 'D:/color.json', 
-    SINGLE_CLOB) AS [Json]    
+    SINGLE_NCLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )
     WITH  (
             Id			int				'$.Id', 
@@ -56,8 +64,8 @@ GO
 
 SET IDENTITY_INSERT Products ON
 GO
-INSERT INTO Products (Id, Title, Description, CategoryId, BrandId)
-SELECT Id, Title, Description, CategoryId, BrandId  FROM OPENROWSET  (
+INSERT INTO Products (Id, Title, Description, Overview, Material, CategoryId, BrandId)
+SELECT Id, Title, Description, Overview, Material, CategoryId, BrandId  FROM OPENROWSET  (
     BULK 'D:/product.json', 
     SINGLE_NCLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )
@@ -65,6 +73,8 @@ SELECT Id, Title, Description, CategoryId, BrandId  FROM OPENROWSET  (
             Id				int				'$.Id', 
             Title			Nvarchar(MAX)	'$.title' ,
 			Description		Nvarchar(MAX)	'$.description',
+			Overview		Nvarchar(MAX)	'$.overview' ,
+			Material		Nvarchar(MAX)	'$.material',
 			CategoryId		int				'$.categoryId',
 			BrandId			int				'$.brandId'
         ) AS [Products]
@@ -163,10 +173,26 @@ SELECT Date, Year, Totals  FROM OPENROWSET  (
         ) AS [Sales]
 GO
 
+SET IDENTITY_INSERT Addresses ON
+GO
+INSERT INTO Addresses (Id, WardId, Street)
+SELECT Id, WardId, Street  FROM OPENROWSET  (
+    BULK 'D:/addresses.json', 
+    SINGLE_CLOB) AS [Json]    
+    CROSS APPLY OPENJSON ( BulkColumn, '$' )
+    WITH  (
+            Id			int				'$.Id',
+			WardId		int				'$.wardId',
+            Street		Nvarchar(MAX)	'$.street'
+        )  AS [Addresses]
+GO
+SET IDENTITY_INSERT Addresses OFF
+GO
+
 SET IDENTITY_INSERT Users ON
 GO
-INSERT INTO Users (Id, Name, Email, Role)
-SELECT Id, Name, Email, Role FROM OPENROWSET  (
+INSERT INTO Users (Id, Name, Email, Role, Phone, Weight, Height, AddressId)
+SELECT Id, Name, Email, Role, Phone, Weight, Height, AddressId FROM OPENROWSET  (
     BULK 'D:/users.json', 
     SINGLE_NCLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )
@@ -174,10 +200,46 @@ SELECT Id, Name, Email, Role FROM OPENROWSET  (
             Id				int				'$.id', 
             Name			Nvarchar(MAX)	'$.name', 
 			Email			Nvarchar(MAX)	'$.email',
-			Role			int				'$.role'
+			Role			int				'$.role',
+			Phone			Nvarchar(MAX)	'$.phone', 
+			Weight			int				'$.weight', 
+			Height			int				'$.height',
+			AddressId		int				'$.addressId'
         ) AS [Users]
 GO
 SET IDENTITY_INSERT Users OFF
+GO
+
+SET IDENTITY_INSERT Orders ON
+GO
+INSERT INTO Orders (Id, UserId, Status, AddressId, TotalPrice)
+SELECT Id, UserId, Status, AddressId, TotalPrice FROM OPENROWSET  (
+    BULK 'D:/order.json', 
+    SINGLE_CLOB) AS [Json]    
+    CROSS APPLY OPENJSON ( BulkColumn, '$' )
+    WITH  (
+            Id				int			'$.Id', 
+            UserId			int			'$.UserId', 
+			Status			int			'$.Status',
+			AddressId		int			'$.AddressId',	
+			TotalPrice		int			'$.TotalPrice'
+        ) AS [Orders]
+GO
+SET IDENTITY_INSERT Orders OFF
+GO
+
+INSERT INTO OrderItems (OrderId, ProductId, ProductVariantId, Quantity, TotalPrice)
+SELECT OrderId, ProductId, ProductVariantId, Quantity, TotalPrice FROM OPENROWSET  (
+    BULK 'D:/orderItem.json', 
+    SINGLE_CLOB) AS [Json]    
+    CROSS APPLY OPENJSON ( BulkColumn, '$' )
+    WITH  (
+            OrderId				int			'$.OrderId', 
+			ProductId			int			'$.ProductId', 
+            ProductVariantId	int			'$.ProductVariantId', 
+			Quantity			int			'$.Quantity',
+			TotalPrice			int			'$.TotalPrice'
+        ) AS [OrderItems]
 GO
 
 -- Set default password is 'string'
@@ -188,23 +250,43 @@ GO
 
 SET DATEFORMAT YMD;
 GO
-INSERT INTO Comments (UserId, ProductVariantId, Rating, Content, CommentDate, ProductId, ProductTitle, UserName, ProductSize, ProductColor)
-SELECT UserId, ProductVariantId, Rating, Content, CommentDate, ProductId, ProductTitle, UserName, ProductSize, ProductColor FROM OPENROWSET  (
+
+SET IDENTITY_INSERT Comments ON
+GO
+INSERT INTO Comments (Id, UserId, ProductVariantId, Rating, Content, CommentDate, ProductId, CreatedDate)
+SELECT Id, UserId, ProductVariantId, Rating, Content, CommentDate, ProductId, CreatedDate FROM OPENROWSET  (
     BULK 'D:/comments.json', 
     SINGLE_NCLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )
     WITH  (
+			Id					int				'$.Id', 
             UserId				int				'$.UserId', 
             ProductVariantId	int				'$.ProductVariantId', 
 			Rating				Real			'$.Rating',
 			Content				Nvarchar(MAX)	'$.Content',
 			CommentDate			DateTime		'$.CommentDate',
-			ProductId			int				'$.ProductId',
-			ProductTitle		Nvarchar(MAX)	'$.ProductTitle',
-			UserName			Nvarchar(MAX)	'$.UserName',
-			ProductSize			Nvarchar(MAX)	'$.ProductSize',
-			ProductColor		Nvarchar(MAX)	'$.ProductColor'
+			CreatedDate			DateTime		'$.CommentDate',
+			ProductId			int				'$.ProductId'
         ) AS [Comments]
+GO
+SET IDENTITY_INSERT Comments OFF
+GO
+
+SET IDENTITY_INSERT Warehouses ON
+GO
+INSERT INTO Warehouses (Id, AddressId, Phone, Name)
+SELECT Id, AddressId, Phone, Name FROM OPENROWSET  (
+    BULK 'D:/warehouses.json', 
+    SINGLE_NCLOB) AS [Json]    
+    CROSS APPLY OPENJSON ( BulkColumn, '$' )
+    WITH  (
+			Id			int				'$.id', 
+			AddressId	int				'$.addressId',
+			Phone		Nvarchar(MAX)	'$.phone',
+			Name		Nvarchar(MAX)	'$.name'
+        ) AS [Warehouses]
+GO
+SET IDENTITY_INSERT Warehouses OFF
 GO
 
 INSERT INTO ProductVariantStores (ProductVariantId, WarehouseId, BuyPrice, Quantity, DateInput, LotCode)
@@ -227,16 +309,32 @@ GO
 UPDATE comments
 SET UserName = (select name from users where users.id=comments.UserId)
 GO
-UPDATE comments
-SET ProductVariantId = (
-SELECT MAX(Id)
-FROM productVariants where productVariants.productId=comments.productId)
-GO
+--UPDATE comments
+--SET ProductId = (select ProductId from productVariants where productVariants.Id=comments.ProductVariantId)
+--GO
 UPDATE comments
 SET ProductTitle = (select products.Title from productVariants inner join products on productVariants.productId = products.id
-	where productVariants.id=comments.ProductVariantId),
+		where productVariants.id=comments.ProductVariantId),
 	ProductSize = (select ProductSize from productVariants 
-	where productVariants.id=comments.ProductVariantId),
+		where productVariants.id=comments.ProductVariantId),
 	ProductColor = (select colors.Name from productVariants inner join colors on productVariants.colorId = colors.id
-	where productVariants.id=comments.ProductVariantId)
+		where productVariants.id=comments.ProductVariantId)
+GO
 
+--Update orders
+UPDATE orders
+SET Name = (select name from users where users.id=orders.UserId),
+	Phone = (select phone from users where users.id=orders.UserId)
+GO
+UPDATE orders
+SET OrderDate = (select createdDate from comments where orders.id=comments.Id),
+	CreatedDate = (select createdDate from comments where orders.id=comments.Id)
+GO
+
+--Update orderItems
+UPDATE orderItems
+SET ProductSize = (select ProductSize from productVariants 
+		where productVariants.id=orderItems.ProductVariantId),
+	ProductColor = (select colors.Name from productVariants inner join colors on productVariants.colorId = colors.id
+		where productVariants.id=orderItems.ProductVariantId)
+GO

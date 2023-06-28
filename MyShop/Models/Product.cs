@@ -8,6 +8,8 @@ namespace MyShop.Models
         [Column(TypeName = "nvarchar(MAX)")]
         public string Title { get; set; } = String.Empty;
         public string Description { get; set; } = String.Empty;
+        public string Overview { get; set; } = String.Empty;
+        public string Material { get; set; } = String.Empty;
 
         public Category? Category { get; set; }
         public int CategoryId { get; set; }
