@@ -12,6 +12,7 @@ namespace MyShop.Models
         public string ProductSize { get; set; } = String.Empty;
         public string ProductColor { get; set; } = String.Empty;
         public int ProductId { get; set; } = 1;
+        public int OrderItemId { get; set; } = 1;
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:HH:mm:ss dd/MM/yyyy}", ApplyFormatInEditMode = true)]

@@ -64,6 +64,13 @@ namespace MyShop.Controllers
             return !result.Success ? (ActionResult<ServiceResponse<Product>>)BadRequest(result) : (ActionResult<ServiceResponse<Product>>)Ok(result);
         }
 
+        [HttpGet("ratingSummary/{productId:int}")]
+        public async Task<ActionResult<ServiceResponse<List<RatingCount>>>> GetSummaryRating(int productId)
+        {
+            var result = await _ratingService.GetSummaryRating(productId);
+            return !result.Success ? (ActionResult<ServiceResponse<List<RatingCount>>>)BadRequest(result) : (ActionResult<ServiceResponse<List<RatingCount>>>)Ok(result);
+        }
+
         [HttpGet("topSale")]
         public async Task<ActionResult<ServiceResponse<Product>>> GetTopSaleProducts()
         {
@@ -78,10 +85,10 @@ namespace MyShop.Controllers
             return !result.Success ? (ActionResult<ServiceResponse<Product>>)BadRequest(result) : (ActionResult<ServiceResponse<Product>>)Ok(result);
         }
 
-        [HttpGet("search/{searchText}/{page}")]
-        public async Task<ActionResult<ServiceResponse<ProductSearchResult>>> SearchProducts(string searchText, int page)
+        [HttpGet("search/{searchText}/{page}/{orderPrice}")]
+        public async Task<ActionResult<ServiceResponse<ProductSearchResult>>> SearchProducts(string searchText, int page, int orderPrice)
         {
-            var result = await _productService.SearchProducts(searchText, page);
+            var result = await _productService.SearchProducts(searchText, page, orderPrice);
 
             return Ok(result);
         }

@@ -7,14 +7,16 @@
         private readonly IUserService _userService;
         private readonly IProductService _productService;
         private readonly IRatingService _ratingService;
+        private readonly IOrderService _orderService;
 
-        public CommentService(DataContext context, IAuthService authService, IUserService userService, IProductService productService, IRatingService ratingService)
+        public CommentService(DataContext context, IAuthService authService, IUserService userService, IProductService productService, IRatingService ratingService, IOrderService orderService)
         {
             _context = context;
             _authService = authService;
             _userService = userService;
             _productService = productService;
             _ratingService = ratingService;
+            _orderService = orderService;
         }
 
         public async Task<ServiceResponse<CommentEachPage>> GetComments(int productId, int page)
@@ -69,8 +71,15 @@
 
             await _productService.UpdateRating(productVariant.ProductId, listCommentOfProducts);
             await _ratingService.AddOrUpdateRating(new RatingPerProduct() { ProductId = comment.ProductId, UserId = comment.UserId, Rating = comment.Rating }, listCommentOfProducts);
+            await _orderService.UpdateIsComment(comment.OrderItemId);
+
 
             return new ServiceResponse<Comment> { Data = comment };
+        }
+
+        public Task<ServiceResponse<Comment>> UpdateComment(Comment comment)
+        {
+            throw new NotImplementedException();
         }
     }
 }

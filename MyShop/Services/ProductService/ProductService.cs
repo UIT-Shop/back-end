@@ -48,11 +48,11 @@
             var pageResults = 20f;
             var pageCount = Math.Ceiling(allProducts / pageResults);
             var products = await _context.Products
-                                .Where(p => !p.Deleted)
+                                .Where(p => !p.Deleted && p.Id >= (page - 1) * (int)pageResults && p.Id < (page) * (int)pageResults)
                                 .Include(p => p.Variants.Where(v => !v.Deleted))
                                 .Include(pc => pc.Images)
-                                .Skip((page - 1) * (int)pageResults)
-                                .Take((int)pageResults)
+                                //.Skip((page - 1) * (int)pageResults)
+                                //.Take((int)pageResults)
                                 .ToListAsync();
 
             var response = new ServiceResponse<ProductSearchResult>
@@ -217,19 +217,29 @@
             return new ServiceResponse<List<string>> { Data = result };
         }
 
-        public async Task<ServiceResponse<ProductSearchResult>> SearchProducts(string searchText, int page)
+        public async Task<ServiceResponse<ProductSearchResult>> SearchProducts(string searchText, int page, int orderPrice = 1)
         {
-            var pageResults = 2f;
+            var pageResults = 12f;
             var pageCount = Math.Ceiling((await FindProductsBySearchText(searchText)).Count / pageResults);
-            var products = await _context.Products
+            List<Product> products = orderPrice == 1
+                ? await _context.Products
+                                 .Where(p => p.Title.ToLower().Contains(searchText.ToLower()) ||
+                                     p.Description.ToLower().Contains(searchText.ToLower()) &&
+                                     p.Visible && !p.Deleted)
+                                 .Include(p => p.Variants)
+                                 .OrderByDescending(p => p.Variants[0].Price)
+                                 .Skip((page - 1) * (int)pageResults)
+                                 .Take((int)pageResults)
+                                 .ToListAsync()
+                : await _context.Products
                                 .Where(p => p.Title.ToLower().Contains(searchText.ToLower()) ||
                                     p.Description.ToLower().Contains(searchText.ToLower()) &&
                                     p.Visible && !p.Deleted)
                                 .Include(p => p.Variants)
+                                .OrderBy(p => p.Variants[0].Price)
                                 .Skip((page - 1) * (int)pageResults)
                                 .Take((int)pageResults)
                                 .ToListAsync();
-
             var response = new ServiceResponse<ProductSearchResult>
             {
                 Data = new ProductSearchResult

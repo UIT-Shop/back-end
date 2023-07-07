@@ -105,32 +105,46 @@
             return response;
         }
 
-        public async Task<ServiceResponse<List<OrderOverviewResponse>>> GetOrdersAdmin()
+        public async Task<ServiceResponse<OrdersAdminResponse>> GetOrdersAdmin(int page, Status status)
         {
-            var response = new ServiceResponse<List<OrderOverviewResponse>>();
+            var allOrders = _context.Orders.Where(o => o.Status == status).Count();
+            var pageResults = 20f;
+            var pageCount = Math.Ceiling(allOrders / pageResults);
+            if (pageCount == 0) pageCount = 1;
+            DateTime date = new DateTime(2023, 1, 1);
             var orders = await _context.Orders
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Product)
-                .ThenInclude(op => op.Images)
+                .Where(o => o.Status == status && o.OrderDate > date)
                 .OrderByDescending(o => o.OrderDate)
+                .Skip((page - 1) * (int)pageResults)
+                .Take((int)pageResults)
                 .ToListAsync();
 
-            var orderResponse = new List<OrderOverviewResponse>();
-            orders.ForEach(o => orderResponse.Add(new OrderOverviewResponse
+            var orderOverviews = new List<OrderOverviewResponse>();
+            orders.ForEach(o => orderOverviews.Add(new OrderOverviewResponse
             {
                 Id = o.Id,
                 OrderDate = o.OrderDate,
                 TotalPrice = o.TotalPrice,
                 Product = o.OrderItems.Count > 1 ?
-                    $"{o.OrderItems.First().Product.Title} and" +
-                    $" {o.OrderItems.Count - 1} more..." :
+                    $"{o.OrderItems.First().Product.Title} và" +
+                    $" {o.OrderItems.Count - 1} sản phẩm khác." :
                     o.OrderItems.First().Product.Title,
-                ProductImageUrl = o.OrderItems.First().Product.Images.First().Url,
+                ProductImageUrl = "",
                 Status = o.Status,
             }));
 
-            response.Data = orderResponse;
-            response.Success = true;
+            var response = new ServiceResponse<OrdersAdminResponse>
+            {
+                Data = new OrdersAdminResponse
+                {
+                    OrderOverviews = orderOverviews,
+                    CurrentPage = page,
+                    Pages = (int)pageCount
+                },
+                Success = true
+            };
             return response;
         }
 
@@ -198,6 +212,22 @@
             await _context.SaveChangesAsync();
             if (status == Status.Delivered)
                 await _saleService.CreateOrUpdateSaleAsync(order.TotalPrice);
+
+            return new ServiceResponse<bool> { Data = true };
+        }
+
+        public async Task<ServiceResponse<bool>> UpdateIsComment(int orderItemId)
+        {
+            var response = new ServiceResponse<bool>();
+            var orderItem = await _context.OrderItems.FindAsync(orderItemId);
+            if (orderItem == null)
+            {
+                response.Success = false;
+                response.Message = "Order item not found.";
+                return response;
+            }
+            orderItem.IsCommented = true;
+            await _context.SaveChangesAsync();
 
             return new ServiceResponse<bool> { Data = true };
         }

@@ -90,7 +90,7 @@ namespace MyShop.Services.RatingService
             var prediction = model.Transform(testDataView);
             var metrics = mlContext.Regression.Evaluate(prediction, labelColumnName: "Rating", scoreColumnName: "Score");
             Console.WriteLine("The model evaluation metrics RootMeanSquaredError:" + metrics.RootMeanSquaredError);
-            Console.WriteLine("RSquared: " + (-metrics.RSquared).ToString());
+            Console.WriteLine("RSquared: " + (metrics.RSquared).ToString());
             Console.WriteLine("=============== End of process ===============");
             return model;
         }
@@ -116,7 +116,7 @@ namespace MyShop.Services.RatingService
                 MatrixColumnIndexColumnName = @"UserId",
                 MatrixRowIndexColumnName = @"ProductId",
                 ApproximationRank = 20,
-                LearningRate = 0.0024122579826735,
+                LearningRate = 0.00224122579826735,
                 NumberOfIterations = 67600,
                 Quiet = true
             };
@@ -199,6 +199,21 @@ namespace MyShop.Services.RatingService
             string fullPath = Path.Combine(assemblyFolderPath, relativePath);
 
             return fullPath;
+        }
+
+        public async Task<ServiceResponse<List<RatingCount>>> GetSummaryRating(int productId)
+        {
+            List<RatingCount> ratings = await _context.Comments
+                                .Where(c => c.ProductId == productId)
+                                .GroupBy(oi => oi.Rating)
+                                .Select(o => new RatingCount
+                                {
+                                    Rating = o.Key,
+                                    Quantity = o.Count()
+                                })
+                                .OrderByDescending(o => o.Rating)
+                                .ToListAsync();
+            return new ServiceResponse<List<RatingCount>> { Data = ratings };
         }
 
         /// <summary>

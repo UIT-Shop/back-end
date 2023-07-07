@@ -22,6 +22,7 @@ namespace MyShop.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:HH:mm:ss dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime OrderDate { get; set; } = DateTime.Now;
+        public bool IsPaid { get; set; } = false;
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalPrice { get; set; }

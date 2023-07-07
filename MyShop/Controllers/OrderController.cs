@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyShop.Controllers
 {
@@ -21,9 +22,9 @@ namespace MyShop.Controllers
         }
 
         [HttpGet("admin")]
-        public async Task<ActionResult<ServiceResponse<List<OrderOverviewResponse>>>> GetOrdersAdmin()
+        public async Task<ActionResult<ServiceResponse<OrdersAdminResponse>>> GetOrdersAdmin([Required] int page, [Required] Status status)
         {
-            var result = await _orderService.GetOrdersAdmin();
+            var result = await _orderService.GetOrdersAdmin(page, status);
             return Ok(result);
         }
 

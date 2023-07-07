@@ -9,5 +9,7 @@ namespace MyShop.Services.RatingService
         List<RecommendOutput> GetRecommend(List<int> productId);
 
         Task<ServiceResponse<RatingPerProduct>> AddOrUpdateRating(RatingPerProduct rating, List<Comment> listComment);
+
+        Task<ServiceResponse<List<RatingCount>>> GetSummaryRating(int productId);
     }
 }

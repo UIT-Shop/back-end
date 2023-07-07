@@ -92,10 +92,12 @@
             modelBuilder.Entity<Order>().Property("Phone").HasDefaultValue(String.Empty);
             modelBuilder.Entity<Order>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
             modelBuilder.Entity<Order>().Property("OrderDate").HasDefaultValue(DateTime.Now);
+            modelBuilder.Entity<Order>().Property("IsPaid").HasDefaultValue(false);
 
             modelBuilder.Entity<OrderItem>().Property("ProductSize").HasDefaultValue(String.Empty);
             modelBuilder.Entity<OrderItem>().Property("ProductColor").HasDefaultValue(String.Empty);
             modelBuilder.Entity<OrderItem>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
+            modelBuilder.Entity<OrderItem>().Property("IsCommented").HasDefaultValue(false);
 
             modelBuilder.Entity<Comment>().Property("ProductSize").HasDefaultValue(String.Empty);
             modelBuilder.Entity<Comment>().Property("ProductColor").HasDefaultValue(String.Empty);

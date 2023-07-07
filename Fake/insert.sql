@@ -324,7 +324,8 @@ GO
 --Update orders
 UPDATE orders
 SET Name = (select name from users where users.id=orders.UserId),
-	Phone = (select phone from users where users.id=orders.UserId)
+	Phone = (select phone from users where users.id=orders.UserId),
+	IsPaid = 1
 GO
 UPDATE orders
 SET OrderDate = (select createdDate from comments where orders.id=comments.Id),
@@ -336,5 +337,6 @@ UPDATE orderItems
 SET ProductSize = (select ProductSize from productVariants 
 		where productVariants.id=orderItems.ProductVariantId),
 	ProductColor = (select colors.Name from productVariants inner join colors on productVariants.colorId = colors.id
-		where productVariants.id=orderItems.ProductVariantId)
+		where productVariants.id=orderItems.ProductVariantId),
+	IsCommented = 1
 GO
