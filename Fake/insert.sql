@@ -253,8 +253,8 @@ GO
 
 SET IDENTITY_INSERT Comments ON
 GO
-INSERT INTO Comments (Id, UserId, ProductVariantId, Rating, Content, CommentDate, ProductId, CreatedDate)
-SELECT Id, UserId, ProductVariantId, Rating, Content, CommentDate, ProductId, CreatedDate FROM OPENROWSET  (
+INSERT INTO Comments (Id, UserId, ProductVariantId, Rating, Content, CommentDate, ProductId, CreatedDate, OrderId)
+SELECT Id, UserId, ProductVariantId, Rating, Content, CommentDate, ProductId, CreatedDate, OrderId FROM OPENROWSET  (
     BULK 'D:/comments.json', 
     SINGLE_NCLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )
@@ -266,7 +266,8 @@ SELECT Id, UserId, ProductVariantId, Rating, Content, CommentDate, ProductId, Cr
 			Content				Nvarchar(MAX)	'$.Content',
 			CommentDate			DateTime		'$.CommentDate',
 			CreatedDate			DateTime		'$.CommentDate',
-			ProductId			int				'$.ProductId'
+			ProductId			int				'$.ProductId',
+			OrderId				int				'$.Id'
         ) AS [Comments]
 GO
 SET IDENTITY_INSERT Comments OFF

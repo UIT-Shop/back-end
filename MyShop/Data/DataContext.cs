@@ -103,7 +103,7 @@
             modelBuilder.Entity<Comment>().Property("ProductColor").HasDefaultValue(String.Empty);
             modelBuilder.Entity<Comment>().Property("ProductTitle").HasDefaultValue(String.Empty);
             modelBuilder.Entity<Comment>().Property("UserName").HasDefaultValue(String.Empty);
-            modelBuilder.Entity<OrderItem>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
+            modelBuilder.Entity<Comment>().Property("CreatedDate").HasDefaultValue(DateTime.Now);
         }
 
         public DbSet<Product> Products { get; set; }

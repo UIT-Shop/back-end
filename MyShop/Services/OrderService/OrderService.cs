@@ -216,10 +216,12 @@
             return new ServiceResponse<bool> { Data = true };
         }
 
-        public async Task<ServiceResponse<bool>> UpdateIsComment(int orderItemId)
+        public async Task<ServiceResponse<bool>> UpdateIsComment(int orderId, int productVariantId)
         {
             var response = new ServiceResponse<bool>();
-            var orderItem = await _context.OrderItems.FindAsync(orderItemId);
+            var orderItem = await _context.OrderItems
+            .Where(oi => oi.ProductVariantId == productVariantId && oi.OrderId == orderId)
+                .FirstOrDefaultAsync();
             if (orderItem == null)
             {
                 response.Success = false;

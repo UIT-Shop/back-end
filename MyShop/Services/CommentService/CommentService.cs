@@ -42,6 +42,18 @@
 
         public async Task<ServiceResponse<Comment>> AddComment(Comment comment)
         {
+            var orderItem = await _context.OrderItems
+                .Where(oi => oi.ProductVariantId == comment.ProductVariantId && oi.OrderId == comment.OrderId)
+                .FirstOrDefaultAsync();
+            if (orderItem != null)
+                if (orderItem.IsCommented)
+                    return new ServiceResponse<Comment>
+                    {
+                        Data = null,
+                        Success = false,
+                        Message = "Bạn đã đánh giá sản phẩm này rồi"
+                    };
+
             var userId = _authService.GetUserId();
             var userInfo = await _userService.GetUserInfo(userId);
             var productVariant = await _context.ProductVariants
@@ -61,8 +73,8 @@
             comment.ProductTitle = productVariant.Product.Title;
             comment.UserName = userInfo.Data.Name;
             comment.UserId = userId;
-            _context.Comments.Add(comment);
 
+            _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
 
             var listCommentOfProducts = await _context.Comments
@@ -71,7 +83,7 @@
 
             await _productService.UpdateRating(productVariant.ProductId, listCommentOfProducts);
             await _ratingService.AddOrUpdateRating(new RatingPerProduct() { ProductId = comment.ProductId, UserId = comment.UserId, Rating = comment.Rating }, listCommentOfProducts);
-            await _orderService.UpdateIsComment(comment.OrderItemId);
+            await _orderService.UpdateIsComment(comment.OrderId, comment.ProductVariantId);
 
 
             return new ServiceResponse<Comment> { Data = comment };

@@ -9,6 +9,6 @@
         Task<ServiceResponse<OrderDetailsResponse>> GetOrderDetails(int orderId);
 
         Task<ServiceResponse<bool>> UpdateStatus(int order, Status status);
-        Task<ServiceResponse<bool>> UpdateIsComment(int orderItemId);
+        Task<ServiceResponse<bool>> UpdateIsComment(int orderId, int productVariantId);
     }
 }
