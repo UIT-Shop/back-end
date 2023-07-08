@@ -166,6 +166,7 @@
                         p.Visible && !p.Deleted)
                     .Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
                     .Include(pc => pc.Images)
+                    .Include(p => p.Category)
                     .Skip((page - 1) * (int)pageResults)
                     .Take((int)pageResults)
                     .ToListAsync();

@@ -65,7 +65,8 @@
                     ProductVariantID = item.ProductVariantId,
                     Quantity = item.Quantity,
                     Title = item.Product.Title,
-                    TotalPrice = item.TotalPrice
+                    TotalPrice = item.TotalPrice,
+                    IsCommented = item.IsCommented
                 });
             });
 
