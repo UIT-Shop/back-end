@@ -106,17 +106,18 @@
             return response;
         }
 
-        public async Task<ServiceResponse<OrdersAdminResponse>> GetOrdersAdmin(int page, Status status)
+        public async Task<ServiceResponse<OrdersAdminResponse>> GetOrdersAdmin(int page, Status status, DateTime monthYear)
         {
-            var allOrders = _context.Orders.Where(o => o.Status == status).Count();
+            var firstDayOfMonth = new DateTime(monthYear.Year, monthYear.Month, 1);
+            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+            var allOrders = _context.Orders.Where(o => o.Status == status && o.OrderDate > firstDayOfMonth && o.OrderDate < lastDayOfMonth).Count();
             var pageResults = 20f;
             var pageCount = Math.Ceiling(allOrders / pageResults);
             if (pageCount == 0) pageCount = 1;
-            DateTime date = new DateTime(2023, 1, 1);
             var orders = await _context.Orders
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Product)
-                .Where(o => o.Status == status && o.OrderDate > date)
+                .Where(o => o.Status == status && o.OrderDate > firstDayOfMonth && o.OrderDate < lastDayOfMonth)
                 .OrderByDescending(o => o.OrderDate)
                 .Skip((page - 1) * (int)pageResults)
                 .Take((int)pageResults)

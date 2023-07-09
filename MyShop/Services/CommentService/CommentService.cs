@@ -21,7 +21,7 @@
 
         public async Task<ServiceResponse<CommentEachPage>> GetComments(int productId, int page)
         {
-            var allComments = await _context.Comments.Where(c => c.ProductId == productId).ToListAsync();
+            var allComments = await _context.Comments.Include(c => c.ImageComments).Where(c => c.ProductId == productId).ToListAsync();
             var pageResults = 10f;
             var pageCount = Math.Ceiling(allComments.Count / pageResults);
             var comments = allComments

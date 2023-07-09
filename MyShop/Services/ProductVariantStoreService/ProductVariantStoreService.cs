@@ -166,6 +166,7 @@
                 Size = ps.ProductVariant.ProductSize,
                 QuantityIn = ps.Quantity > 0 ? ps.Quantity : 0,
                 QuantityOut = ps.Quantity < 0 ? ps.Quantity : 0,
+                LastDate = ps.DateInput
             }));
             data = productVariantStoreOutput.GroupBy(key => new
             {
@@ -181,10 +182,23 @@
                     Color = ps.Key.Color,
                     Size = ps.Key.Size,
                     QuantityIn = ps.Sum(qIn => qIn.QuantityIn),
-                    QuantityOut = ps.Sum(qOut => qOut.QuantityOut)
+                    QuantityOut = ps.Sum(qOut => qOut.QuantityOut),
+                    LastDate = ps.Max(lDate => lDate.LastDate)
                 })
             .ToList();
 
+            data.ForEach(d =>
+            {
+                var productVariantStores = _context.ProductVariantStores
+                .Include(p => p.ProductVariant)
+                .ThenInclude(pv => pv.Color)
+                .Where(p => p.WarehouseId == d.WarehouseId &&
+                            p.ProductVariant.ProductId == productId &&
+                            p.ProductVariant.Color.Name == d.Color &&
+                            p.ProductVariant.ProductSize == d.Size &&
+                            p.DateInput == d.LastDate).ToList();
+                d.QuantityCurrent = productVariantStores.First().Stock;
+            });
             response.Data = data;
             response.Success = true;
             return response;
@@ -212,6 +226,7 @@
                 Size = ps.ProductVariant.ProductSize,
                 QuantityIn = ps.Quantity > 0 ? ps.Quantity : 0,
                 QuantityOut = ps.Quantity < 0 ? ps.Quantity : 0,
+                LastDate = ps.DateInput
             }));
 
             data = productVariantStoreOutput.GroupBy(key => new
@@ -228,9 +243,23 @@
                     Color = ps.Key.Color,
                     Size = ps.Key.Size,
                     QuantityIn = ps.Sum(qIn => qIn.QuantityIn),
-                    QuantityOut = ps.Sum(qOut => qOut.QuantityOut)
+                    QuantityOut = ps.Sum(qOut => qOut.QuantityOut),
+                    LastDate = ps.Max(lDate => lDate.LastDate)
                 })
             .ToList();
+
+            data.ForEach(d =>
+            {
+                var productVariantStores = _context.ProductVariantStores
+                .Include(p => p.ProductVariant)
+                .ThenInclude(pv => pv.Color)
+                .Where(p => p.WarehouseId == warehouseId &&
+                            p.ProductVariant.ProductId == d.ProductId &&
+                            p.ProductVariant.Color.Name == d.Color &&
+                            p.ProductVariant.ProductSize == d.Size &&
+                            p.DateInput == d.LastDate).ToList();
+                d.QuantityCurrent = productVariantStores.First().Stock;
+            });
 
             response.Data = data;
             response.Success = true;

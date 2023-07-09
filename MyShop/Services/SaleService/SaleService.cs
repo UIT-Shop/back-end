@@ -60,7 +60,7 @@ namespace MyShop.Services.SaleService
                 seriesLength: 30,
                 trainSize: 365,
                 horizon: 365,
-                confidenceLevel: 0.5f,
+                confidenceLevel: 0.75f,
                 confidenceLowerBoundColumn: "LowerBoundSales",
                 confidenceUpperBoundColumn: "UpperBoundSales");
 

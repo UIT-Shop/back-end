@@ -290,8 +290,8 @@ GO
 SET IDENTITY_INSERT Warehouses OFF
 GO
 
-INSERT INTO ProductVariantStores (ProductVariantId, WarehouseId, BuyPrice, Quantity, DateInput, LotCode)
-SELECT ProductVariantId, WarehouseId, BuyPrice, Quantity, DateInput, LotCode  FROM OPENROWSET  (
+INSERT INTO ProductVariantStores (ProductVariantId, WarehouseId, BuyPrice, Quantity, DateInput, LotCode, Stock)
+SELECT ProductVariantId, WarehouseId, BuyPrice, Quantity, DateInput, LotCode, Stock  FROM OPENROWSET  (
     BULK 'D:/store.json', 
     SINGLE_CLOB) AS [Json]    
     CROSS APPLY OPENJSON ( BulkColumn, '$' )

@@ -22,9 +22,9 @@ namespace MyShop.Controllers
         }
 
         [HttpGet("admin")]
-        public async Task<ActionResult<ServiceResponse<OrdersAdminResponse>>> GetOrdersAdmin([Required] int page, [Required] Status status)
+        public async Task<ActionResult<ServiceResponse<OrdersAdminResponse>>> GetOrdersAdmin([Required] int page, [Required] Status status, [Required] DateTime monthYear)
         {
-            var result = await _orderService.GetOrdersAdmin(page, status);
+            var result = await _orderService.GetOrdersAdmin(page, status, monthYear);
             return Ok(result);
         }
 

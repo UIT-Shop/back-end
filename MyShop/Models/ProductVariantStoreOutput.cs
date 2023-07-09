@@ -10,5 +10,7 @@
         public string Size { get; set; }
         public int? QuantityIn { get; set; }
         public int? QuantityOut { get; set; }
+        public int QuantityCurrent { get; set; } = 0;
+        public DateTime LastDate { get; set; }
     }
 }
