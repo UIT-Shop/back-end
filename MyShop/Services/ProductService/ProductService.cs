@@ -272,6 +272,8 @@
 
             dbProduct.Title = product.Title;
             dbProduct.Description = product.Description;
+            dbProduct.Overview = product.Overview;
+            dbProduct.Material = product.Material;
             dbProduct.CategoryId = product.CategoryId;
             dbProduct.Visible = product.Visible;
 
