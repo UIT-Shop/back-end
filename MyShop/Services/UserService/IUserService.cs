@@ -3,7 +3,7 @@
     public interface IUserService
     {
         // Read
-        Task<ServiceResponse<List<User>>> GetUsers();
+        Task<ServiceResponse<UserSearchResult>> GetUsers(int page);
         Task<ServiceResponse<User>> GetUserInfo(int userId);
 
         // Update

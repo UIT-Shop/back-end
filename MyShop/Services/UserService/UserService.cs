@@ -15,10 +15,26 @@ namespace MyShop.Services.UserService
             _addressService = addressService;
             _authService = authService;
         }
-        public async Task<ServiceResponse<List<MyShop.Models.User>>> GetUsers()
+        public async Task<ServiceResponse<UserSearchResult>> GetUsers(int page)
         {
-            var users = await _context.Users.Where(u => !u.Deleted).ToListAsync();
-            return new ServiceResponse<List<MyShop.Models.User>> { Data = users };
+            var allUsers = _context.Users
+                    .Where(u => !u.Deleted)
+                    .Count();
+            var pageResults = 50f;
+            var pageCount = Math.Ceiling(allUsers / pageResults);
+            var users = await _context.Users
+                                .Where(u => !u.Deleted && u.Id >= (page - 1) * (int)pageResults && u.Id < (page) * (int)pageResults)
+                                .ToListAsync();
+            //var users = await _context.Users.Where(u => !u.Deleted).ToListAsync();
+            return new ServiceResponse<UserSearchResult>
+            {
+                Data = new UserSearchResult
+                {
+                    Users = users,
+                    CurrentPage = page,
+                    Pages = (int)pageCount
+                }
+            };
         }
         public async Task<ServiceResponse<bool>> DeleteUser(int userId)
         {

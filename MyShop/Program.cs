@@ -132,7 +132,11 @@ builder.Services.AddCors(options =>
 {
     var frontend_URL = configuration.GetValue<string>("frontend_url");
     var admin_URL = configuration.GetValue<string>("admin_url");
-    options.AddDefaultPolicy(builder => { builder.WithOrigins(frontend_URL, admin_URL).AllowAnyMethod().AllowAnyHeader(); });
+    options.AddDefaultPolicy(builder =>
+    {
+        //builder.WithOrigins(frontend_URL, admin_URL).AllowAnyMethod().AllowAnyHeader(); 
+        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
 });
 
 builder.Services.AddSingleton(FirebaseApp.Create(new AppOptions()

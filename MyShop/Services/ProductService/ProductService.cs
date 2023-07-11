@@ -106,7 +106,7 @@
             if (product == null)
             {
                 response.Success = false;
-                response.Message = "Sorry, but this product does not exist.";
+                response.Message = "Sản phẩm không tồn tại";
             }
             else
             {

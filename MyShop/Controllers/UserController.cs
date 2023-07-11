@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace MyShop.Controllers
 {
@@ -16,10 +16,10 @@ namespace MyShop.Controllers
         }
 
         [HttpGet(), Authorize(Roles = "Admin")]
-        public async Task<ActionResult<ServiceResponse<List<User>>>> GetUsers()
+        public async Task<ActionResult<ServiceResponse<UserSearchResult>>> GetUsers([Required] int page)
         {
-            var result = await _userService.GetUsers();
-            return !result.Success ? (ActionResult<ServiceResponse<List<User>>>)BadRequest(result) : (ActionResult<ServiceResponse<List<User>>>)Ok(result);
+            var result = await _userService.GetUsers(page);
+            return !result.Success ? (ActionResult<ServiceResponse<UserSearchResult>>)BadRequest(result) : (ActionResult<ServiceResponse<UserSearchResult>>)Ok(result);
         }
 
 
