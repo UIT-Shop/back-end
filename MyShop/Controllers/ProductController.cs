@@ -72,10 +72,10 @@ namespace MyShop.Controllers
         }
 
         [HttpGet("topSale")]
-        public async Task<ActionResult<ServiceResponse<Product>>> GetTopSaleProducts()
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetTopSaleProducts()
         {
             var result = await _productService.GetTopSaleProducts();
-            return !result.Success ? (ActionResult<ServiceResponse<Product>>)BadRequest(result) : (ActionResult<ServiceResponse<Product>>)Ok(result);
+            return !result.Success ? (ActionResult<ServiceResponse<List<Product>>>)BadRequest(result) : (ActionResult<ServiceResponse<List<Product>>>)Ok(result);
         }
 
         [HttpGet("Category/{categoryId}")]

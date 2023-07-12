@@ -228,7 +228,7 @@
                                      p.Description.ToLower().Contains(searchText.ToLower()) &&
                                      p.Visible && !p.Deleted)
                                  .Include(p => p.Variants)
-                                 .OrderByDescending(p => p.Variants[0].Price)
+                                 .OrderByDescending(p => p.Variants.First().Price)
                                  .Skip((page - 1) * (int)pageResults)
                                  .Take((int)pageResults)
                                  .ToListAsync()
@@ -237,7 +237,7 @@
                                     p.Description.ToLower().Contains(searchText.ToLower()) &&
                                     p.Visible && !p.Deleted)
                                 .Include(p => p.Variants)
-                                .OrderBy(p => p.Variants[0].Price)
+                                .OrderBy(p => p.Variants.First().Price)
                                 .Skip((page - 1) * (int)pageResults)
                                 .Take((int)pageResults)
                                 .ToListAsync();
@@ -339,7 +339,7 @@
                                 })
                                 .Take(topCount).OrderByDescending(o => o.SumQuantities)
                                 .ToListAsync();
-            List<int> ids = (List<int>?)orderItems.Select(o => o.ProductId);
+            List<int> ids = (List<int>?)orderItems.Select(o => o.ProductId).ToList();
             var products = GetProducts(ids).Result.Data;
             return new ServiceResponse<List<Product>> { Data = products };
         }
