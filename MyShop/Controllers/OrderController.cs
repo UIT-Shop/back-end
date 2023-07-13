@@ -38,8 +38,8 @@ namespace MyShop.Controllers
         [HttpPost()]
         public async Task<ActionResult<ServiceResponse<OrderDetailsResponse>>> PlaceOrder(OrderInput orderInput)
         {
-            var address = new Address() { WardId = orderInput.WardId, Street = orderInput.street };
-            var result = await _orderService.PlaceOrder(orderInput.Name, orderInput.Phone, address);
+            var address = new Address() { WardId = orderInput.WardId, Street = orderInput.Street };
+            var result = await _orderService.PlaceOrder(orderInput.Name, orderInput.Phone, address, orderInput.IsPaid);
             return result.Success == false ? (ActionResult<ServiceResponse<OrderDetailsResponse>>)BadRequest(result) : (ActionResult<ServiceResponse<OrderDetailsResponse>>)Ok(result);
         }
 

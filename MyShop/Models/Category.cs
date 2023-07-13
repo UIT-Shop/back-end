@@ -14,5 +14,7 @@ namespace MyShop.Models
         public string MetaTitle { get; set; } = String.Empty;
         public string MetaKeyword { get; set; } = String.Empty;
         public string MetaDiscription { get; set; } = String.Empty;
+
+        public bool Deleted { get; set; } = false;
     }
 }

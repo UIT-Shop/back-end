@@ -9,5 +9,7 @@ namespace MyShop.Models
         [Column(TypeName = "nvarchar(MAX)")]
         public string Name { get; set; } = String.Empty;
         public string Url { get; set; } = String.Empty;
+
+        public bool Deleted { get; set; } = false;
     }
 }

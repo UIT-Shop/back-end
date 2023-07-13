@@ -150,7 +150,7 @@
             return response;
         }
 
-        public async Task<ServiceResponse<bool>> PlaceOrder(string? name, string? phone, Address? address)
+        public async Task<ServiceResponse<bool>> PlaceOrder(string? name, string? phone, Address? address, bool? IsPaid = false)
         {
             var userId = _authService.GetUserId();
             var user = (await _userService.GetUserInfo(userId)).Data;
@@ -187,7 +187,8 @@
                 TotalPrice = totalPrice,
                 OrderItems = orderItems,
                 Status = Status.Waiting,
-                AddressId = address.Id
+                AddressId = address.Id,
+                IsPaid = (bool)IsPaid
             };
 
             _context.Orders.Add(order);

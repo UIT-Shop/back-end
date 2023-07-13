@@ -38,7 +38,7 @@
                         Message = "Category not found."
                     };
                 }
-                _context.Remove(dbCategory);
+                dbCategory.Deleted = true;
                 await _context.SaveChangesAsync();
                 return new ServiceResponse<bool> { Data = true };
             }
@@ -71,7 +71,7 @@
 
         public async Task<ServiceResponse<List<Category>>> GetCategories()
         {
-            var categories = await _context.Categories.ToListAsync();
+            var categories = await _context.Categories.Where(b => b.Deleted != false).ToListAsync();
             return new ServiceResponse<List<Category>>
             {
                 Data = categories

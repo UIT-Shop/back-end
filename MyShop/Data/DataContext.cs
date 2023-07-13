@@ -64,6 +64,9 @@
             modelBuilder.Entity<ProductVariant>().Property("Deleted").HasDefaultValue(false);
 
             modelBuilder.Entity<Sale>().Property("Totals").HasDefaultValue(0);
+            modelBuilder.Entity<Brand>().Property("Deleted").HasDefaultValue(false);
+            modelBuilder.Entity<Color>().Property("Deleted").HasDefaultValue(false);
+            modelBuilder.Entity<Category>().Property("Deleted").HasDefaultValue(false);
 
             modelBuilder.Entity<User>().Property("Deleted").HasDefaultValue(false);
             modelBuilder.Entity<User>().Property("Role").HasDefaultValue(Role.Customer);

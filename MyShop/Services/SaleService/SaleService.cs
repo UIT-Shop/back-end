@@ -2,6 +2,7 @@
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Transforms.TimeSeries;
+using System.Globalization;
 
 namespace MyShop.Services.SaleService
 {
@@ -17,10 +18,10 @@ namespace MyShop.Services.SaleService
         public async Task<bool> CreateOrUpdateSaleAsync(decimal totalPrice)
         {
             DateTime today = DateTime.Today;
-            var dbSale = await _context.Sales.Where(s => s.Date.Year == today.Year && s.Date.Month == today.Month && s.Date.Day == today.Day).FirstAsync();
+            var dbSale = await _context.Sales.Where(s => s.Date.Year == today.Year && s.Date.Month == today.Month && s.Date.Day == today.Day).FirstOrDefaultAsync();
             if (dbSale == null)
             {
-                var sale = new Sale { Date = today, Totals = (float)totalPrice };
+                var sale = new Sale { Date = today, Year = float.Parse(today.Year.ToString() + "." + today.Month.ToString(), CultureInfo.InvariantCulture.NumberFormat), Totals = (float)totalPrice };
                 _context.Sales.Add(sale);
             }
             else dbSale.Totals += (float)totalPrice;

@@ -33,7 +33,7 @@
                     Message = "Brand not found."
                 };
             }
-            _context.Brands.Remove(dbBrand);
+            dbBrand.Deleted = true;
             await _context.SaveChangesAsync();
             return new ServiceResponse<bool> { Data = true };
         }
@@ -55,7 +55,7 @@
 
         public async Task<ServiceResponse<List<Brand>>> GetBrands()
         {
-            var brands = await _context.Brands.ToListAsync();
+            var brands = await _context.Brands.Where(b => b.Deleted != false).ToListAsync();
             return new ServiceResponse<List<Brand>>
             {
                 Data = brands

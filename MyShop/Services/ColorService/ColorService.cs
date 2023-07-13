@@ -29,13 +29,14 @@
                     Message = "Color not found."
                 };
             }
+            dbColor.Deleted = true;
             await _context.SaveChangesAsync();
             return new ServiceResponse<bool> { Data = true };
         }
 
         public async Task<ServiceResponse<List<Color>>> GetColors()
         {
-            var colors = await _context.Colors.ToListAsync();
+            var colors = await _context.Colors.Where(b => b.Deleted != false).ToListAsync();
             return new ServiceResponse<List<Color>> { Data = colors };
         }
 

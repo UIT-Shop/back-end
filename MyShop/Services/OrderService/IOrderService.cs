@@ -2,7 +2,7 @@
 {
     public interface IOrderService
     {
-        Task<ServiceResponse<bool>> PlaceOrder(string? name, string? phone, Address? address);
+        Task<ServiceResponse<bool>> PlaceOrder(string? name, string? phone, Address? address, bool? IsPaid);
 
         Task<ServiceResponse<List<OrderOverviewResponse>>> GetOrders();
         Task<ServiceResponse<OrdersAdminResponse>> GetOrdersAdmin(int page, Status status, DateTime monthYear);
