@@ -17,7 +17,7 @@
             return await GetColors();
         }
 
-        public async Task<ServiceResponse<bool>> DeleteColor(string colorId)
+        public async Task<ServiceResponse<bool>> DeleteColor(int colorId)
         {
             var dbColor = await _context.Colors.FindAsync(colorId);
             if (dbColor == null)
@@ -40,7 +40,7 @@
             return new ServiceResponse<List<Color>> { Data = colors };
         }
 
-        public async Task<ServiceResponse<Color>> GetColor(string colorId)
+        public async Task<ServiceResponse<Color>> GetColor(int colorId)
         {
             var color = await _context.Colors.FindAsync(colorId);
             return new ServiceResponse<Color> { Data = color };

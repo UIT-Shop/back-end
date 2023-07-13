@@ -6,6 +6,7 @@ namespace MyShop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class WarehouseController : ControllerBase
     {
         private readonly IWarehouseService _warehouseService;

@@ -22,7 +22,7 @@ namespace MyShop.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ServiceResponse<Color>>> GetColor(string id)
+        public async Task<ActionResult<ServiceResponse<Color>>> GetColor(int id)
         {
             var response = await _colorService.GetColor(id);
             return Ok(response);
@@ -43,7 +43,7 @@ namespace MyShop.Controllers
         }
 
         [HttpDelete("{id}"), Authorize(Roles = "Admin")]
-        public async Task<ActionResult<ServiceResponse<bool>>> DeleteColor(string id)
+        public async Task<ActionResult<ServiceResponse<bool>>> DeleteColor(int id)
         {
             var result = await _colorService.DeleteColor(id);
             return Ok(result);

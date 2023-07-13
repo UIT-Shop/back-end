@@ -41,7 +41,7 @@ namespace MyShop.Controllers
         [HttpPost, Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<Category>>> CreateCategory(Category category)
         {
-            if (category == null || category.Name.Length == 0 || category.Url.Length == 0)
+            if (category == null || category.Name.Length == 0)
                 return BadRequest(new ServiceResponse<Category>() { Message = "Please full fill form" });
             var result = await _categoryService.CreateCategory(category);
             return Ok(result);
@@ -50,7 +50,7 @@ namespace MyShop.Controllers
         [HttpPut, Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<Category>>> UpdateCategory(Category category)
         {
-            if (category == null || category.Name.Length == 0 || category.Url.Length == 0)
+            if (category == null || category.Name.Length == 0)
                 return BadRequest(new ServiceResponse<Category>() { Message = "Please full fill form" });
             var result = await _categoryService.UpdateCategory(category);
             return Ok(result);
