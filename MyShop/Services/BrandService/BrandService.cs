@@ -55,7 +55,7 @@
 
         public async Task<ServiceResponse<List<Brand>>> GetBrands()
         {
-            var brands = await _context.Brands.Where(b => b.Deleted != false).ToListAsync();
+            var brands = await _context.Brands.Where(b => b.Deleted == false).ToListAsync();
             return new ServiceResponse<List<Brand>>
             {
                 Data = brands
