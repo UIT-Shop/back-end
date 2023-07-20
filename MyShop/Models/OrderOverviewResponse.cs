@@ -15,5 +15,6 @@ namespace MyShop.Models
         public string Product { get; set; }
         public string ProductImageUrl { get; set; }
         public Status Status { get; set; }
+        public bool IsPaid { get; set; }
     }
 }

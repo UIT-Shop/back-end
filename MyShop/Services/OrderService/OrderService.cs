@@ -94,11 +94,12 @@
                 OrderDate = o.OrderDate,
                 TotalPrice = o.TotalPrice,
                 Product = o.OrderItems.Count > 1 ?
-                    $"{o.OrderItems.First().Product.Title} and" +
-                    $" {o.OrderItems.Count - 1} more..." :
+                    $"{o.OrderItems.First().Product.Title} và" +
+                    $" {o.OrderItems.Count - 1} sản phẩm khác..." :
                     o.OrderItems.First().Product.Title,
                 ProductImageUrl = o.OrderItems.First().Product.Images.First().Url,
                 Status = o.Status,
+                IsPaid = o.IsPaid
             }));
 
             response.Data = orderResponse;
@@ -135,6 +136,7 @@
                     o.OrderItems.First().Product.Title,
                 ProductImageUrl = "",
                 Status = o.Status,
+                IsPaid = o.IsPaid
             }));
 
             var response = new ServiceResponse<OrdersAdminResponse>
@@ -212,9 +214,14 @@
                 return response;
             }
             order.Status = status;
-            await _context.SaveChangesAsync();
             if (status == Status.Delivered)
+            {
                 await _saleService.CreateOrUpdateSaleAsync(order.TotalPrice);
+                order.IsPaid = true;
+            }
+
+            await _context.SaveChangesAsync();
+
 
             return new ServiceResponse<bool> { Data = true };
         }

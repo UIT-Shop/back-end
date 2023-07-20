@@ -227,7 +227,8 @@
                                  .Where(p => p.Title.ToLower().Contains(searchText.ToLower()) ||
                                      p.Description.ToLower().Contains(searchText.ToLower()) &&
                                      p.Visible && !p.Deleted)
-                                 .Include(p => p.Variants)
+                                 .Include(p => p.Variants.Where(v => !v.Deleted))
+                                 .Include(pc => pc.Images)
                                  .OrderByDescending(p => p.Variants.First().Price)
                                  .Skip((page - 1) * (int)pageResults)
                                  .Take((int)pageResults)
@@ -236,7 +237,8 @@
                                 .Where(p => p.Title.ToLower().Contains(searchText.ToLower()) ||
                                     p.Description.ToLower().Contains(searchText.ToLower()) &&
                                     p.Visible && !p.Deleted)
-                                .Include(p => p.Variants)
+                                .Include(p => p.Variants.Where(v => !v.Deleted))
+                                .Include(pc => pc.Images)
                                 .OrderBy(p => p.Variants.First().Price)
                                 .Skip((page - 1) * (int)pageResults)
                                 .Take((int)pageResults)
