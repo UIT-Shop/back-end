@@ -13,17 +13,33 @@
 
         public async Task<ServiceResponse<bool>> AddProductVariantStore(ProductVariantStoreInput productVariantStoreInput)
         {
+            int stock = 0;
             var variant = _productVariantService.GetProductVariant(productVariantStoreInput.ProductId, productVariantStoreInput.ColorId, productVariantStoreInput.Size).Result.Data;
             ProductVariantStore productVariantStore = await _context.ProductVariantStores
                     .Where(p => p.WarehouseId == productVariantStoreInput.WarehouseId && p.ProductVariantId == variant.Id && p.LotCode == productVariantStoreInput.LotCode)
                     .FirstOrDefaultAsync();
             variant.Quantity += productVariantStoreInput.Quantity;
             _productVariantService.UpdateProductVariant(variant);
-
+            var productVariantStores = await _context.ProductVariantStores
+                               .Where(p => p.WarehouseId == productVariantStoreInput.WarehouseId && p.ProductVariantId == variant.Id)
+                               .GroupBy(p => p.ProductVariantId)
+                               .Select(q => new
+                               {
+                                   SumQuantities = q.Sum(p => p.Quantity)
+                               })
+                               .ToListAsync();
+            stock += productVariantStores.FirstOrDefault().SumQuantities;
+            if (Math.Abs(productVariantStoreInput.Quantity) > stock && productVariantStoreInput.Quantity < 0)
+                return new ServiceResponse<bool>
+                {
+                    Success = false,
+                    Data = false,
+                    Message = "Không đủ số lượng sản phẩm " + variant.Id.ToString() + " trong kho hàng"
+                };
             if (productVariantStore != null)
             {
                 productVariantStore.Quantity += productVariantStoreInput.Quantity;
-                productVariantStore.Stock = variant.Quantity;
+                productVariantStore.Stock = stock + productVariantStoreInput.Quantity;
                 await _context.SaveChangesAsync();
             }
             else
@@ -48,7 +64,7 @@
                     WarehouseId = productVariantStoreInput.WarehouseId,
                     BuyPrice = productVariantStoreInput.BuyPrice,
                     Quantity = productVariantStoreInput.Quantity,
-                    Stock = variant.Quantity,
+                    Stock = stock + productVariantStoreInput.Quantity,
                     DateInput = productVariantStoreInput.DateInput,
                     LotCode = productVariantStoreInput.LotCode,
                     Note = productVariantStoreInput.Note
@@ -70,13 +86,29 @@
                 .FirstOrDefaultAsync();
             if (productVariantStore != null)
             {
+                var productVariantStoreFroms = await _context.ProductVariantStores
+                               .Where(p => p.WarehouseId == productVariantStoreInput.WarehouseFromId && p.ProductVariantId == variant.Id)
+                               .GroupBy(p => p.ProductVariantId)
+                               .Select(q => new
+                               {
+                                   SumQuantities = q.Sum(p => p.Quantity)
+                               })
+                               .ToListAsync();
+                productVariantStore.Stock = productVariantStoreFroms.First().SumQuantities;
+                if (Math.Abs(productVariantStoreInput.Quantity) > productVariantStore.Stock && productVariantStoreInput.Quantity < 0)
+                    return new ServiceResponse<bool>
+                    {
+                        Success = false,
+                        Data = false,
+                        Message = "Không đủ số lượng sản phẩm " + variant.Id.ToString() + " trong kho hàng"
+                    };
                 productVariantStore = new ProductVariantStore
                 {
                     ProductVariantId = variant.Id,
                     WarehouseId = productVariantStoreInput.WarehouseId,
                     BuyPrice = productVariantStoreInput.BuyPrice,
                     Quantity = -productVariantStoreInput.Quantity,
-                    Stock = variant.Quantity,
+                    Stock = productVariantStore.Stock - productVariantStoreInput.Quantity,
                     DateInput = productVariantStoreInput.DateInput,
                     LotCode = productVariantStoreInput.LotCode,
                     Note = productVariantStoreInput.Note
@@ -92,9 +124,26 @@
                     Message = "Không tồn tại sản phẩm " + variant.Id.ToString() + " trong kho hàng"
                 };
 
+            int stock = 0;
             productVariantStore = await _context.ProductVariantStores
                    .Where(p => p.WarehouseId == productVariantStoreInput.WarehouseId && p.ProductVariantId == variant.Id && p.LotCode == productVariantStoreInput.LotCode)
                    .FirstOrDefaultAsync();
+            var productVariantStores = await _context.ProductVariantStores
+                               .Where(p => p.WarehouseId == productVariantStoreInput.WarehouseId && p.ProductVariantId == variant.Id)
+                               .GroupBy(p => p.ProductVariantId)
+                               .Select(q => new
+                               {
+                                   SumQuantities = q.Sum(p => p.Quantity)
+                               })
+                               .ToListAsync();
+            stock += productVariantStores.FirstOrDefault().SumQuantities;
+            if (Math.Abs(productVariantStoreInput.Quantity) > stock && productVariantStoreInput.Quantity < 0)
+                return new ServiceResponse<bool>
+                {
+                    Success = false,
+                    Data = false,
+                    Message = "Không đủ số lượng sản phẩm " + variant.Id.ToString() + " trong kho hàng"
+                };
             if (productVariantStore != null)
             {
                 productVariantStore.Quantity += productVariantStoreInput.Quantity;
@@ -109,7 +158,7 @@
                     WarehouseId = productVariantStoreInput.WarehouseId,
                     BuyPrice = productVariantStoreInput.BuyPrice,
                     Quantity = productVariantStoreInput.Quantity,
-                    Stock = variant.Quantity,
+                    Stock = stock + productVariantStoreInput.Quantity,
                     DateInput = productVariantStoreInput.DateInput,
                     LotCode = productVariantStoreInput.LotCode,
                     Note = productVariantStoreInput.Note
