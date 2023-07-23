@@ -19,7 +19,7 @@
                     .Where(p => p.WarehouseId == productVariantStoreInput.WarehouseId && p.ProductVariantId == variant.Id && p.LotCode == productVariantStoreInput.LotCode)
                     .FirstOrDefaultAsync();
             variant.Quantity += productVariantStoreInput.Quantity;
-            _productVariantService.UpdateProductVariant(variant);
+            await _productVariantService.UpdateProductVariant(variant);
             var productVariantStores = await _context.ProductVariantStores
                                .Where(p => p.WarehouseId == productVariantStoreInput.WarehouseId && p.ProductVariantId == variant.Id)
                                .GroupBy(p => p.ProductVariantId)
@@ -28,7 +28,7 @@
                                    SumQuantities = q.Sum(p => p.Quantity)
                                })
                                .ToListAsync();
-            stock += productVariantStores.FirstOrDefault().SumQuantities;
+            stock += productVariantStores.FirstOrDefault() != null ? productVariantStores.FirstOrDefault().SumQuantities : 0;
             if (Math.Abs(productVariantStoreInput.Quantity) > stock && productVariantStoreInput.Quantity < 0)
                 return new ServiceResponse<bool>
                 {
@@ -136,7 +136,7 @@
                                    SumQuantities = q.Sum(p => p.Quantity)
                                })
                                .ToListAsync();
-            stock += productVariantStores.FirstOrDefault().SumQuantities;
+            stock += productVariantStores.FirstOrDefault() != null ? productVariantStores.FirstOrDefault().SumQuantities : 0;
             if (Math.Abs(productVariantStoreInput.Quantity) > stock && productVariantStoreInput.Quantity < 0)
                 return new ServiceResponse<bool>
                 {
